@@ -46,18 +46,42 @@ type Message struct {
 
 const defaultNamespace = "core"
 
+type ProtocolType int
+
+const (
+	CONNECTION_PROTOCOL ProtocolType = iota
+	GAME_PROTOCOL
+)
+
+const (
+	connectionProtocolNamespace = "com.ankama.dofus.server.connection"
+	gameProtocolNamespace       = "com.ankama.dofus.server.game"
+)
+
 func main() {
-	export("com.ankama.dofus.server.connection", "output/connection.proto")
-	export("com.ankama.dofus.server.game", "output/game.proto")
+	export(CONNECTION_PROTOCOL, "output/connection.proto")
+	export(GAME_PROTOCOL, "output/game.proto")
 }
 
-func export(targetNamespace string, outputFile string) {
+func export(protocolType ProtocolType, outputFile string) {
 	os.Mkdir("output", os.ModePerm)
 	os.Remove(outputFile)
 
 	protoFile, err := os.Create(outputFile)
 	if err != nil {
 		panic(err)
+	}
+
+	targetNamespace := ""
+	ignoreNamespace := ""
+
+	switch protocolType {
+	case CONNECTION_PROTOCOL:
+		targetNamespace = connectionProtocolNamespace
+		ignoreNamespace = gameProtocolNamespace
+	case GAME_PROTOCOL:
+		targetNamespace = gameProtocolNamespace
+		ignoreNamespace = connectionProtocolNamespace
 	}
 
 	_, _ = protoFile.WriteString(`syntax = "proto3";`)
@@ -121,25 +145,6 @@ func export(targetNamespace string, outputFile string) {
 		listEnums[name] = e
 	}
 
-	// Remove enums that don't have index 0 filed
-	for name, e := range listEnums {
-		if e.IsOneOf {
-			continue
-		}
-
-		hasIndex0 := false
-		for _, field := range e.Fields {
-			if field.Index == 0 {
-				hasIndex0 = true
-				break
-			}
-		}
-
-		if !hasIndex0 {
-			delete(listEnums, name)
-		}
-	}
-
 	var reMessage = regexp.MustCompile(`(?m)// Namespace: (.*)\n.*\npublic sealed class (.*) : IMessage.*\n\{((?s).*?)}\n\n//`)
 	var reFields = regexp.MustCompile(`// Fields\n((?s).*?)// (Properties|Methods)`)
 	var reProperties = regexp.MustCompile(`// Properties\n((?s).*?)// (Methods|Fields)`)
@@ -151,10 +156,13 @@ func export(targetNamespace string, outputFile string) {
 
 	matches := reMessage.FindAllStringSubmatch(string(data), -1)
 	for _, match := range matches {
-		namespace := match[1]
-		name := match[2]
-		name = strings.Replace(name, ".", "", -1)
+		namespace := strings.ToLower(match[1])
+		name := strings.Replace(match[2], ".", "", -1)
 		code := match[3]
+
+		if strings.HasPrefix(namespace, ignoreNamespace) {
+			continue
+		}
 
 		if namespace == "" {
 			namespace = defaultNamespace
@@ -165,6 +173,8 @@ func export(targetNamespace string, outputFile string) {
 			Name:      name,
 			Imports:   map[string]any{},
 		}
+
+		//fmt.Println(namespace, name)
 
 		mapFieldIndex := make(map[string]string)
 		fieldsCode := reFields.FindStringSubmatch(code)
@@ -437,6 +447,7 @@ func isCustomProtoType(protoType string) bool {
 		"double",
 		"string",
 		"object",
+		"google.protobuf.Any",
 	}
 
 	for _, t := range list {
