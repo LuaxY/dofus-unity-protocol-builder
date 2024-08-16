@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/character";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.character;
+
+message PlayerStatusUpdateRequest {
+	.com.ankama.dofus.server.game.protocol.common.CharacterStatus status = 1;
+}
+
+message ResetCharacterCharacteristicsRequest {
+}
+
+message FreeSoulRequest {
+}
+
+message CharacterCharacteristicUpgradeRequest {
+	int32 strength = 1;
+	int32 vitality = 2;
+	int32 wisdom = 3;
+	int32 chance = 4;
+	int32 agility = 5;
+	int32 intelligence = 6;
+}
+
+message PlayerStatusUpdateErrorEvent {
+}
+
+message PlayerStatusUpdatedEvent {
+	int32 account_id = 1;
+	int64 player_id = 2;
+	.com.ankama.dofus.server.game.protocol.common.CharacterStatus status = 3;
+}
+
+message CharacterCharacteristicsEvent {
+	.com.ankama.dofus.server.game.protocol.common.CharacterCharacteristics stats = 1;
+}
+
+message CharacterLevelUpEvent {
+	int32 new_level = 1;
+}
+
+message CharacterExperienceGainEvent {
+	int64 character_experience = 1;
+	int64 mount_experience = 2;
+	int64 guild_experience = 3;
+}
+
+message LifePointsRegenBeginEvent {
+	int32 regen_rate = 1;
+}
+
+message UpdateLifePointsEvent {
+	int32 life_points = 1;
+	int32 max_life_points = 2;
+	optional int32 life_points_gained = 3;
+}
+
+message CharacterLifeStatusEvent {
+	.com.ankama.dofus.server.game.protocol.character.CharacterLifeStatusEvent.LifeStatus state = 1;
+	int64 phoenix_map_id = 2;
+	enum LifeStatus {
+		ALIVE_AND_KICKING = 0;
+		TOMBSTONE = 1;
+		PHANTOM = 2;
+	}
+
+}
+
+message GameOverEvent {
+}
+
+message CharacterCharacteristicUpgradeResultEvent {
+	.com.ankama.dofus.server.game.protocol.character.CharacterCharacteristicUpgradeResultEvent.CharacteristicUpgradeResult result = 1;
+	int32 points = 2;
+	enum CharacteristicUpgradeResult {
+		NONE = 0;
+		SUCCESS = 1;
+		GUEST = 2;
+		IN_FIGHT = 3;
+		NOT_ENOUGH_POINT = 4;
+	}
+
+}
+
+message CharacterRestrictionsEvent {
+	int64 character_id = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.Restriction restrictions = 2;
+}
+
+message CharacterOnConnectionEvent {
+	.com.ankama.dofus.server.game.protocol.character.CharacterOnConnectionEvent.ConnectionEvent connection_event = 1;
+	enum ConnectionEvent {
+		FIRST_ACCOUNT_CONNECTION_EVER = 0;
+		FIRST_ACCOUNT_CONNECTION_ON_SERVER = 1;
+		FIRST_ACCOUNT_CONNECTION_SINCE_REBOOT = 2;
+		FIRST_CHARACTER_CONNECTION = 3;
+		FIRST_CHARACTER_CONNECTION_SINCE_REBOOT = 4;
+	}
+
+}
+

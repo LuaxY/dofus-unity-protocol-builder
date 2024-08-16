@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/guild_chest";
+
+package com.ankama.dofus.server.game.protocol.guild.chest;
+
+message GuildChestTabSelectRequest {
+	int32 tab_number = 1;
+}
+
+message GuildChestTabUpdateRequest {
+	int32 tab_number = 1;
+	string name = 2;
+	int32 picto = 3;
+	repeated int32 drop_type_limitation = 4;
+}
+
+message GuildChestTabContributionsRequest {
+}
+
+message GuildChestContributionStartRequest {
+}
+
+message GuildChestContributionStopRequest {
+}
+
+message GuildChestStructureStartListeningRequest {
+}
+
+message GuildChestStructureStopListeningRequest {
+}
+
+message GuildChestTabContributionsEvent {
+	repeated .com.ankama.dofus.server.game.protocol.guild.chest.GuildChestTabContributionsEvent.Contribution contributions = 1;
+	message Contribution {
+		int64 contributor_id = 1;
+		string contributor_name = 2;
+		int64 amount = 3;
+	}
+
+}
+
+message GuildChestTabLastContributionDateEvent {
+	int64 last_contribution_date = 1;
+}
+
+message GuildChestTabContributionEvent {
+	int32 tab_number = 1;
+	int64 required_amount = 2;
+	int64 current_amount = 3;
+	int64 chest_contribution_enrollment_delay = 4;
+	int64 chest_contribution_delay = 5;
+}
+
+message GuildChestCurrentListenersEvent {
+	repeated string players = 1;
+}
+
+message GuildChestCurrentListenersAddEvent {
+	string players = 1;
+}
+
+message GuildChestCurrentListenersRemoveEvent {
+	string players = 1;
+}
+

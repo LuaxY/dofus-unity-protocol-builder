@@ -1,0 +1,410 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/preset";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.preset;
+
+message CharacterPresetInfo {
+	string uuid = 1;
+	string name = 2;
+	int32 symbol_id = 3;
+	bool is_favorite = 4;
+	string last_modification_date = 5;
+	repeated .com.ankama.dofus.server.game.protocol.preset.CharacterPresetInfo.EquipmentByPositionEntry equipment_by_position = 6;
+	.com.ankama.dofus.server.game.protocol.preset.SpellPreset spell_preset = 7;
+	.com.ankama.dofus.server.game.protocol.preset.CharacteristicsInfo characteristics_info = 8;
+	.com.ankama.dofus.server.game.protocol.preset.PresetLook preset_look = 9;
+	optional .com.ankama.dofus.server.game.protocol.preset.Ride ride = 10;
+	optional string outfit_uuid = 11;
+	message EquipmentByPositionEntry {
+		int32 key = 1;
+		.com.ankama.dofus.server.game.protocol.preset.Equipment value = 2;
+	}
+
+}
+
+message ForgettableSpellPresetInfo {
+	string uuid = 1;
+	string name = 2;
+	int32 symbol_id = 3;
+	bool is_favorite = 4;
+	string last_modification_date = 5;
+	.com.ankama.dofus.server.game.protocol.preset.SpellPreset spell_preset = 6;
+	repeated .com.ankama.dofus.server.game.protocol.preset.ForgettableSpellPresetInfo.ForgettableSpellInfoByIdEntry forgettable_spell_info_by_id = 7;
+	message ForgettableSpellInfoByIdEntry {
+		int32 key = 1;
+		.com.ankama.dofus.server.game.protocol.preset.ForgettableSpellInfo value = 2;
+	}
+
+}
+
+message PresetLook {
+	.com.ankama.dofus.server.game.protocol.common.EntityLook look_with_outfit = 1;
+	.com.ankama.dofus.server.game.protocol.common.EntityLook look_without_outfit = 2;
+}
+
+message CharacteristicsInfo {
+	repeated .com.ankama.dofus.server.game.protocol.preset.CharacteristicsInfo.CharacteristicDetailsByIdEntry characteristic_details_by_id = 1;
+	message CharacteristicDetailsByIdEntry {
+		int32 key = 1;
+		.com.ankama.dofus.server.game.protocol.preset.CharacteristicsInfo.CharacteristicsDetails value = 2;
+	}
+
+	message CharacteristicsDetails {
+		int32 from_base = 2;
+		int32 from_allocated = 3;
+		int32 from_equipment = 4;
+		int32 from_bonus = 5;
+		int32 from_initial_bonus = 6;
+		optional int32 limit = 1;
+	}
+
+}
+
+message Equipment {
+	int32 gid = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectEffect effects = 3;
+	optional int32 uid = 2;
+}
+
+message Ride {
+	int32 model_id = 1;
+	int32 level = 2;
+	bool is_current_ride = 3;
+}
+
+message SpellPositions {
+	repeated int32 positions = 1;
+}
+
+message ForgettableSpellInfo {
+	.com.ankama.dofus.server.game.protocol.preset.SpellPositions spell_positions = 1;
+	bool is_missing = 2;
+}
+
+message SpellPreset {
+	repeated .com.ankama.dofus.server.game.protocol.preset.SpellPreset.SpellPositionsByIdEntry spell_positions_by_id = 1;
+	message SpellPositionsByIdEntry {
+		int32 key = 1;
+		.com.ankama.dofus.server.game.protocol.preset.SpellPositions value = 2;
+	}
+
+}
+
+message PresetOrigin {
+	oneof origin {
+		.com.ankama.dofus.server.game.protocol.preset.PresetOrigin.EmptyPreset empty = 1;
+		.com.ankama.dofus.server.game.protocol.preset.PresetOrigin.PlayerCopy player = 2;
+		.com.ankama.dofus.server.game.protocol.preset.PresetOrigin.PresetClone clone = 3;
+	}
+	message EmptyPreset {
+	}
+
+	message PlayerCopy {
+	}
+
+	message PresetClone {
+		string preset_uuid_to_clone = 1;
+	}
+
+}
+
+message CharacterPresetCreateRequest {
+	string name = 1;
+	int32 symbol_id = 2;
+	.com.ankama.dofus.server.game.protocol.preset.PresetOrigin origin = 3;
+}
+
+message CharacterPresetCreateResponse {
+	oneof result {
+		.com.ankama.dofus.server.game.protocol.preset.CharacterPresetCreateResponse.Success success = 1;
+		.com.ankama.dofus.server.game.protocol.preset.CharacterPresetCreateResponse.Error error = 2;
+	}
+	message Success {
+		.com.ankama.dofus.server.game.protocol.preset.CharacterPresetInfo preset_info = 1;
+	}
+
+	enum Error {
+		MAX_QUANTITY = 0;
+		INVALID_NAME_SIZE = 1;
+		PRESET_NOT_FOUND = 2;
+		UNKNOWN = 3;
+	}
+
+}
+
+message ForgettableSpellPresetCreateRequest {
+	string name = 1;
+	int32 symbol_id = 2;
+	.com.ankama.dofus.server.game.protocol.preset.PresetOrigin origin = 3;
+}
+
+message ForgettableSpellPresetCreateResponse {
+	oneof result {
+		.com.ankama.dofus.server.game.protocol.preset.ForgettableSpellPresetCreateResponse.Success success = 1;
+		.com.ankama.dofus.server.game.protocol.preset.ForgettableSpellPresetCreateResponse.Error error = 2;
+	}
+	message Success {
+		.com.ankama.dofus.server.game.protocol.preset.ForgettableSpellPresetInfo preset_info = 1;
+	}
+
+	enum Error {
+		FEATURE_DISABLED = 0;
+		MAX_QUANTITY = 1;
+		INVALID_NAME_SIZE = 2;
+		PRESET_NOT_FOUND = 3;
+		UNKNOWN = 4;
+	}
+
+}
+
+message CharacterPresetSetRequest {
+	string uuid = 1;
+	.com.ankama.dofus.server.game.protocol.preset.PresetOrigin origin = 2;
+}
+
+message CharacterPresetSetResponse {
+	bool is_success = 1;
+	optional .com.ankama.dofus.server.game.protocol.preset.CharacterPresetInfo preset_info = 2;
+}
+
+message ForgettableSpellPresetSetRequest {
+	string uuid = 1;
+	.com.ankama.dofus.server.game.protocol.preset.PresetOrigin origin = 2;
+}
+
+message ForgettableSpellPresetSetResponse {
+	bool is_success = 1;
+	optional .com.ankama.dofus.server.game.protocol.preset.ForgettableSpellPresetInfo preset_info = 2;
+}
+
+message PresetSaveRequest {
+	.com.ankama.dofus.server.game.protocol.common.PresetType type = 1;
+	string uuid = 2;
+}
+
+message PresetSaveResponse {
+	bool is_success = 1;
+}
+
+message CharacterPresetResetRequest {
+	string uuid = 1;
+}
+
+message CharacterPresetResetResponse {
+	bool is_success = 1;
+	optional .com.ankama.dofus.server.game.protocol.preset.CharacterPresetInfo preset_info = 2;
+}
+
+message ForgettableSpellPresetResetRequest {
+	string uuid = 1;
+}
+
+message ForgettableSpellPresetResetResponse {
+	bool is_success = 1;
+	optional .com.ankama.dofus.server.game.protocol.preset.ForgettableSpellPresetInfo preset_info = 2;
+}
+
+message PresetDeleteRequest {
+	string preset_uuid = 1;
+	.com.ankama.dofus.server.game.protocol.common.PresetType preset_type = 2;
+}
+
+message PresetDeleteResponse {
+	bool is_success = 1;
+}
+
+message PresetUseRequest {
+	string preset_uuid = 1;
+	.com.ankama.dofus.server.game.protocol.common.PresetType preset_type = 2;
+}
+
+message PresetUseResponse {
+	oneof result {
+		.com.ankama.dofus.server.game.protocol.preset.PresetUseResponse.ResultEnum result_enum = 1;
+		.com.ankama.dofus.server.game.protocol.preset.PresetUseResponse.MissingEquipments missing_equipments = 2;
+	}
+	message MissingEquipments {
+		repeated int32 missing_item_gids = 1;
+		optional int32 missing_ride_model_id = 2;
+	}
+
+	enum ResultEnum {
+		OK = 0;
+		ERROR_COOLDOWN = 1;
+		ERROR_BAD_PRESET_UUID = 2;
+		ERROR_INVALID_STATE = 3;
+		ERROR_UNKNOWN = 4;
+		ERROR_INVALID_DATA = 5;
+		MISSING_SPELLS = 6;
+	}
+
+}
+
+message PresetSpellUpdateRequest {
+	string preset_uuid = 1;
+	.com.ankama.dofus.server.game.protocol.preset.PresetSpellUpdateRequest.Target target = 2;
+	.com.ankama.dofus.server.game.protocol.preset.SpellPreset spell_preset = 3;
+	enum Target {
+		CHARACTER = 0;
+		FORGETTABLE_BASE = 1;
+		FORGETTABLE_SPELL = 2;
+	}
+
+}
+
+message PresetSpellUpdateResponse {
+	bool is_success = 1;
+}
+
+message PresetStatUpdateRequest {
+	string preset_uuid = 1;
+	repeated .com.ankama.dofus.server.game.protocol.preset.PresetStatUpdateRequest.StatByIdEntry stat_by_id = 2;
+	message StatByIdEntry {
+		int32 key = 1;
+		int32 value = 2;
+	}
+
+}
+
+message PresetStatUpdateResponse {
+	bool is_success = 1;
+	optional .com.ankama.dofus.server.game.protocol.preset.CharacteristicsInfo characteristics_info = 2;
+}
+
+message PresetEquipmentUpdateRequest {
+	string character_preset_uuid = 1;
+	oneof action {
+		.com.ankama.dofus.server.game.protocol.preset.PresetEquipmentUpdateRequest.SetItem set_item = 2;
+		.com.ankama.dofus.server.game.protocol.preset.PresetEquipmentUpdateRequest.RemoveItem remove_item = 3;
+		.com.ankama.dofus.server.game.protocol.preset.PresetEquipmentUpdateRequest.SetRide set_ride = 4;
+		.com.ankama.dofus.server.game.protocol.preset.PresetEquipmentUpdateRequest.RemoveRide remove_ride = 5;
+	}
+	message SetItem {
+		int32 position = 1;
+		int32 item_uid = 2;
+	}
+
+	message RemoveItem {
+		int32 position = 1;
+	}
+
+	message SetRide {
+	}
+
+	message RemoveRide {
+	}
+
+}
+
+message PresetEquipmentUpdateResponse {
+	bool is_success = 1;
+	optional .com.ankama.dofus.server.game.protocol.preset.PresetEquipmentUpdateResponse.EquipmentRefresh equipment_refresh = 2;
+	message EquipmentRefresh {
+		.com.ankama.dofus.server.game.protocol.preset.CharacteristicsInfo characteristics_info = 1;
+		.com.ankama.dofus.server.game.protocol.preset.PresetLook preset_look = 2;
+	}
+
+}
+
+message PresetRenameRequest {
+	string preset_uuid = 1;
+	.com.ankama.dofus.server.game.protocol.common.PresetType preset_type = 2;
+	string name = 3;
+}
+
+message PresetRenameResponse {
+	.com.ankama.dofus.server.game.protocol.preset.PresetRenameResponse.Result result = 1;
+	enum Result {
+		SUCCESS = 0;
+		PRESET_NOT_FOUND = 1;
+		ERROR_NAME_SIZE = 2;
+		UNKNOWN_ERROR = 3;
+		FEATURE_DISABLED = 4;
+	}
+
+}
+
+message PresetSymbolUpdateRequest {
+	string preset_uuid = 1;
+	.com.ankama.dofus.server.game.protocol.common.PresetType preset_type = 2;
+	int32 symbol_id = 3;
+}
+
+message PresetSymbolUpdateResponse {
+	bool is_success = 1;
+}
+
+message PresetSetFavoriteRequest {
+	string preset_uuid = 1;
+	.com.ankama.dofus.server.game.protocol.common.PresetType preset_type = 2;
+	bool is_favorite = 3;
+}
+
+message PresetSetFavoriteResponse {
+	bool is_success = 1;
+}
+
+message CharacterPresetInfoRequest {
+	string preset_uuid = 1;
+}
+
+message CharacterPresetInfoResponse {
+	bool is_success = 1;
+	optional .com.ankama.dofus.server.game.protocol.preset.CharacterPresetInfo info = 2;
+}
+
+message ForgettableSpellPresetInfoRequest {
+	string preset_uuid = 1;
+}
+
+message ForgettableSpellPresetInfoResponse {
+	bool is_success = 1;
+	optional .com.ankama.dofus.server.game.protocol.preset.ForgettableSpellPresetInfo info = 2;
+}
+
+message PresetOutfitUpdateRequest {
+	string preset_uuid = 1;
+	optional string outfit_uuid = 2;
+}
+
+message PresetOutfitUpdateResponse {
+	bool is_success = 1;
+	optional .com.ankama.dofus.server.game.protocol.preset.PresetLook updated_look = 2;
+}
+
+message PresetItemUpdateEvent {
+	bool is_linked = 1;
+	repeated .com.ankama.dofus.server.game.protocol.preset.PresetItemUpdateEvent.ItemPositionByPresetUuidEntry item_position_by_preset_uuid = 2;
+	int32 item_uid = 3;
+	message ItemPositionByPresetUuidEntry {
+		string key = 1;
+		int32 value = 2;
+	}
+
+}
+
+message PresetListEvent {
+	repeated .com.ankama.dofus.server.game.protocol.preset.PresetListEvent.CharacterPresetInfoByIdEntry character_preset_info_by_id = 1;
+	repeated .com.ankama.dofus.server.game.protocol.preset.PresetListEvent.ForgettableSpellPresetInfoByIdEntry forgettable_spell_preset_info_by_id = 2;
+	message CharacterPresetInfoByIdEntry {
+		string key = 1;
+		.com.ankama.dofus.server.game.protocol.preset.CharacterPresetInfo value = 2;
+	}
+
+	message ForgettableSpellPresetInfoByIdEntry {
+		string key = 1;
+		.com.ankama.dofus.server.game.protocol.preset.ForgettableSpellPresetInfo value = 2;
+	}
+
+}
+
+message CharacterPresetCurrentStateRequest {
+}
+
+message CharacterPresetCurrentStateResponse {
+	.com.ankama.dofus.server.game.protocol.preset.CharacterPresetInfo preset = 1;
+}
+

@@ -1,0 +1,359 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/game_action";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.game.action;
+
+enum FightSpellCastCritical {
+	NORMAL = 0;
+	CRITICAL_HIT = 1;
+	CRITICAL_FAIL = 2;
+}
+
+enum SequenceType {
+	SPELL = 0;
+	WEAPON = 1;
+	GLYPH_TRAP = 2;
+	TRIGGERED = 3;
+	MOVE = 4;
+	CHARACTER_DEATH = 5;
+	TURN_START = 6;
+	TURN_END = 7;
+	FIGHT_START = 8;
+}
+
+message GameActionItemConsumeRequest {
+	int32 action_id = 1;
+	int64 player_id = 2;
+}
+
+message GameActionItemConsumeAllRequest {
+	int64 player_id = 1;
+}
+
+message GameActionFightCastRequest {
+	int32 spell_id = 1;
+	int32 cell = 2;
+}
+
+message GameActionFightCastOnTargetRequest {
+	int32 spell_id = 1;
+	int64 target_id = 2;
+}
+
+message GameActionAcknowledgementRequest {
+	bool valid = 1;
+	int32 action_id = 2;
+}
+
+message GameActionItemListEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.GameActionItem actions = 1;
+}
+
+message GameActionItemConsumedEvent {
+	bool success = 1;
+	int32 action_id = 2;
+	bool automatic_action = 3;
+}
+
+message GameActionSpamEvent {
+	repeated int32 cells = 1;
+}
+
+message GameActionFightEvent {
+	int32 action_id = 1;
+	int64 source_id = 2;
+	oneof action {
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.Slide slide = 3;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.DodgePointLoss dodge_point_loss = 4;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.ReflectDamages reflect_damages = 5;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.ReduceDamages reduce_damages = 6;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.ReflectSpell reflect_spell = 7;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.RemovableEffect removable_effect = 8;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.LifePointsLost life_points_lost = 9;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.LifePointsGain life_points_gain = 10;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.SpellImmunity spell_immunity = 11;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.SpellCoolDownVariation spell_cool_down_variation = 12;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.Vanish vanish = 13;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.Kill kill = 14;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.Death death = 15;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.TargetedAbility targeted_ability = 16;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.Tackled tackled = 17;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.PointsVariation points_variation = 18;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.InvisibleDetected invisible_detected = 19;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.TeleportOnSameMap teleport_on_same_map = 20;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.ExchangePositions exchange_positions = 21;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.SpellRemove spell_remove = 22;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.ModifyEffectsDuration modify_effects_duration = 23;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.StealKama steal_kama = 24;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.ChangeLook change_look = 25;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.Invisibility invisibility = 26;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.Summons summons = 27;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.MarkCells mark_cells = 28;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.UnmarkCells unmark_cells = 29;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.TriggerGlyphTrap trigger_glyph_trap = 30;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.ActivateGlyphTrap activate_glyph_trap = 31;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.CarryCharacter carry_character = 32;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.ThrowCharacter throw_character = 33;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.DropCharacter drop_character = 34;
+		.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.ExecuteScript execute_script = 35;
+	}
+	message CarryCharacter {
+		int64 target_id = 3;
+		int32 cell = 4;
+	}
+
+	message ThrowCharacter {
+		int64 target_id = 3;
+		int32 cell = 4;
+	}
+
+	message DropCharacter {
+		int64 target_id = 3;
+		int32 cell = 4;
+	}
+
+	message ExecuteScript {
+		int32 script_usage_id = 1;
+		bool critical = 2;
+		int32 spell_id = 3;
+		int32 spell_rank = 4;
+		int32 cell = 5;
+	}
+
+	message UnmarkCells {
+		int32 mark_id = 1;
+	}
+
+	message TriggerGlyphTrap {
+		int32 mark_id = 1;
+		int32 mark_impact_cell = 2;
+		int64 triggering_character_id = 3;
+	}
+
+	message ActivateGlyphTrap {
+		int32 mark_id = 1;
+		bool active = 2;
+	}
+
+	message Invisibility {
+		int64 target_id = 1;
+		.com.ankama.dofus.server.game.protocol.common.FightInvisibilityState invisibility_state = 2;
+	}
+
+	message Summons {
+		oneof summons {
+			.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.Summons.SummonsByActor summons_by_actor = 1;
+			.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.Summons.SummonsByContextInformation summons_by_context_information = 2;
+		}
+		message SummonsByActor {
+			repeated .com.ankama.dofus.server.game.protocol.common.ActorPositionInformation summons = 1;
+		}
+
+		message SummonsByContextInformation {
+			repeated .com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.Summons.SummonsByContextInformation.SummonContextInformation summons = 1;
+			message SummonContextInformation {
+				.com.ankama.dofus.server.game.protocol.game.action.EntitySpawnInformation spawn_information = 1;
+				int32 wave = 2;
+				.com.ankama.dofus.server.game.protocol.common.EntityLook look = 3;
+				.com.ankama.dofus.server.game.protocol.common.FightCharacteristics characteristics = 4;
+				repeated .com.ankama.dofus.server.game.protocol.common.SpawnInformation summons = 5;
+			}
+
+		}
+
+	}
+
+	message MarkCells {
+		.com.ankama.dofus.server.game.protocol.common.FightMark mark = 1;
+	}
+
+	message ModifyEffectsDuration {
+		int64 target_id = 3;
+		int32 delta = 4;
+	}
+
+	message StealKama {
+		int64 target_id = 3;
+		int64 amount = 4;
+	}
+
+	message ChangeLook {
+		int64 target_id = 3;
+		.com.ankama.dofus.server.game.protocol.common.EntityLook look = 4;
+	}
+
+	message TeleportOnSameMap {
+		int64 target_id = 1;
+		int32 cell = 2;
+	}
+
+	message ExchangePositions {
+		int64 target_id = 1;
+		int32 caster_cell_id = 2;
+		int32 target_cell_id = 3;
+	}
+
+	message SpellRemove {
+		int64 target_id = 1;
+		bool verbose_cast = 2;
+		oneof complement {
+			.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.SpellRemove.EffectRemove effect_remove = 3;
+			int32 spell_id = 4;
+		}
+		message EffectRemove {
+			int32 effect = 1;
+			bool trigger = 2;
+		}
+
+	}
+
+	message Tackled {
+		repeated int64 tacklers_id = 1;
+	}
+
+	message PointsVariation {
+		int64 target_id = 1;
+		int32 delta = 2;
+	}
+
+	message InvisibleDetected {
+		int64 target_id = 1;
+		int32 cell = 2;
+	}
+
+	message TargetedAbility {
+		int64 target_id = 1;
+		int32 destination_cell = 2;
+		.com.ankama.dofus.server.game.protocol.game.action.FightSpellCastCritical critical = 3;
+		bool silent_cast = 4;
+		bool verbose_cast = 5;
+		oneof fight {
+			.com.ankama.dofus.server.game.protocol.game.action.GameActionFightEvent.TargetedAbility.SpellCast spell_cast = 6;
+			int32 weapon_generic_id = 7;
+		}
+		message SpellCast {
+			int32 spell_id = 1;
+			int32 spell_level = 2;
+			repeated int32 portals_id = 3;
+		}
+
+	}
+
+	message Vanish {
+		int64 target_id = 1;
+	}
+
+	message Kill {
+		int64 target_id = 1;
+	}
+
+	message Death {
+		int64 target_id = 1;
+	}
+
+	message SpellImmunity {
+		int64 target_id = 1;
+		int32 spell_id = 2;
+	}
+
+	message SpellCoolDownVariation {
+		int64 target_id = 1;
+		int32 spell_id = 2;
+		int32 value = 3;
+	}
+
+	message LifePointsLost {
+		int64 target_id = 1;
+		int32 loss = 2;
+		int32 permanent_damages = 3;
+		int32 element_id = 4;
+		optional int32 shield_loss = 5;
+	}
+
+	message LifePointsGain {
+		int64 target_id = 1;
+		int32 delta = 2;
+	}
+
+	message RemovableEffect {
+		.com.ankama.dofus.server.game.protocol.common.FightRemovableEffect effect = 1;
+	}
+
+	message Slide {
+		int64 target_id = 1;
+		int32 start_cell = 2;
+		int32 end_cell = 3;
+	}
+
+	message DodgePointLoss {
+		int64 target_id = 1;
+		int32 amount = 2;
+	}
+
+	message ReflectDamages {
+		int64 target_id = 1;
+	}
+
+	message ReduceDamages {
+		int64 target_id = 1;
+		int32 amount = 2;
+	}
+
+	message ReflectSpell {
+		int64 target_id = 1;
+	}
+
+}
+
+message GameActionUpdateEffectTriggerCountEvent {
+	repeated .com.ankama.dofus.server.game.protocol.game.action.GameActionUpdateEffectTriggerCountEvent.FightEffectTriggerCount effects_count_on_target = 1;
+	message FightEffectTriggerCount {
+		int32 effect_id = 1;
+		int64 target_id = 2;
+		int32 count = 3;
+	}
+
+}
+
+message SequenceStartEvent {
+	.com.ankama.dofus.server.game.protocol.game.action.SequenceType sequence_type = 1;
+	int64 author_id = 2;
+}
+
+message SequenceEndEvent {
+	int32 action_id = 1;
+	int64 author_id = 2;
+	.com.ankama.dofus.server.game.protocol.game.action.SequenceType sequence_type = 3;
+}
+
+message EntitySpawnInformation {
+	oneof spawn_information {
+		.com.ankama.dofus.server.game.protocol.game.action.EntitySpawnInformation.Monster monster = 1;
+		.com.ankama.dofus.server.game.protocol.game.action.EntitySpawnInformation.Character character = 2;
+		.com.ankama.dofus.server.game.protocol.game.action.EntitySpawnInformation.Companion companion = 3;
+	}
+	message Monster {
+		int32 monster_gid = 1;
+		oneof invocation_information {
+			int32 grade = 2;
+			int32 level = 3;
+		}
+	}
+
+	message Character {
+		string name = 1;
+		int32 level = 2;
+	}
+
+	message Companion {
+		int32 model_id = 1;
+		int32 level = 2;
+		int64 summoner_id = 3;
+		int64 owner_id = 4;
+	}
+
+}
+

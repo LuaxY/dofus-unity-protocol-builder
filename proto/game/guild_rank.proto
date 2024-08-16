@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/guild_rank";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.guild.rank;
+
+message GuildRanksRequest {
+}
+
+message GuildRankCreateRequest {
+	int32 parent_rank_id = 1;
+	int32 gfx_id = 2;
+	string name = 3;
+}
+
+message GuildRankUpdateAllRequest {
+	repeated .com.ankama.dofus.server.game.protocol.common.RankInformation ranks = 1;
+}
+
+message GuildRankUpdateRequest {
+	.com.ankama.dofus.server.game.protocol.common.RankInformation rank = 1;
+}
+
+message GuildRightsUpdateRequest {
+	int32 rank_id = 1;
+	repeated int32 rights = 2;
+}
+
+message GuildRankRemoveRequest {
+	int32 rank_id = 1;
+	int32 new_rank_id = 2;
+}
+
+message GuildRanksEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.RankInformation ranks = 1;
+}
+

@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/account";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.account;
+
+message AccountInformationUpdateEvent {
+	int64 subscription_end_date = 1;
+}
+
+message AccountSubscriptionElapsedDurationUpdateEvent {
+	int64 subscription_elapsed_duration = 1;
+}
+
+message AccountCapabilitiesEvent {
+	int64 account_id = 1;
+	bool tutorial_available = 2;
+	.com.ankama.dofus.server.game.protocol.common.Hierarchy status = 3;
+	bool can_create_new_character = 4;
+}
+
+message GuestLimitationEvent {
+	.com.ankama.dofus.server.game.protocol.account.GuestLimitationEvent.GuestLimitation reason = 1;
+	enum GuestLimitation {
+		LIMITED_TO_REGISTERED = 0;
+		LIMIT_ON_JOB_XP = 1;
+		LIMIT_ON_JOB_USE = 2;
+		LIMIT_ON_MAP = 3;
+		LIMIT_ON_ITEM = 4;
+		LIMIT_ON_CHAT = 5;
+		LIMIT_ON_GUILD = 6;
+	}
+
+}
+
+message GuestModeEvent {
+	bool effective = 1;
+}
+
+message SubscriptionLimitationEvent {
+	.com.ankama.dofus.server.game.protocol.account.SubscriptionLimitationEvent.SubscriptionRequired reason = 1;
+	enum SubscriptionRequired {
+		LIMITED_TO_SUBSCRIBER = 0;
+		LIMIT_ON_JOB_XP = 1;
+		LIMIT_ON_JOB_USE = 2;
+		LIMIT_ON_MAP = 3;
+		LIMIT_ON_ITEM = 4;
+		LIMIT_ON_HAVEN_BAG = 5;
+	}
+
+}
+
+message SubscriptionZoneEvent {
+	bool effective = 1;
+}
+

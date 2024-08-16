@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/living_object";
+
+package com.ankama.dofus.server.game.protocol.living.object;
+
+message LivingObjectMessageRequest {
+	int32 message_id = 1;
+	int32 object_gid = 2;
+}
+
+message LivingObjectDissociateRequest {
+	int32 object_uid = 1;
+	int32 position = 2;
+}
+
+message LivingObjectChangeSkinRequest {
+	int32 object_uid = 1;
+	int32 position = 2;
+	int32 skin_id = 3;
+}
+
+message LivingObjectMessageEvent {
+	int32 message_id = 1;
+	int64 timestamp = 2;
+	string owner_name = 3;
+	int32 object_gid = 4;
+}
+

@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/alliance_conquest";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.alliance.conquest;
+
+message AVAStateUpdateRequest {
+	bool enable = 1;
+}
+
+message AllianceFightListenStartRequest {
+}
+
+message AllianceFightListenStopRequest {
+}
+
+message AllianceFightJoinRequest {
+	.com.ankama.dofus.server.game.protocol.common.SocialFightInformation fight_information = 1;
+}
+
+message AllianceFightReplaceRequest {
+	.com.ankama.dofus.server.game.protocol.common.SocialFightInformation fight_information = 1;
+	int64 to_replace_fighter_id = 2;
+}
+
+message AllianceFightLeaveRequest {
+	.com.ankama.dofus.server.game.protocol.common.SocialFightInformation fight_information = 1;
+}
+
+message AllianceFightsInformationEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.SocialFight alliance_fights = 1;
+}
+
+message AllianceFightStartedEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialFightInformation fight_information = 1;
+	.com.ankama.dofus.server.game.protocol.common.FightPhaseInfo phase = 2;
+}
+
+message AllianceFightFinishedEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialFightInformation fight_information = 1;
+}
+
+message AllianceFightPhaseUpdateEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialFightInformation fight_information = 1;
+	.com.ankama.dofus.server.game.protocol.common.FightPhaseInfo phase = 2;
+}
+
+message AllianceFightFighterAddedEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialFightInformation fight_information = 1;
+	.com.ankama.dofus.server.game.protocol.common.Character fighter = 2;
+	.com.ankama.dofus.server.game.protocol.common.Team team = 3;
+}
+
+message AllianceFightFighterRemovedEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialFightInformation fight_information = 1;
+	int64 fighter_id = 2;
+}
+
+message KOTHUpdateEvent {
+	repeated .com.ankama.dofus.server.game.protocol.alliance.conquest.KOTHUpdateEvent.KOTHAllianceInformation koth_alliance_information = 1;
+	string starting_ava_timestamp = 2;
+	int64 next_tick_time = 3;
+	message KOTHAllianceInformation {
+		.com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance = 1;
+		int64 member_count = 2;
+		repeated .com.ankama.dofus.server.game.protocol.alliance.conquest.KOTHUpdateEvent.KOTHAllianceInformation.KOTHAllianceRoleNumber koth_roles = 3;
+		repeated .com.ankama.dofus.server.game.protocol.alliance.conquest.KOTHUpdateEvent.KOTHAllianceInformation.KOTHScore scores = 4;
+		int32 match_domination_scores = 5;
+		message KOTHAllianceRoleNumber {
+			int64 member_count = 1;
+			int32 koth_role = 2;
+		}
+
+		message KOTHScore {
+			.com.ankama.dofus.server.game.protocol.alliance.conquest.KOTHUpdateEvent.KOTHAllianceInformation.KOTHScore.KOTHScoreType score_type = 1;
+			int32 round_scores = 2;
+			int32 cumulated_scores = 3;
+			enum KOTHScoreType {
+				FIGHT = 0;
+				DOMINATION = 1;
+				PRISM = 2;
+			}
+
+		}
+
+	}
+
+}
+
+message KOTHEndEvent {
+	optional .com.ankama.dofus.server.game.protocol.common.AllianceInformation winner = 1;
+}
+
+message NuggetsBeneficiary {
+	int64 character_id = 1;
+	int32 nuggets_quantity = 2;
+}
+
+message NuggetsDistributionRequest {
+	repeated .com.ankama.dofus.server.game.protocol.alliance.conquest.NuggetsBeneficiary beneficiaries = 1;
+}
+
+message NuggetsListenStartRequest {
+}
+
+message NuggetsListenStopRequest {
+}
+
+message NuggetsInformationEvent {
+	int32 nuggets_quantity = 1;
+}
+

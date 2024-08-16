@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/tag_storage";
+
+package com.ankama.dofus.server.game.protocol.tag.storage;
+
+message AddTagStorageRequest {
+	string name = 1;
+	int32 picto = 2;
+}
+
+message AddTagStorageResponse {
+	string tag_storage_uuid = 1;
+}
+
+message RemoveTagStorageRequest {
+	string tag_storage_uuid = 1;
+}
+
+message RemoveTagStorageResponse {
+	string tag_storage_uuid = 1;
+}
+
+message AddTagObjectRequest {
+	repeated .com.ankama.dofus.server.game.protocol.tag.storage.TagObjectUpdateContent tag_object_update_content = 1;
+}
+
+message AddTagObjectResponse {
+	repeated int32 object_ids = 1;
+}
+
+message RemoveTagObjectRequest {
+	repeated .com.ankama.dofus.server.game.protocol.tag.storage.TagObjectUpdateContent tag_object_update_content = 1;
+}
+
+message RemoveTagObjectResponse {
+	repeated int32 object_ids = 1;
+}
+
+message TagObjectUpdateContent {
+	string tag_storage_uuid = 1;
+	int32 object_id = 2;
+}
+
+message UpdateTagStorageContentRequest {
+	.com.ankama.dofus.server.game.protocol.tag.storage.TagStorageData tag_storage_data = 1;
+}
+
+message UpdateTagStorageContentResponse {
+	string tag_storage_uuid = 1;
+}
+
+message TagStoragesRefreshEvent {
+	repeated .com.ankama.dofus.server.game.protocol.tag.storage.TagInformation tag_information = 1;
+}
+
+message TagInformation {
+	.com.ankama.dofus.server.game.protocol.tag.storage.TagStorageData tag_storage_data = 1;
+	.com.ankama.dofus.server.game.protocol.tag.storage.TagObjectData tag_object_data = 2;
+}
+
+message TagStorageData {
+	string tag_storage_uuid = 1;
+	string name = 2;
+	int32 picto = 3;
+}
+
+message TagObjectData {
+	repeated int32 tag_object_uuids = 1;
+}
+

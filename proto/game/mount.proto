@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/mount";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.mount;
+
+message MountReleaseRequest {
+}
+
+message MountSterilizeRequest {
+}
+
+message MountToggleRidingRequest {
+}
+
+message MountRenameRequest {
+	string name = 1;
+	int32 mount_id = 2;
+}
+
+message MountFeedRequest {
+	int32 mount_id = 1;
+	.com.ankama.dofus.server.game.protocol.mount.MountFeedRequest.MountLocation mount_location = 2;
+	int32 mount_food_uid = 3;
+	int32 quantity = 4;
+	enum MountLocation {
+		EQUIPPED = 0;
+		INVENTORY = 1;
+		STABLED = 2;
+		MAP = 3;
+	}
+
+}
+
+message MountSetXpRatioRequest {
+	int32 xp_ratio = 1;
+}
+
+message MountInformationRequest {
+	int32 mount_id = 1;
+	int64 time = 2;
+}
+
+message MountInformationInPaddockRequest {
+	int32 mount_id = 1;
+}
+
+message MountHarnessDissociateRequest {
+}
+
+message MountHarnessColorsUpdateRequest {
+	bool use_harness_colors = 1;
+}
+
+message MountSterilizedEvent {
+	int32 mount_id = 1;
+}
+
+message MountReleasedEvent {
+	int32 mount_id = 1;
+}
+
+message MountRenamedEvent {
+	int32 mount_id = 1;
+	string name = 2;
+}
+
+message MountRenamedErrorEvent {
+	int32 mount_id = 1;
+}
+
+message MountXpRatioEvent {
+	int32 ratio = 1;
+}
+
+message MountDataEvent {
+	.com.ankama.dofus.server.game.protocol.common.MountData mount_data = 1;
+}
+
+message MountDataErrorEvent {
+	.com.ankama.dofus.server.game.protocol.mount.MountDataErrorEvent.MountDataError reason = 1;
+	enum MountDataError {
+		UNKNOWN = 0;
+		NOT_FOUND = 1;
+		SOMEONE_ELSE_PRIVATE_FARM = 2;
+		SOMEONE_ELSE_MOUNT = 3;
+	}
+
+}
+
+message MountEquippedEvent {
+	.com.ankama.dofus.server.game.protocol.common.MountData mount_data = 1;
+}
+
+message MountUnequippedEvent {
+}
+
+message MountEquippedErrorEvent {
+	.com.ankama.dofus.server.game.protocol.mount.MountEquippedErrorEvent.MountEquippedError error = 1;
+	enum MountEquippedError {
+		UNEQUIPPED = 0;
+		EQUIPPED = 1;
+		RIDING = 2;
+	}
+
+}
+
+message MountRidingEvent {
+	bool is_riding = 1;
+	bool is_auto_pilot = 2;
+}
+
+message MountEmoteIconUsedEvent {
+	int32 mount_id = 1;
+	int32 reaction = 2;
+}
+
+message MountUpdateCharacteristicsEvent {
+	int32 ride_id = 1;
+	repeated .com.ankama.dofus.server.game.protocol.mount.MountUpdateCharacteristicsEvent.MountCharacteristicUpdate updated_characteristics = 2;
+	message MountCharacteristicUpdate {
+		.com.ankama.dofus.server.game.protocol.common.MountCharacteristic characteristic = 1;
+		optional int32 int_value = 2;
+	}
+
+}
+
+message DisplayNumericalValuePaddockEvent {
+	int32 mount_id = 1;
+	int32 value = 2;
+	.com.ankama.dofus.server.game.protocol.common.MountCharacteristic type = 3;
+}
+

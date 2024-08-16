@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/dialog";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.dialog;
+
+message DialogLeaveRequest {
+}
+
+message DialogLeaveEvent {
+	.com.ankama.dofus.server.game.protocol.common.DialogType dialog_type = 1;
+}
+

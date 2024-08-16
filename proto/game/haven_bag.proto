@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/haven_bag";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.haven.bag;
+
+message HavenBagEnterRequest {
+	int64 owner = 1;
+}
+
+message HavenBagChangeRoomRequest {
+	int32 room_id = 1;
+}
+
+message HavenBagExitRequest {
+}
+
+message HavenBagEditRequest {
+}
+
+message HavenBagEditCancelRequest {
+}
+
+message HavenBagThemeChangeRequest {
+	int32 theme = 1;
+}
+
+message HavenBagFurnitureOpenRequest {
+}
+
+message HavenBagFurnitureRequest {
+	repeated .com.ankama.dofus.server.game.protocol.haven.bag.Element furniture = 1;
+}
+
+message HavenBagFurnitureCloseRequest {
+}
+
+message HavenBagKickRequest {
+	int64 guest_id = 1;
+}
+
+message HavenBagPermissionsUpdateRequest {
+	int32 permissions = 1;
+}
+
+message HavenBagInvitationAnswerRequest {
+	bool accepted = 1;
+}
+
+message HavenBagInvitationRequest {
+	int64 guest_id = 1;
+}
+
+message HavenBagRoomUpdateEvent {
+	.com.ankama.dofus.server.game.protocol.haven.bag.HavenBagRoomUpdateEvent.HavenBagRoomAction action = 1;
+	repeated .com.ankama.dofus.server.game.protocol.haven.bag.HavenBagRoomUpdateEvent.HavenBagRoomPreview preview = 2;
+	message HavenBagRoomPreview {
+		int32 room_id = 1;
+		int32 theme_id = 2;
+	}
+
+	enum HavenBagRoomAction {
+		HAVEN_BAG_ROOM_DISPATCH = 0;
+		HAVEN_BAG_ROOM_UPDATE = 1;
+	}
+
+}
+
+message HavenBagPackListEvent {
+	repeated int32 packs_id = 1;
+}
+
+message HavenBagEditStartEvent {
+}
+
+message HavenBagEditFinishedEvent {
+}
+
+message HavenBagDailyLotteryEvent {
+	.com.ankama.dofus.server.game.protocol.haven.bag.HavenBagDailyLotteryEvent.DailyLotteryResult result = 1;
+	optional int64 game_action_id = 2;
+	enum DailyLotteryResult {
+		HAVEN_BAG_DAILY_LOTTERY_OK = 0;
+		HAVEN_BAG_DAILY_LOTTERY_ALREADY_USED = 1;
+		HAVEN_BAG_DAILY_LOTTERY_ERROR = 2;
+	}
+
+}
+
+message HavenBagFurnitureEvent {
+	repeated .com.ankama.dofus.server.game.protocol.haven.bag.Element furniture = 1;
+}
+
+message HavenBagPermissionsUpdateEvent {
+	int32 permissions = 1;
+}
+
+message HavenBagInvitationClosedEvent {
+	.com.ankama.dofus.server.game.protocol.common.Character host_information = 1;
+}
+
+message HavenBagInvitationEvent {
+	.com.ankama.dofus.server.game.protocol.common.Character guest_information = 1;
+	bool accepted = 2;
+}
+
+message HavenBagInvitationOfferedEvent {
+	.com.ankama.dofus.server.game.protocol.common.Character host_information = 1;
+	int64 time_before_cancel = 2;
+}
+
+message Element {
+	int32 cell_id = 1;
+	int32 element_id = 2;
+	int32 orientation = 3;
+}
+

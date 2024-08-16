@@ -1,0 +1,189 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/arena";
+
+package com.ankama.dofus.server.game.protocol.arena;
+
+enum ArenaType {
+	ONE_VS_ONE = 0;
+	TWO_VS_TWO = 1;
+	THREE_VS_THREE = 2;
+}
+
+message ArenaRegisterRequest {
+	.com.ankama.dofus.server.game.protocol.arena.ArenaType arena_type = 1;
+}
+
+message ArenaUnregisterRequest {
+}
+
+message ArenaFightAnswerRequest {
+	bool accept = 1;
+}
+
+message ArenaFightAnswerResponse {
+	bool acknowledged = 1;
+}
+
+message ArenaRegistrationStatusEvent {
+	bool registered = 1;
+	.com.ankama.dofus.server.game.protocol.arena.ArenaRegistrationStatusEvent.Step step = 2;
+	.com.ankama.dofus.server.game.protocol.arena.ArenaType battle_mode = 3;
+	enum Step {
+		REGISTERED = 0;
+		WAITING_FIGHT = 1;
+		STARTING_FIGHT = 2;
+		UNREGISTERED = 3;
+	}
+
+}
+
+message ArenaFightPropositionEvent {
+	int32 fight_id = 1;
+	repeated int64 allies = 2;
+	int32 duration = 3;
+}
+
+message ArenaFighterStatusEvent {
+	int32 fight_id = 1;
+	int64 character_id = 2;
+	bool accepted = 3;
+}
+
+message ArenaUpdatePlayerInformationEvent {
+	repeated .com.ankama.dofus.server.game.protocol.arena.ArenaUpdatePlayerInformationEvent.ArenaRank arena_ranks = 1;
+	string ban_end_date = 2;
+	message ArenaRank {
+		.com.ankama.dofus.server.game.protocol.arena.ArenaType arena_type = 1;
+		.com.ankama.dofus.server.game.protocol.arena.ArenaUpdatePlayerInformationEvent.ArenaRank.LeagueRanking league_ranking = 2;
+		int32 best_league_id = 3;
+		int32 best_rating = 4;
+		int32 daily_victory_count = 5;
+		int32 season_victory_count = 6;
+		int32 daily_fight_count = 7;
+		int32 season_fight_count = 8;
+		int32 fight_needed_for_ladder = 9;
+		message LeagueRanking {
+			int32 rating = 1;
+			int32 league_id = 2;
+			int32 ladder_position = 3;
+		}
+
+	}
+
+}
+
+message ArenaSwitchToFightServerEvent {
+	string address = 1;
+	repeated int32 ports = 2;
+	string token = 3;
+}
+
+message ArenaLeagueRewardsEvent {
+	int32 season_id = 1;
+	int32 league_id = 2;
+	int32 ladder_position = 3;
+	bool end_season_reward = 4;
+}
+
+message ArenaPlayerBehavioursEvent {
+	repeated string flags = 1;
+	repeated string sanctions = 2;
+	optional int32 ban_duration = 3;
+}
+
+message ArenaRegistrationWarningEvent {
+	.com.ankama.dofus.server.game.protocol.arena.ArenaType battle_mode = 1;
+}
+
+message ArenaFighterIdleEvent {
+}
+
+message ArenaSwitchXpRewardsModeRequest {
+	bool xpRewards = 1;
+}
+
+message SurrenderStateEvent {
+	bool permitSurrender = 1;
+	bool permitVote = 2;
+}
+
+message SurrenderInfoRequest {
+}
+
+message SurrenderInfoResponse {
+	.com.ankama.dofus.server.game.protocol.arena.SurrenderInfoResponse.SurrenderResponse surrender_response = 1;
+	.com.ankama.dofus.server.game.protocol.arena.SurrenderInfoResponse.SurrenderVoteResponse surrender_vote_response = 2;
+	bool has_sanction = 3;
+	message SurrenderResponse {
+		oneof response {
+			.com.ankama.dofus.server.game.protocol.arena.SurrenderInfoResponse.SurrenderResponse.SurrenderAccepted accepted = 1;
+			.com.ankama.dofus.server.game.protocol.arena.SurrenderInfoResponse.SurrenderResponse.SurrenderRefused refused = 2;
+			.com.ankama.dofus.server.game.protocol.arena.SurrenderInfoResponse.SurrenderResponse.SurrenderBeforeTurn before_turn = 3;
+			.com.ankama.dofus.server.game.protocol.arena.SurrenderInfoResponse.SurrenderResponse.SurrenderBeforeVote before_vote = 4;
+		}
+		message SurrenderAccepted {
+		}
+
+		message SurrenderRefused {
+		}
+
+		message SurrenderBeforeTurn {
+			int32 min_turn_for_surrender = 1;
+		}
+
+		message SurrenderBeforeVote {
+		}
+
+	}
+
+	message SurrenderVoteResponse {
+		oneof response {
+			.com.ankama.dofus.server.game.protocol.arena.SurrenderInfoResponse.SurrenderVoteResponse.SurrenderVoteAccepted accepted = 1;
+			.com.ankama.dofus.server.game.protocol.arena.SurrenderInfoResponse.SurrenderVoteResponse.SurrenderVoteRefused refused = 2;
+			.com.ankama.dofus.server.game.protocol.arena.SurrenderInfoResponse.SurrenderVoteResponse.SurrenderVoteBeforeTurn before_turn = 3;
+			.com.ankama.dofus.server.game.protocol.arena.SurrenderInfoResponse.SurrenderVoteResponse.SurrenderVoteAlreadyAsked already_asked = 4;
+			.com.ankama.dofus.server.game.protocol.arena.SurrenderInfoResponse.SurrenderVoteResponse.SurrenderVoteWaiting waiting = 5;
+		}
+		message SurrenderVoteAccepted {
+		}
+
+		message SurrenderVoteRefused {
+		}
+
+		message SurrenderVoteBeforeTurn {
+			int32 min_turn_for_surrender_vote = 1;
+		}
+
+		message SurrenderVoteAlreadyAsked {
+		}
+
+		message SurrenderVoteWaiting {
+			string vote_unlock_time_stamp = 1;
+		}
+
+	}
+
+}
+
+message SurrenderVoteCastRequest {
+	bool vote = 1;
+}
+
+message SurrenderVoteStartEvent {
+	bool already_casted_vote = 1;
+	int32 participant_number = 2;
+	int32 casted_vote_number = 3;
+	int32 vote_duration = 4;
+}
+
+message SurrenderVoteUpdateEvent {
+}
+
+message SurrenderVoteEndEvent {
+	bool voteResult = 1;
+}
+
+message OpponentSurrenderEvent {
+}
+

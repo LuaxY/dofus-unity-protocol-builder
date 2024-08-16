@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/suggestion";
+
+package com.ankama.dofus.server.game.protocol.suggestion;
+
+message ActivitySuggestionsRequest {
+	int32 min_level = 1;
+	int32 max_level = 2;
+	int32 area_id = 3;
+	int32 activity_category_id = 4;
+	int32 cards_number = 5;
+}
+
+message ActivityHideRequest {
+	int32 activity_id = 1;
+}
+
+message ActivityLockRequest {
+	int32 activity_id = 1;
+}
+
+message ActivitySuggestionsEvent {
+	repeated int32 locked_activities = 1;
+	repeated int32 unlocked_activities = 2;
+}
+

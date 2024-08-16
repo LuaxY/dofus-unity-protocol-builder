@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/moderation";
+
+package com.ankama.dofus.server.game.protocol.moderation;
+
+message PopupWarningCloseRequest {
+}
+
+message PopupWarningEvent {
+	int32 lock_duration = 1;
+	string author = 2;
+	string content = 3;
+}
+
+message PopupWarningClosedEvent {
+}
+

@@ -1,0 +1,261 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/contact";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.contact;
+
+enum AddFailureReason {
+	UNKNOWN = 0;
+	OVER_QUOTA = 1;
+	NOT_FOUND = 2;
+	EGOCENTRIC = 3;
+	IS_DOUBLE = 4;
+	IS_CONFLICTING_DOUBLE = 5;
+}
+
+message ContactWarnOnAchievementCompleteSetRequest {
+	bool enable = 1;
+}
+
+message ContactLookRequest {
+	int32 request_id = 1;
+	.com.ankama.dofus.server.game.protocol.contact.ContactLookRequest.SocialContactCategory contact_type = 2;
+	oneof complement {
+		string name = 3;
+		int64 id = 4;
+	}
+	enum SocialContactCategory {
+		FRIEND = 0;
+		SPOUSE = 1;
+		PARTY = 2;
+		GUILD = 3;
+		ALLIANCE = 4;
+		CRAFTER = 5;
+		INTERLOCUTOR = 6;
+		FIGHT = 7;
+	}
+
+}
+
+message FriendAddRequest {
+	.com.ankama.dofus.server.game.protocol.common.PlayerSearch target = 1;
+}
+
+message FriendDeleteRequest {
+	int64 account_id = 1;
+}
+
+message FriendSetWarnOnConnectionRequest {
+	bool enable = 1;
+}
+
+message FriendSetWarnOnLevelGainRequest {
+	bool enable = 1;
+}
+
+message FriendSetStatusShareRequest {
+	bool share = 1;
+}
+
+message IgnoreRequest {
+	.com.ankama.dofus.server.game.protocol.common.PlayerSearch player_search = 1;
+}
+
+message UnIgnoreRequest {
+	int64 account_id = 1;
+}
+
+message BlockListRequest {
+}
+
+message BlockRequest {
+	.com.ankama.dofus.server.game.protocol.common.PlayerSearch player_search = 1;
+}
+
+message UnBlockRequest {
+	int64 account_id = 1;
+}
+
+message FriendListRequest {
+}
+
+message AcquaintanceListRequest {
+}
+
+message ContactWarnOnPermanentDeathSetRequest {
+	bool enable = 1;
+}
+
+message ContactWarnOnAchievementCompleteStateEvent {
+	bool enable = 1;
+}
+
+message ContactLookEvent {
+	int32 request_id = 1;
+	string player_name = 2;
+	int64 player_id = 3;
+	.com.ankama.dofus.server.game.protocol.common.EntityLook look = 4;
+}
+
+message ContactLookErrorEvent {
+	int32 request_id = 1;
+}
+
+message FriendAddFailureEvent {
+	.com.ankama.dofus.server.game.protocol.contact.AddFailureReason reason = 1;
+}
+
+message AcquaintanceAddedEvent {
+	.com.ankama.dofus.server.game.protocol.contact.AcquaintanceInformation acquaintance = 1;
+}
+
+message FriendAddedEvent {
+	.com.ankama.dofus.server.game.protocol.contact.FriendInformation friend = 1;
+}
+
+message FriendDeletionResultEvent {
+	bool success = 1;
+	.com.ankama.dofus.server.game.protocol.common.AccountTag account_tag = 2;
+}
+
+message FriendWarnOnConnectionStateEvent {
+	bool enable = 1;
+}
+
+message WarnOnPermanentDeathStateEvent {
+	bool enable = 1;
+}
+
+message FriendWarnOnLevelGainStateEvent {
+	bool enable = 1;
+}
+
+message FriendStatusShareStateEvent {
+	bool share = 1;
+}
+
+message IgnoreEvent {
+	oneof result {
+		.com.ankama.dofus.server.game.protocol.contact.IgnoreEvent.Error error = 1;
+		.com.ankama.dofus.server.game.protocol.contact.IgnoreEvent.Success success = 2;
+	}
+	message Error {
+		.com.ankama.dofus.server.game.protocol.contact.AddFailureReason reason = 1;
+	}
+
+	message Success {
+		.com.ankama.dofus.server.game.protocol.contact.ContactInformation ignored = 1;
+	}
+
+}
+
+message UnIgnoreEvent {
+	oneof result {
+		.com.ankama.dofus.server.game.protocol.contact.UnIgnoreEvent.Error error = 1;
+		.com.ankama.dofus.server.game.protocol.contact.UnIgnoreEvent.Success success = 2;
+	}
+	message Error {
+	}
+
+	message Success {
+		.com.ankama.dofus.server.game.protocol.common.AccountTag ignored_tag = 1;
+	}
+
+}
+
+message BlockListEvent {
+	repeated .com.ankama.dofus.server.game.protocol.contact.ContactInformation blocked = 1;
+}
+
+message BlockEvent {
+	oneof result {
+		.com.ankama.dofus.server.game.protocol.contact.BlockEvent.Error error = 1;
+		.com.ankama.dofus.server.game.protocol.contact.BlockEvent.Success success = 2;
+	}
+	message Error {
+		.com.ankama.dofus.server.game.protocol.contact.AddFailureReason reason = 1;
+	}
+
+	message Success {
+		.com.ankama.dofus.server.game.protocol.contact.ContactInformation blocked = 1;
+	}
+
+}
+
+message UnBlockEvent {
+	oneof result {
+		.com.ankama.dofus.server.game.protocol.contact.UnBlockEvent.Error error = 1;
+		.com.ankama.dofus.server.game.protocol.contact.UnBlockEvent.Success success = 2;
+	}
+	message Error {
+	}
+
+	message Success {
+		.com.ankama.dofus.server.game.protocol.common.AccountTag tag = 1;
+	}
+
+}
+
+message AddContactFailureEvent {
+	.com.ankama.dofus.server.game.protocol.contact.AddFailureReason reason = 1;
+}
+
+message FriendListEvent {
+	repeated .com.ankama.dofus.server.game.protocol.contact.FriendInformation friend = 1;
+}
+
+message AcquaintanceListEvent {
+	repeated .com.ankama.dofus.server.game.protocol.contact.AcquaintanceInformation acquaintance = 1;
+}
+
+message ContactLevelUpEvent {
+	string name = 1;
+	int64 character_id = 2;
+	int32 level = 3;
+}
+
+message FriendInformation {
+	int64 account_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.AccountTag account_tag = 2;
+	.com.ankama.dofus.server.game.protocol.common.CharacterState state = 3;
+	optional int64 duration_since_last_connection_hours = 4;
+	optional int32 achievement_points = 5;
+	optional int32 league_id = 6;
+	optional int32 ladder_position = 7;
+	optional .com.ankama.dofus.server.game.protocol.contact.FriendInformation.FriendOnlineInformation online_information = 8;
+	message FriendOnlineInformation {
+		int64 character_id = 1;
+		string character_name = 2;
+		int32 character_level = 3;
+		.com.ankama.dofus.server.game.protocol.common.Alignment alignment = 4;
+		int32 breed_id = 5;
+		.com.ankama.dofus.server.game.protocol.common.Gender gender = 6;
+		int32 mood_smiley_id = 7;
+		bool haven_bag_shared = 8;
+		.com.ankama.dofus.server.game.protocol.common.CharacterStatus status = 9;
+		optional .com.ankama.dofus.server.game.protocol.common.GuildInformation guild = 10;
+	}
+
+}
+
+message AcquaintanceInformation {
+	int64 account_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.AccountTag account_tag = 2;
+	.com.ankama.dofus.server.game.protocol.common.CharacterState state = 3;
+	optional .com.ankama.dofus.server.game.protocol.contact.AcquaintanceInformation.OnlineInformation online = 4;
+	message OnlineInformation {
+		int64 character_id = 1;
+		string character_name = 2;
+		int32 mood_smiley_id = 3;
+		.com.ankama.dofus.server.game.protocol.common.CharacterStatus status = 4;
+	}
+
+}
+
+message ContactInformation {
+	int64 account_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.AccountTag account_tag = 2;
+}
+

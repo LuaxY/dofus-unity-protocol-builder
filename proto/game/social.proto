@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/social";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.social;
+
+message SmileyRequest {
+	int32 smiley_id = 1;
+}
+
+message SmileyEvent {
+	int64 entity_id = 1;
+	int32 smiley_id = 2;
+	optional int64 account_id = 3;
+	optional int32 cell_id = 4;
+}
+
+message AdditionalSmileyEvent {
+	repeated int32 pack_id = 1;
+}
+
+message SetMoodRequest {
+	int32 smiley_id = 1;
+}
+
+message SetMoodEvent {
+	.com.ankama.dofus.server.game.protocol.social.SetMoodEvent.Result result = 1;
+	int32 smiley_id = 2;
+	enum Result {
+		OK = 0;
+		ERROR_UNKNOWN = 1;
+		ERROR_FLOOD = 2;
+	}
+
+}
+
+message MoodUpdateEvent {
+	int64 account_id = 1;
+	int64 character_id = 2;
+	int32 smiley_id = 3;
+}
+
+message SpouseStatusEvent {
+	bool has_spouse = 1;
+}
+
+message SpouseInformationRequest {
+}
+
+message SpouseInformationEvent {
+	int64 account_id = 1;
+	int64 character_id = 2;
+	string character_name = 3;
+	int32 character_level = 4;
+	int32 breed_id = 5;
+	.com.ankama.dofus.server.game.protocol.common.Gender gender = 6;
+	.com.ankama.dofus.server.game.protocol.common.GuildInformation guild = 7;
+	.com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance = 8;
+	.com.ankama.dofus.server.game.protocol.common.Alignment alignment = 9;
+	.com.ankama.dofus.server.game.protocol.common.EntityLook entity_look = 10;
+	optional .com.ankama.dofus.server.game.protocol.social.SpouseInformationEvent.Online online = 11;
+	message Online {
+		int64 map_id = 1;
+		int32 sub_area_id = 2;
+		int32 area_id = 3;
+		bool in_fight = 4;
+		bool following = 5;
+	}
+
+}
+
+message JoinFriendRequest {
+	int64 actor_id = 1;
+}
+
+message JoinSpouseRequest {
+}
+
+message SubscribeSpouseCompassRequest {
+	bool enable = 1;
+}
+
+message DiceRollRequest {
+	int32 dice = 1;
+	int32 faces = 2;
+}
+
+message PvpEnableSetRequest {
+	bool enable = 1;
+}
+
+message PlayersMapAttackableStatusUpdateEvent {
+	repeated .com.ankama.dofus.server.game.protocol.social.PlayersMapAttackableStatusUpdateEvent.AttackableStatus pvp_players = 1;
+	message AttackableStatus {
+		int64 character_id = 1;
+		.com.ankama.dofus.server.game.protocol.common.AttackableStatus status = 2;
+		int32 koth_role = 3;
+		optional int32 picto_score = 4;
+	}
+
+}
+
+message SelfAttackableStatusUpdateEvent {
+	.com.ankama.dofus.server.game.protocol.common.AttackableStatus status = 1;
+	int64 probation_time = 2;
+	int32 koth_role = 3;
+	int32 picto_score = 4;
+}
+
+message AlignmentRankUpdateEvent {
+	int32 alignment_rank = 1;
+	bool verbose = 2;
+}
+

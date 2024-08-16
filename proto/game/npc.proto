@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/npc";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.npc;
+
+message NpcGenericActionRequest {
+	int32 npc_id = 1;
+	int32 npc_action_id = 2;
+	int64 npc_map_id = 3;
+}
+
+message NpcDialogReplyRequest {
+	int32 reply_id = 1;
+}
+
+message NpcsMapQuestStatusUpdateEvent {
+	repeated .com.ankama.dofus.server.game.protocol.npc.NpcsMapQuestStatusUpdateEvent.MapNpcQuest map_information = 1;
+	message MapNpcQuest {
+		int64 map_id = 1;
+		repeated .com.ankama.dofus.server.game.protocol.npc.NpcsMapQuestStatusUpdateEvent.MapNpcQuest.NpcWithQuest npcs_with_quests = 2;
+		message NpcWithQuest {
+			int32 npc_id = 1;
+			repeated int32 quests_to_validate = 2;
+			repeated int32 quests_to_start = 3;
+		}
+
+	}
+
+}
+
+message NpcGenericActionFailureEvent {
+}
+
+message NpcDialogCreationEvent {
+	int64 map_id = 1;
+	int32 npc_id = 2;
+	optional .com.ankama.dofus.server.game.protocol.npc.NpcDialogCreationEvent.PortalType portal_type = 3;
+	enum PortalType {
+		UNSUPPORTED = 0;
+		ENUTROSOR = 1;
+		SRAMBAD = 2;
+		XELORIUM = 3;
+		ECAFLIPUS = 4;
+	}
+
+}
+
+message NpcDialogQuestionEvent {
+	int32 message_id = 1;
+	repeated string dialog_params = 2;
+	repeated .com.ankama.dofus.server.game.protocol.npc.NpcDialogQuestionEvent.VisibleReply visible_replies = 3;
+	message VisibleReply {
+		int32 reply_id = 1;
+		repeated .com.ankama.dofus.server.game.protocol.npc.NpcDialogQuestionEvent.VisibleReply.ActionInformation actions = 2;
+		message ActionInformation {
+			int32 id = 1;
+			optional bool is_repeatable = 2;
+		}
+
+	}
+
+}
+
+message TaxCollectorDialogQuestionEvent {
+	.com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance_information = 1;
+	int32 max_pods = 2;
+	int32 prospecting = 3;
+	int32 tax_collectors_count = 4;
+	int32 looted_pods = 6;
+	int64 looted_items_value = 7;
+	optional int32 possible_attack = 5;
+}
+
+message PrismDialogQuestionEvent {
+}
+
+message EntityTalkEvent {
+	int64 entity_id = 1;
+	int32 text_id = 2;
+	repeated string parameters = 3;
+}
+

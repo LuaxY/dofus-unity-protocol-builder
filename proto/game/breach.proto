@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/breach";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.breach;
+
+message BreachTeleportRequest {
+}
+
+message BreachRoomUnlockRequest {
+	int32 room_id = 1;
+}
+
+message BreachExitRequest {
+}
+
+message BreachRewardBuyRequest {
+	int32 reward_id = 1;
+}
+
+message BreachInvitationRequest {
+	repeated int64 guests = 1;
+}
+
+message BreachInvitationAnswerRequest {
+	bool accepted = 1;
+}
+
+message BreachKickRequest {
+	int64 player_id = 1;
+}
+
+message BreachEnterEvent {
+	int64 owner = 1;
+}
+
+message BreachTeleportResultEvent {
+	bool teleported = 1;
+}
+
+message BreachRoomLockedEvent {
+}
+
+message BreachRoomUnlockResultEvent {
+	int32 room_id = 1;
+	.com.ankama.dofus.server.game.protocol.breach.BreachRoomUnlockResultEvent.BreachRoomUnlockResult result = 2;
+	enum BreachRoomUnlockResult {
+		SUCCESS = 0;
+		FAIL_NOT_ENOUGH_BUDGET = 1;
+	}
+
+}
+
+message BreachExitResultEvent {
+	bool exited = 1;
+}
+
+message BreachStateEvent {
+	.com.ankama.dofus.server.game.protocol.common.Character owner = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectEffect bonuses = 2;
+	int32 budget = 3;
+	bool saved = 4;
+}
+
+message BreachCharactersEvent {
+	repeated int64 players = 1;
+}
+
+message BreachBonusEvent {
+	.com.ankama.dofus.server.game.protocol.common.ObjectEffect bonus = 1;
+}
+
+message BreachBudgetEvent {
+	int32 budget = 1;
+}
+
+message BreachSavedEvent {
+	bool saved = 1;
+}
+
+message BreachBranchesEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.BreachBranch branches = 1;
+}
+
+message BreachRewardsEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.BreachReward rewards = 1;
+}
+
+message BreachRewardBoughtEvent {
+	int32 reward_id = 1;
+	bool bought = 2;
+}
+
+message BreachInvitationOfferEvent {
+	.com.ankama.dofus.server.game.protocol.common.Character host = 1;
+	int32 time_left_before_cancel = 2;
+}
+
+message BreachInvitationCloseEvent {
+	.com.ankama.dofus.server.game.protocol.common.Character host = 1;
+}
+

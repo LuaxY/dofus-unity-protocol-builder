@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/debug";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.debug;
+
+message DumpedEntityStatsEvent {
+	int64 entity_id = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.CharacterCharacteristic stats = 2;
+}
+
+message DebugHighlightCellsEvent {
+	int64 color = 1;
+	repeated int32 cells = 2;
+}
+
+message DebugClearHighlightCellsEvent {
+}
+
+message DebugInClientEvent {
+	.com.ankama.dofus.server.game.protocol.debug.DebugInClientEvent.DebugLevel level = 1;
+	string message = 2;
+	enum DebugLevel {
+		TRACE = 0;
+		DEBUG = 1;
+		INFO = 2;
+		WARN = 3;
+		ERROR = 4;
+		FATAL = 5;
+	}
+
+}
+

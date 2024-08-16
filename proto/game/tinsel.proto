@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/tinsel";
+
+package com.ankama.dofus.server.game.protocol.tinsel;
+
+enum TinselSelectError {
+	UNDEFINED = 0;
+	INVALID = 1;
+	ALREADY = 2;
+}
+
+message TitlesAndOrnamentsRequest {
+}
+
+message TitlesAndOrnamentsEvent {
+	repeated int32 titles = 1;
+	repeated int32 ornaments = 2;
+}
+
+message TitleGainedEvent {
+	int32 title_id = 1;
+}
+
+message TitleLostEvent {
+	int32 title_id = 1;
+}
+
+message OrnamentGainedEvent {
+	int32 ornament_id = 1;
+}
+
+message OrnamentLostEvent {
+	int32 ornament_id = 1;
+}
+
+message TitleSelectedEvent {
+	int32 title_id = 1;
+}
+
+message TitleSelectErrorEvent {
+	.com.ankama.dofus.server.game.protocol.tinsel.TinselSelectError reason = 1;
+}
+
+message OrnamentSelectedEvent {
+	int32 ornament_id = 1;
+}
+
+message OrnamentSelectErrorEvent {
+	.com.ankama.dofus.server.game.protocol.tinsel.TinselSelectError reason = 1;
+}
+

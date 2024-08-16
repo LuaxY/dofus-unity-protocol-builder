@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/alliance_recruitment";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.alliance.recruitment;
+
+message AllianceRecruitmentInformationRequest {
+}
+
+message AllianceRecruitmentUpdateRequest {
+	.com.ankama.dofus.server.game.protocol.common.AllianceRecruitmentInformation information = 1;
+}
+
+message AllianceRecruitmentInformationEvent {
+	.com.ankama.dofus.server.game.protocol.common.AllianceRecruitmentInformation information = 1;
+}
+
+message AllianceRecruitmentAutomaticJoinRequest {
+	string alliance_uid = 1;
+}
+
+message AllianceRecruitmentInvalidateEvent {
+}
+
+message AllianceApplicationSubmitRequest {
+	string alliance_uid = 1;
+	string text = 2;
+}
+
+message AllianceApplicationUpdateRequest {
+	string alliance_uid = 1;
+	string text = 2;
+}
+
+message AllianceApplicationDeletionRequest {
+}
+
+message AllianceApplicationListenRequest {
+	bool state = 1;
+}
+
+message AllianceApplicationRequest {
+}
+
+message AllianceApplicationListRequest {
+	int64 offset = 1;
+	int64 count = 2;
+}
+
+message AllianceApplicationAnswerRequest {
+	int64 player_id = 1;
+	bool accepted = 2;
+}
+
+message AllianceApplicationPresenceRequest {
+}
+
+message AllianceApplicationDeletedEvent {
+	bool success = 1;
+}
+
+message AllianceApplicationInformationEvent {
+	.com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance = 1;
+	.com.ankama.dofus.server.game.protocol.common.SocialApplicationInformation application_information = 2;
+}
+
+message AllianceApplicationNoInformationEvent {
+}
+
+message AllianceApplicationResponseEvent {
+	bool accepted = 1;
+	.com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance_information = 2;
+}
+
+message AllianceApplicationListEvent {
+	int64 offset = 1;
+	int64 count = 2;
+	int64 total = 3;
+	repeated .com.ankama.dofus.server.game.protocol.common.SocialApplicationInformation applies = 4;
+}
+
+message AllianceApplicationModifiedEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialApplicationInformation apply = 1;
+	.com.ankama.dofus.server.game.protocol.common.SocialApplicationState state = 2;
+	int64 player_id = 3;
+}
+
+message AllianceApplicationReceivedEvent {
+	string player_name = 1;
+	int64 player_id = 2;
+}
+
+message AllianceApplicationPresenceEvent {
+	bool presence = 1;
+}
+

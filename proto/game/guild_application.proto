@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/guild_application";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.guild.application;
+
+message GuildApplicationSubmitRequest {
+	string apply_text = 1;
+	int32 guild_id = 2;
+	int32 time_spent = 3;
+	string language_filter = 4;
+	string ambiance_filter = 5;
+	string play_time_filter = 6;
+	string interest_filter = 7;
+	string min_max_guild_level_filter = 8;
+	string recruitment_type_filter = 9;
+	string min_max_character_level_filter = 10;
+	string min_max_achievement_filter = 11;
+	string search_name_filter = 12;
+	string last_sort_filter = 13;
+}
+
+message GuildApplicationUpdateRequest {
+	string apply_text = 1;
+	int32 guild_id = 2;
+}
+
+message GuildApplicationDeleteRequest {
+}
+
+message GuildApplicationListenRequest {
+	bool listen = 1;
+}
+
+message GuildApplicationGetOwnRequest {
+}
+
+message GuildApplicationsRequest {
+	int64 offset = 1;
+	int32 count = 2;
+}
+
+message GuildApplicationAnswerRequest {
+	bool accepted = 1;
+	int64 player_id = 2;
+}
+
+message GuildApplicationPresenceRequest {
+}
+
+message GuildApplicationDeletedEvent {
+	bool deleted = 1;
+}
+
+message GuildApplicationPlayerEvent {
+	optional .com.ankama.dofus.server.game.protocol.guild.application.GuildApplicationPlayerEvent.ApplicationInformation application = 1;
+	message ApplicationInformation {
+		.com.ankama.dofus.server.game.protocol.common.GuildInformation guild_information = 1;
+		.com.ankama.dofus.server.game.protocol.common.SocialApplicationInformation apply = 2;
+	}
+
+}
+
+message GuildApplicationAnswerEvent {
+	bool accepted = 1;
+	.com.ankama.dofus.server.game.protocol.common.GuildInformation guild_information = 2;
+}
+
+message GuildApplicationsEvent {
+	int64 offset = 1;
+	int64 count = 2;
+	int64 total = 3;
+	repeated .com.ankama.dofus.server.game.protocol.common.SocialApplicationInformation applies = 4;
+}
+
+message GuildApplicationModifiedEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialApplicationInformation application = 1;
+	.com.ankama.dofus.server.game.protocol.common.SocialApplicationState state = 2;
+	int64 player_id = 3;
+}
+
+message GuildApplicationReceivedEvent {
+	string player_name = 1;
+	int64 player_id = 2;
+}
+
+message GuildApplicationPresenceEvent {
+	bool is_application = 1;
+}
+

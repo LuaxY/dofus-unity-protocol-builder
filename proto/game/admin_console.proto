@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/admin_console";
+
+package com.ankama.dofus.server.game.protocol.admin.console;
+
+message ConsoleCommand {
+	string content = 1;
+	bool quiet = 2;
+}
+
+message ConsoleEnd {
+	bool success = 1;
+}
+
+message ConsoleMessage {
+	string content = 1;
+	.com.ankama.dofus.server.game.protocol.admin.console.ConsoleMessage.Type type = 2;
+	enum Type {
+		TEXT = 0;
+		INFO = 1;
+		ERROR = 2;
+	}
+
+}
+
+message CommandSummary {
+	repeated .com.ankama.dofus.server.game.protocol.admin.console.Command command = 1;
+}
+
+message Command {
+	string alias = 1;
+	string arguments = 2;
+	string description = 3;
+}
+

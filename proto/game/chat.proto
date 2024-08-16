@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/chat";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.chat;
+
+enum Channel {
+	GLOBAL = 0;
+	TEAM = 1;
+	GUILD = 2;
+	ALLIANCE = 3;
+	PARTY = 4;
+	SALES = 5;
+	SEEK = 6;
+	NOOB = 7;
+	ADMIN = 8;
+	ARENA = 9;
+	PRIVATE = 10;
+	INFO = 12;
+	FIGHT_LOG = 13;
+	ADS = 14;
+	EVENT = 15;
+	EXCHANGE = 16;
+}
+
+message ChatPrivateMessageRequest {
+	string content = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectItemInventory object = 2;
+	oneof target {
+		string name = 3;
+		.com.ankama.dofus.server.game.protocol.common.AccountTag tag = 4;
+	}
+}
+
+message ChatPrivateCopyMessageEvent {
+	string content = 1;
+	string date = 2;
+	int64 target_character_id = 3;
+	string target_name = 4;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectItemInventory object = 5;
+}
+
+message ChatChannelMessageRequest {
+	string content = 1;
+	.com.ankama.dofus.server.game.protocol.chat.Channel channel = 2;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectItemInventory object = 3;
+}
+
+message ChatChannelMessageEvent {
+	string content = 1;
+	.com.ankama.dofus.server.game.protocol.chat.Channel channel = 2;
+	string date = 3;
+	int64 sender_character_id = 4;
+	int64 sender_account_id = 5;
+	string sender_prefix = 6;
+	string sender_name = 7;
+	bool from_admin = 8;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectItemInventory object = 9;
+	optional int32 origin_server_id = 10;
+}
+
+message ChatErrorEvent {
+	.com.ankama.dofus.server.game.protocol.chat.ChatErrorEvent.Error error = 1;
+	enum Error {
+		UNKNOWN = 0;
+		RECEIVER_NOT_FOUND = 1;
+		INTERIOR_MONOLOGUE = 2;
+		NO_GUILD = 3;
+		NO_PARTY = 4;
+		ALLIANCE = 5;
+		INVALID_MAP = 6;
+		NO_PARTY_ARENA = 7;
+		NO_TEAM = 8;
+		MALFORMED_CONTENT = 9;
+		NO_EXCHANGE = 10;
+	}
+
+}
+
+message SubscribeChannelRequest {
+	.com.ankama.dofus.server.game.protocol.chat.Channel channel = 1;
+	bool enable = 2;
+}
+
+message ChannelUpdateEvent {
+	.com.ankama.dofus.server.game.protocol.chat.Channel channel = 1;
+	bool enable = 2;
+}
+
+message ChatChannelsEnabledEvent {
+	repeated .com.ankama.dofus.server.game.protocol.chat.Channel active_channels = 1;
+	repeated .com.ankama.dofus.server.game.protocol.chat.Channel disabled_channels = 2;
+}
+

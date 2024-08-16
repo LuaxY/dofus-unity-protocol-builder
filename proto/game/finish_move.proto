@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/finish_move";
+
+package com.ankama.dofus.server.game.protocol.finish.move;
+
+message FinishMovesRequest {
+}
+
+message FinishMoveSetRequest {
+	int32 finish_move_id = 1;
+	bool effective = 2;
+}
+
+message FinishMovesEvent {
+	repeated .com.ankama.dofus.server.game.protocol.finish.move.FinishMovesEvent.FinishMove finish_moves = 1;
+	message FinishMove {
+		int32 finish_move_id = 1;
+		bool effective = 2;
+	}
+
+}
+

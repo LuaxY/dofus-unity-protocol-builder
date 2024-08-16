@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/basic";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.basic;
+
+message DateRequest {
+}
+
+message WhoAmIRequest {
+	bool verbose = 1;
+}
+
+message WhoIsRequest {
+	bool verbose = 1;
+	.com.ankama.dofus.server.game.protocol.common.PlayerSearch target = 2;
+}
+
+message WhoIsNumericRequest {
+	int64 player_id = 1;
+}
+
+message BasicLatencyStatsRequest {
+	int32 latency = 1;
+}
+
+message SequenceNumberRequest {
+	int32 number = 1;
+}
+
+message DateEvent {
+	int32 day = 1;
+	int32 month = 2;
+	int32 year = 3;
+}
+
+message TimeEvent {
+	int64 timestamp = 1;
+	int32 timezone_offset = 2;
+}
+
+message AlmanachCalendarDateEvent {
+	int32 date_id = 1;
+}
+
+message SystemMessageDisplayEvent {
+	bool hang_up = 1;
+	int32 message_id = 2;
+	repeated string parameters = 3;
+}
+
+message TextInformationEvent {
+	.com.ankama.dofus.server.game.protocol.basic.TextInformationEvent.TextInformationType message_type = 1;
+	int32 message_id = 2;
+	repeated string parameters = 3;
+	enum TextInformationType {
+		TEXT_INFORMATION_MESSAGE = 0;
+		TEXT_INFORMATION_ERROR = 1;
+		TEXT_INFORMATION_PVP = 2;
+		TEXT_INFORMATION_FIGHT_LOG = 3;
+		TEXT_INFORMATION_POPUP = 4;
+		TEXT_LIVING_OBJECT = 5;
+		TEXT_ENTITY_TALK = 6;
+		TEXT_INFORMATION_FIGHT = 7;
+		TEXT_INFORMATION_EVENT = 8;
+	}
+
+}
+
+message WhoIsEvent {
+	bool self = 1;
+	.com.ankama.dofus.server.game.protocol.common.Hierarchy position = 2;
+	string account_name = 3;
+	string account_tag = 4;
+	int64 account_id = 5;
+	string character_name = 6;
+	int64 character_id = 7;
+	int32 area_id = 8;
+	int32 server_id = 9;
+	int32 origin_server_id = 10;
+	bool verbose = 13;
+	.com.ankama.dofus.server.game.protocol.common.CharacterState state = 14;
+	optional .com.ankama.dofus.server.game.protocol.common.GuildInformation guild_information = 11;
+	optional .com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance_information = 12;
+}
+
+message WhoIsNoMatchEvent {
+}
+
+message WhoIsNumericEvent {
+	int64 player_id = 1;
+	int64 account_id = 2;
+}
+
+message BasicLatencyStatsEvent {
+}
+
+message SequenceNumberEvent {
+}
+
+message CurrentServerStatusUpdateEvent {
+	.com.ankama.dofus.server.game.protocol.basic.CurrentServerStatusUpdateEvent.ServerStatus status = 1;
+	enum ServerStatus {
+		UNKNOWN = 0;
+		OFFLINE = 1;
+		STARTING = 2;
+		ONLINE = 3;
+		NO_JOIN = 4;
+		SAVING = 5;
+		STOPPING = 6;
+		FULL = 7;
+	}
+
+}
+

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/ui";
+
+package com.ankama.dofus.server.game.protocol.ui;
+
+message ClientUIOpenedEvent {
+	.com.ankama.dofus.server.game.protocol.ui.ClientUIOpenedEvent.UIType type = 1;
+	optional int32 object_uid = 2;
+	enum UIType {
+		UNDEFINED = 0;
+		TELEPORT_GUILD_HOUSE = 1;
+		TELEPORT_GUILD_PADDOCK = 2;
+		OBJECT_MIMICRY = 3;
+		LEGENDARY_TREASURE_QUEST = 4;
+		TELEPORT_HOUSE = 5;
+	}
+
+}
+

@@ -1,0 +1,141 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/job";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.job;
+
+message JobCrafterDirectoryListRequest {
+	int32 job_id = 1;
+}
+
+message JobCrafterDirectorySettingsRequest {
+	.com.ankama.dofus.server.game.protocol.job.JobCrafterDirectorySettings settings = 1;
+}
+
+message JobDescriptionEvent {
+	repeated .com.ankama.dofus.server.game.protocol.job.JobDescription jobs = 1;
+}
+
+message JobLevelUpEvent {
+	int32 new_level = 1;
+	.com.ankama.dofus.server.game.protocol.job.JobDescription job = 2;
+}
+
+message JobExperiencesUpdateEvent {
+	repeated .com.ankama.dofus.server.game.protocol.job.JobExperience experiences = 1;
+}
+
+message JobExperienceOtherPlayerUpdateEvent {
+	.com.ankama.dofus.server.game.protocol.job.JobExperience experience = 1;
+	int64 player_id = 2;
+}
+
+message JobMultiCraftStateEvent {
+	bool enabled = 1;
+	optional .com.ankama.dofus.server.game.protocol.job.JobMultiCraftStateEvent.PlayerSkills player_skills = 2;
+	message PlayerSkills {
+		int64 player_id = 1;
+		repeated int32 skills = 2;
+	}
+
+}
+
+message JobCrafterDirectoryListEvent {
+	repeated .com.ankama.dofus.server.game.protocol.job.JobCrafterDirectoryEntry list_entries = 1;
+}
+
+message JobCrafterDirectorySettingsEvent {
+	repeated .com.ankama.dofus.server.game.protocol.job.JobCrafterDirectorySettings settings = 1;
+}
+
+message JobBookSubscriptionEvent {
+	repeated .com.ankama.dofus.server.game.protocol.job.JobBookSubscriptionEvent.Subscription subscriptions = 1;
+	message Subscription {
+		int32 job_id = 1;
+		bool subscribed = 2;
+	}
+
+}
+
+message JobCrafterDirectoryRemoveEvent {
+	int32 job_id = 1;
+	int64 player_id = 2;
+}
+
+message JobCrafterDirectoryAddEvent {
+	.com.ankama.dofus.server.game.protocol.job.JobCrafterDirectoryEntry entry = 1;
+}
+
+message JobCrafterDirectoryEntryEvent {
+	.com.ankama.dofus.server.game.protocol.job.JobCrafterDirectoryPlayerInformation player_information = 1;
+	repeated .com.ankama.dofus.server.game.protocol.job.JobCrafterDirectoryJobInformation jobs_information = 2;
+	.com.ankama.dofus.server.game.protocol.common.EntityLook look = 3;
+}
+
+message JobDescription {
+	int32 job_id = 1;
+	repeated .com.ankama.dofus.server.game.protocol.job.JobDescription.SkillAction skills = 2;
+	message SkillAction {
+		int32 skill_id = 1;
+		oneof action {
+			.com.ankama.dofus.server.game.protocol.job.JobDescription.SkillAction.Timed timed = 2;
+			.com.ankama.dofus.server.game.protocol.job.JobDescription.SkillAction.Craft craft = 3;
+		}
+		message Timed {
+			int32 time = 1;
+			optional .com.ankama.dofus.server.game.protocol.job.JobDescription.SkillAction.Timed.Collect collect = 2;
+			message Collect {
+				int32 min = 1;
+				int32 max = 2;
+			}
+
+		}
+
+		message Craft {
+			int32 probability = 1;
+		}
+
+	}
+
+}
+
+message JobExperience {
+	int32 job_id = 1;
+	int32 job_level = 2;
+	int64 job_xp = 3;
+	int64 job_xp_level_floor = 4;
+	int64 job_xp_next_level_floor = 5;
+}
+
+message JobCrafterDirectoryEntry {
+	.com.ankama.dofus.server.game.protocol.job.JobCrafterDirectoryPlayerInformation player_information = 1;
+	.com.ankama.dofus.server.game.protocol.job.JobCrafterDirectoryJobInformation job_information = 2;
+}
+
+message JobCrafterDirectoryPlayerInformation {
+	int64 player_id = 1;
+	string name = 2;
+	.com.ankama.dofus.server.game.protocol.common.Alignment alignment = 3;
+	int32 breed = 4;
+	.com.ankama.dofus.server.game.protocol.common.Gender gender = 5;
+	bool is_in_workshop = 6;
+	.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates coordinates = 7;
+	bool can_craft_legendary = 8;
+	.com.ankama.dofus.server.game.protocol.common.CharacterStatus status = 9;
+}
+
+message JobCrafterDirectoryJobInformation {
+	int32 job_id = 1;
+	int32 job_level = 2;
+	bool free = 3;
+	int32 min_level = 4;
+}
+
+message JobCrafterDirectorySettings {
+	int32 job_id = 1;
+	int32 min_level = 2;
+	bool free = 3;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/area";
+
+package com.ankama.dofus.server.game.protocol.area;
+
+message SubareaRewardRateEvent {
+	int32 subarea_rate = 1;
+}
+
+message AreaFightModifierUpdateEvent {
+	repeated int32 spell_pairs = 1;
+}
+

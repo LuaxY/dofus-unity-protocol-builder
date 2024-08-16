@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/atlas";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.atlas;
+
+enum CompassType {
+	SIMPLE = 0;
+	SPOUSE = 1;
+	PARTY = 2;
+	PVP_SEEK = 3;
+	QUEST = 4;
+}
+
+message CompassResetEvent {
+	.com.ankama.dofus.server.game.protocol.atlas.CompassType type = 1;
+}
+
+message CompassUpdateEvent {
+	.com.ankama.dofus.server.game.protocol.atlas.CompassType type = 1;
+	.com.ankama.dofus.server.game.protocol.common.MapCoordinates coordinates = 2;
+	oneof complement {
+		.com.ankama.dofus.server.game.protocol.atlas.CompassUpdateEvent.PartyMember party_member = 3;
+		.com.ankama.dofus.server.game.protocol.atlas.CompassUpdateEvent.PvpSeek pvp_seek = 4;
+	}
+	message PartyMember {
+		int64 member_id = 1;
+		bool active = 2;
+	}
+
+	message PvpSeek {
+		int64 target_id = 1;
+		string target_name = 2;
+	}
+
+}
+

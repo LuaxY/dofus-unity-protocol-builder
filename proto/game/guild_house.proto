@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/guild_house";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.guild.house;
+
+message GuildHousesEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.House houses = 1;
+}
+
+message GuildHouseUpdateEvent {
+	.com.ankama.dofus.server.game.protocol.common.House house = 1;
+}
+
+message GuildHouseRemoveEvent {
+	int32 house_id = 1;
+	int32 instance_id = 2;
+	bool second_hand = 3;
+}
+

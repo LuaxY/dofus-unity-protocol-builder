@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/emote";
+
+package com.ankama.dofus.server.game.protocol.emote;
+
+message EmotePlayRequest {
+	int32 emote_id = 1;
+}
+
+message EmotesEvent {
+	repeated int32 emotes_id = 1;
+}
+
+message EmoteAddedEvent {
+	int32 emote_id = 1;
+}
+
+message EmoteRemovedEvent {
+	int32 emote_id = 1;
+}
+
+message EmotePlayEvent {
+	int32 emote_id = 1;
+	int64 emote_start_time = 2;
+	int64 actor_id = 3;
+	int32 account_id = 4;
+}
+
+message EmoteMassivePlayEvent {
+	int32 emote_id = 1;
+	int64 emote_start_time = 2;
+	repeated int64 actors_id = 3;
+}
+
+message EmotePlayErrorEvent {
+	int32 emote_id = 1;
+}
+

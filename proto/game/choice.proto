@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/choice";
+
+package com.ankama.dofus.server.game.protocol.choice;
+
+message Choice {
+	int32 id = 1;
+	int32 position = 2;
+}
+
+message ChoiceSelectionEvent {
+	int32 selection_id = 1;
+	repeated .com.ankama.dofus.server.game.protocol.choice.Choice choices = 2;
+}
+
+message ChoiceSelectedEvent {
+	int32 position = 1;
+}
+
+message ChoiceSelectedRequest {
+	int32 position = 1;
+}
+

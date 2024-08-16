@@ -1,0 +1,1 @@
+{ "name": "includes/script.proto", "package": "com.ankama.dofus.server.game.protocol.script", "messageType": [ { "name": "CinematicEvent", "field": [ { "name": "cinematic_id", "number": 1, "label": "LABEL_OPTIONAL", "type": "TYPE_INT32" } ] } ], "options": { "javaMultipleFiles": true }, "syntax": "proto3" }

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/guild_recruitment";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.guild.recruitment;
+
+message GuildRecruitmentUpdateRequest {
+	.com.ankama.dofus.server.game.protocol.common.GuildRecruitmentInformation recruitment = 1;
+}
+
+message GuildRecruitmentEvent {
+	.com.ankama.dofus.server.game.protocol.common.GuildRecruitmentInformation recruitment = 1;
+}
+
+message GuildRecruitmentInvalidateEvent {
+}
+

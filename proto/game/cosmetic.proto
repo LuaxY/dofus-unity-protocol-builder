@@ -1,0 +1,201 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/cosmetic";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.cosmetic;
+
+enum ObjectSlot {
+	AMULET = 0;
+	RING_LEFT = 1;
+	RING_RIGHT = 2;
+	BELT = 3;
+	BOOTS = 4;
+	PETMOUNT = 5;
+	DRAGOTURKEY = 6;
+	RHINEETLE = 7;
+	SEEMYOOL = 8;
+	CAPE = 9;
+	HAT = 10;
+	PET = 11;
+	SHIELD = 12;
+	BOW = 13;
+	WAND = 14;
+	STAFF = 15;
+	DAGGER = 16;
+	SCYTHE = 17;
+	AXE = 18;
+	LANCE = 19;
+	HAMMER = 20;
+	SHOVEL = 21;
+	SWORD = 22;
+	DISGUISE = 23;
+	WINGS = 24;
+	SHOULDERS = 25;
+}
+
+message CosmeticInventoryLoadedEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectItem objects = 1;
+}
+
+message CosmeticInventoryAddObjectRequest {
+	int32 uid = 1;
+}
+
+message CosmeticInventoryAddObjectResponse {
+	.com.ankama.dofus.server.game.protocol.cosmetic.CosmeticInventoryAddObjectResponse.Result result = 1;
+	enum Result {
+		ERROR = 0;
+		DUPLICATE = 1;
+		SUCCESS = 2;
+	}
+
+}
+
+message CosmeticInventoryPopObjectRequest {
+	int32 gid = 1;
+}
+
+message CosmeticInventoryPopObjectResponse {
+	bool success = 1;
+}
+
+message CosmeticInventoryAddedEvent {
+	.com.ankama.dofus.server.game.protocol.common.ObjectItem object = 1;
+}
+
+message CosmeticInventoryLivingObjectFeedRequest {
+	int32 gid = 1;
+	int32 food_object_uid = 2;
+}
+
+message CosmeticInventoryLivingObjectFeedResponse {
+	bool success = 1;
+	optional .com.ankama.dofus.server.game.protocol.common.ObjectItem living_object_fed = 2;
+}
+
+message OutfitEquipAuraRequest {
+	optional int32 emote_id = 1;
+}
+
+message OutfitEquipAuraResponse {
+	bool success = 1;
+}
+
+message OutfitAuraChangedEvent {
+	optional int32 emote_id = 1;
+}
+
+message OutfitEquipTitleRequest {
+	optional int32 title_id = 1;
+}
+
+message OutfitEquipTitleResponse {
+	bool success = 1;
+}
+
+message OutfitEquipOrnamentRequest {
+	optional int32 ornament_id = 1;
+}
+
+message OutfitEquipOrnamentResponse {
+	bool success = 1;
+}
+
+message OutfitEquipObjectRequest {
+	.com.ankama.dofus.server.game.protocol.cosmetic.ObjectSlot slot = 2;
+	optional int32 gid = 1;
+	optional int32 skin_id = 3;
+}
+
+message OutfitEquipObjectResponse {
+	bool success = 1;
+}
+
+message OutfitEquipObjectBestSlotRequest {
+	int32 gid = 1;
+	optional int32 skin_id = 2;
+}
+
+message OutfitEquipObjectBestSlotResponse {
+	bool success = 1;
+	optional .com.ankama.dofus.server.game.protocol.cosmetic.ObjectSlot slot = 2;
+}
+
+message OutfitUpdateRequest {
+	string outfit_uuid = 1;
+	string name = 2;
+	int32 pictogram_id = 3;
+	bool favorite = 4;
+}
+
+message OutfitUpdateResponse {
+	bool success = 1;
+}
+
+message OutfitCreateEmptyRequest {
+	string name = 1;
+	int32 pictogram_id = 2;
+}
+
+message OutfitDuplicateRequest {
+	string outfit_uuid = 1;
+	string name = 2;
+	int32 pictogram_id = 3;
+}
+
+message OutfitCreationResponse {
+	bool success = 1;
+	optional .com.ankama.dofus.server.game.protocol.cosmetic.Outfit outfit_created = 2;
+}
+
+message OutfitRemoveRequest {
+	string outfit_uuid = 1;
+}
+
+message OutfitRemoveResponse {
+	bool success = 1;
+}
+
+message OutfitEquipRequest {
+	string outfit_uuid = 1;
+}
+
+message OutfitEquipResponse {
+	bool success = 1;
+}
+
+message OutfitsLoadedEvent {
+	.com.ankama.dofus.server.game.protocol.cosmetic.Outfit current = 1;
+	repeated .com.ankama.dofus.server.game.protocol.cosmetic.Outfit outfits = 2;
+}
+
+message OutfitEntityLookChangedEvent {
+	string outfit_uuid = 1;
+	.com.ankama.dofus.server.game.protocol.common.EntityLook entity_look = 2;
+}
+
+message Outfit {
+	string uuid = 1;
+	string name = 2;
+	int32 pictogram_id = 3;
+	repeated .com.ankama.dofus.server.game.protocol.cosmetic.Outfit.ObjectsEntry objects = 4;
+	bool favorite = 9;
+	string last_modified = 10;
+	optional int32 ornament_id = 6;
+	optional int32 title_id = 7;
+	optional .com.ankama.dofus.server.game.protocol.common.EntityLook entity_look = 8;
+	optional int32 aura_emote_id = 5;
+	message ObjectsEntry {
+		int32 key = 1;
+		.com.ankama.dofus.server.game.protocol.cosmetic.Outfit.SkinOutfit value = 2;
+	}
+
+	message SkinOutfit {
+		int32 gid = 1;
+		optional int32 skin = 2;
+	}
+
+}
+

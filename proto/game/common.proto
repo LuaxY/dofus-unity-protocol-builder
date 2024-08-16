@@ -1,0 +1,1879 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/common";
+
+package com.ankama.dofus.server.game.protocol.common;
+
+enum DelayedActionType {
+	DISCONNECT = 0;
+	OBJECT_USE = 1;
+	JOIN_CHARACTER = 2;
+	AGGRESSION_IMMUNE = 3;
+}
+
+enum AllianceRelation {
+	ALLIANCE_RELATION_NONE = 0;
+	ALLIANCE_RELATION_MINE = 1;
+	ALLIANCE_RELATION_DEF = 2;
+	ALLIANCE_RELATION_ATT = 3;
+	ALLIANCE_RELATION_NEUTRAL = 4;
+	ALLIANCE_RELATION_ALLY = 5;
+	ALLIANCE_RELATION_ENEMY = 6;
+}
+
+enum ChallengeMod {
+	CHALLENGE_CHOICE = 0;
+	CHALLENGE_RANDOM = 1;
+}
+
+enum ChallengeBonus {
+	CHALLENGE_EXPERIENCE_BONUS = 0;
+	CHALLENGE_DROP_BONUS = 1;
+}
+
+enum CharacterState {
+	NOT_CONNECTED = 0;
+	IN_ROLE_PLAY = 1;
+	IN_FIGHT = 2;
+	UNKNOWN_STATE = 3;
+}
+
+enum Alignment {
+	UNKNOWN = 0;
+	WITHOUT = 1;
+	NEUTRAL = 2;
+	ANGEL = 3;
+	EVIL = 4;
+}
+
+enum Gender {
+	MALE = 0;
+	FEMALE = 1;
+}
+
+enum Hierarchy {
+	ROLE_UNAVAILABLE = 0;
+	ROLE_PLAYER = 1;
+	ROLE_MODERATOR = 2;
+	ROLE_GAME_MASTER_PADAWAN = 3;
+	ROLE_GAME_MASTER = 4;
+	ROLE_ADMIN = 5;
+	ROLE_UNKNOWN_SPECIAL_USER = 6;
+}
+
+enum AttackableStatus {
+	NON_ATTACKABLE = 0;
+	PVP_ENABLED_ATTACKABLE = 1;
+	PVP_ENABLED_NON_ATTACKABLE = 2;
+	AVA_ENABLED_ATTACKABLE = 3;
+	AVA_ENABLED_NON_ATTACKABLE = 4;
+	AVA_DISQUALIFIED = 5;
+	AVA_PREQUALIFIED_ATTACKABLE = 6;
+}
+
+enum Restriction {
+	CANNOT_BE_ATTACKED = 0;
+	CANNOT_BE_CHALLENGED = 1;
+	CANNOT_TRADE = 2;
+	CANNOT_BE_ATTACKED_BY_MUTANT = 3;
+	CANNOT_RUN = 4;
+	FORCE_SLOW_WALK = 5;
+	CANNOT_MINIMIZE = 6;
+	CANNOT_MOVE = 7;
+	CANNOT_ATTACK = 8;
+	CANNOT_CHALLENGE = 9;
+	CANNOT_EXCHANGE = 10;
+	CANNOT_ATTACK_AS_MUTANT = 11;
+	CANNOT_CHAT = 12;
+	CANNOT_USE_OBJECT = 13;
+	CANNOT_USE_TAX_COLLECTOR = 14;
+	CANNOT_USE_INTERACTIVE = 15;
+	CANNOT_SPEAK_TO_NPC = 16;
+	CANNOT_CHANGE_ZONE = 17;
+	CANNOT_ATTACK_MONSTER = 18;
+}
+
+enum DialogType {
+	DIALOG_BOOK = 0;
+	DIALOG_DIALOG = 1;
+	DIALOG_LOCKABLE = 2;
+	DIALOG_PURCHASABLE = 3;
+	DIALOG_GUILD_INVITATION = 4;
+	DIALOG_GUILD_CREATE = 5;
+	DIALOG_GUILD_RENAME = 6;
+	DIALOG_MARRIAGE = 7;
+	DIALOG_DUNGEON_MEETING = 8;
+	DIALOG_SPELL_FORGET = 9;
+	DIALOG_TELEPORTER = 10;
+	DIALOG_EXCHANGE = 11;
+	DIALOG_ALLIANCE_INVITATION = 12;
+	DIALOG_ALLIANCE_CREATE = 13;
+	DIALOG_ALLIANCE_RENAME = 14;
+	DIALOG_HAVENBAG_MEETING = 15;
+}
+
+enum ExchangeType {
+	NPC_SHOP = 0;
+	PLAYER_TRADE = 1;
+	NPC_TRADE = 2;
+	CRAFT = 3;
+	STORAGE = 4;
+	SHOP_STOCK = 5;
+	TAX_COLLECTOR = 6;
+	NPC_MODIFY_TRADE = 7;
+	BIDHOUSE_SELL = 8;
+	BIDHOUSE_BUY = 9;
+	MULTICRAFT_CRAFTER = 10;
+	MULTICRAFT_CUSTOMER = 11;
+	JOB_INDEX = 12;
+	MOUNT = 13;
+	MOUNT_STABLE = 14;
+	NPC_RESURECT_PET = 15;
+	NPC_TRADE_DRAGOTURKEY = 16;
+	REALESTATE_HOUSE = 17;
+	REALESTATE_FARM = 18;
+	RUNES_TRADE = 19;
+	RECYCLE_TRADE = 20;
+	BANK = 21;
+	TRASHBIN = 22;
+	ALLIANCE_PRISM = 23;
+	HAVENBAG = 24;
+	NPC_TRADE_SEEMYOOL = 25;
+	NPC_TRADE_RHINEETLE = 26;
+	EVOLUTIVE_OBJECT_ELEMENTARY_RECYCLE = 27;
+	NPC_RIDE_CAPABILITY_TRADE = 28;
+	GUILD_CHEST = 29;
+}
+
+enum FightType {
+	FIGHT_TYPE_CHALLENGE = 0;
+	FIGHT_TYPE_AGGRESSION = 1;
+	FIGHT_TYPE_PvMA = 2;
+	FIGHT_TYPE_MXvM = 3;
+	FIGHT_TYPE_PvM = 4;
+	FIGHT_TYPE_PvT = 5;
+	FIGHT_TYPE_PvMU = 6;
+	FIGHT_TYPE_PVP_ARENA = 7;
+	FIGHT_TYPE_KOH = 8;
+	FIGHT_TYPE_PvPr = 9;
+	FIGHT_TYPE_BREACH = 10;
+}
+
+enum TeamType {
+	TEAM_TYPE_PLAYER = 0;
+	TEAM_TYPE_MONSTER = 1;
+	TEAM_TYPE_MUTANT = 2;
+	TEAM_TYPE_TAX_COLLECTOR = 3;
+	TEAM_TYPE_BAD_PLAYER = 4;
+	TEAM_TYPE_PRISM = 5;
+}
+
+enum FightOption {
+	FIGHT_OPTION_SET_SECRET = 0;
+	FIGHT_OPTION_SET_TO_PARTY_ONLY = 1;
+	FIGHT_OPTION_SET_CLOSED = 2;
+	FIGHT_OPTION_ASK_FOR_HELP = 3;
+}
+
+enum FightOutcome {
+	RESULT_LOST = 0;
+	RESULT_DRAW = 1;
+	RESULT_VICTORY = 2;
+	RESULT_TAX = 3;
+	RESULT_DEFENDER_GROUP = 4;
+}
+
+enum FightInvisibilityState {
+	INVISIBLE = 0;
+	DETECTED = 1;
+	VISIBLE = 2;
+}
+
+enum Team {
+	TEAM_CHALLENGER = 0;
+	TEAM_DEFENDER = 1;
+	TEAM_SPECTATOR = 2;
+}
+
+enum ShortcutBar {
+	GENERAL_SHORTCUT_BAR = 0;
+	SPELL_SHORTCUT_BAR = 1;
+}
+
+enum PresetType {
+	CHARACTER = 0;
+	FORGETTABLE_SPELL = 1;
+}
+
+enum Direction {
+	DIRECTION_EAST = 0;
+	DIRECTION_SOUTH_EAST = 1;
+	DIRECTION_SOUTH = 2;
+	DIRECTION_SOUTH_WEST = 3;
+	DIRECTION_WEST = 4;
+	DIRECTION_NORTH_WEST = 5;
+	DIRECTION_NORTH = 6;
+	DIRECTION_NORTH_EAST = 7;
+}
+
+enum ObjectError {
+	INVENTORY_FULL = 0;
+	CANNOT_EQUIP_TWICE = 1;
+	NOT_TRADABLE = 2;
+	CANNOT_DROP = 3;
+	CANNOT_DROP_NO_PLACE = 4;
+	CANNOT_DESTROY = 5;
+	LEVEL_TOO_LOW = 6;
+	LIVING_OBJECT_REFUSED_FOOD = 7;
+	CANNOT_UNEQUIP = 8;
+	CANNOT_EQUIP_HERE = 9;
+	CRITERIONS = 10;
+	SYMBIOTIC_OBJECT_ERROR = 11;
+	EVOLUTIVE_OBJECT_REFUSED_FOOD = 12;
+}
+
+enum ObjectOrigin {
+	ORIGIN_UNDEFINED = 0;
+	ORIGIN_QUEST = 1;
+}
+
+enum SocialRecruitmentType {
+	DISABLED = 0;
+	AUTOMATIC = 1;
+	MANUAL = 2;
+}
+
+enum SocialApplicationState {
+	APPLICATION_ADDED = 0;
+	APPLICATION_DELETED = 1;
+	APPLICATION_UPDATED = 2;
+}
+
+enum ServerType {
+	UNDEFINED = 0;
+	CLASSICAL = 1;
+	KOLIZEUM = 2;
+	TOURNAMENT = 3;
+	EPIC = 4;
+	TEMPORIS = 5;
+}
+
+enum SocialGroupOperationResult {
+	SOCIAL_GROUP_OPERATION_OK = 0;
+	SOCIAL_GROUP_ERROR_NAME_INVALID = 1;
+	SOCIAL_GROUP_ERROR_ALREADY_IN_GROUP = 2;
+	SOCIAL_GROUP_ERROR_NAME_ALREADY_EXISTS = 3;
+	SOCIAL_GROUP_ERROR_LEAVE = 4;
+	SOCIAL_GROUP_ERROR_CANCEL = 5;
+	SOCIAL_GROUP_ERROR_REQUIREMENT_UNMET = 6;
+	SOCIAL_GROUP_ERROR_EMBLEM_INVALID = 7;
+	SOCIAL_GROUP_ERROR_TAG_INVALID = 8;
+	SOCIAL_GROUP_ERROR_TAG_ALREADY_EXISTS = 9;
+	SOCIAL_GROUP_ERROR_UNKNOWN = 10;
+}
+
+enum SocialNoticeError {
+	SOCIAL_NOTICE_UNKNOWN_ERROR = 0;
+	SOCIAL_NOTICE_INVALID_RIGHTS = 1;
+	SOCIAL_NOTICE_COOLDOWN = 2;
+}
+
+enum SocialGroupInvitationState {
+	SOCIAL_GROUP_INVITATION_FAILED = 0;
+	SOCIAL_GROUP_INVITATION_SENT = 1;
+	SOCIAL_GROUP_INVITATION_CANCELED = 2;
+	SOCIAL_GROUP_INVITATION_OK = 3;
+}
+
+enum TaxCollectorState {
+	STATE_COLLECTING = 0;
+	STATE_WAITING_FOR_HELP = 1;
+	STATE_FIGHTING = 2;
+}
+
+enum MountCharacteristic {
+	ENERGY = 0;
+	SERENITY = 1;
+	STAMINA = 2;
+	LOVE = 3;
+	MATURITY = 4;
+	TIREDNESS = 5;
+	CARRIER = 6;
+	FERTILE = 7;
+	PREGNANT = 8;
+}
+
+enum SpellModifierActionType {
+	ACTION_INVALID = 0;
+	ACTION_BOOST = 1;
+	ACTION_REMOVE_BOOST = 2;
+	ACTION_SET = 3;
+}
+
+enum SpellModifierType {
+	INVALID_MODIFICATION = 0;
+	RANGE = 1;
+	DAMAGE = 2;
+	BASE_DAMAGE = 3;
+	HEAL_BONUS = 4;
+	AP_COST = 5;
+	CAST_INTERVAL = 6;
+	CRITICAL_HIT_BONUS = 7;
+	CAST_LINE = 8;
+	LOS = 9;
+	MAX_CAST_PER_TURN = 10;
+	MAX_CAST_PER_TARGET = 11;
+	RANGE_MAX = 12;
+	RANGE_MIN = 13;
+	OCCUPIED_CELL = 14;
+	FREE_CELL = 15;
+	VISIBLE_TARGET = 16;
+	PORTAL_FREE_CELL = 17;
+	PORTAL_PROJECTION = 18;
+}
+
+enum RealEstateOrder {
+	PRICE_ASC = 0;
+	PRICE_DSC = 1;
+}
+
+message AccountTag {
+	string nickname = 1;
+	string tag = 2;
+}
+
+message ActorPositionInformation {
+	int64 actor_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.EntityDisposition disposition = 2;
+	optional .com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation actor_information = 3;
+	message ActorInformation {
+		.com.ankama.dofus.server.game.protocol.common.EntityLook look = 1;
+		oneof information {
+			.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor role_play_actor = 2;
+			.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.FightFighterInformation fighter = 3;
+		}
+		message RolePlayActor {
+			oneof actor {
+				.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor named_actor = 4;
+				.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.TaxCollectorActor tax_collector_actor = 5;
+				.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.MonsterGroupActor monster_group_actor = 6;
+				.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NpcStaticInformation npc_actor = 7;
+				.com.ankama.dofus.server.game.protocol.common.PrismInformation prism_actor = 8;
+				.com.ankama.dofus.server.game.protocol.common.PortalInformation portal_actor = 9;
+				int32 treasure_hunt_npc_id = 10;
+			}
+			message NamedActor {
+				string name = 1;
+				oneof actor {
+					.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Humanoid humanoid_information = 2;
+					.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Mount mount_information = 3;
+				}
+				message Humanoid {
+					repeated .com.ankama.dofus.server.game.protocol.common.Restriction restrictions = 1;
+					.com.ankama.dofus.server.game.protocol.common.Gender gender = 2;
+					repeated .com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Humanoid.HumanOption options = 3;
+					int64 account_id = 4;
+					optional .com.ankama.dofus.server.game.protocol.common.AlignmentInformation alignment_information = 5;
+					optional .com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Humanoid.MutantInformation mutant_information = 6;
+					message HumanOption {
+						oneof option {
+							.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Humanoid.HumanOption.FollowingCharactersOption followers = 3;
+							.com.ankama.dofus.server.game.protocol.common.GuildInformation guild_information = 4;
+							.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Humanoid.HumanOption.AllianceOption alliance_information = 5;
+							.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Humanoid.HumanOption.EmoteOption emote_option = 6;
+							.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Humanoid.HumanOption.TitleOption title_option = 7;
+							.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Humanoid.HumanOption.OrnamentOption ornament_option = 8;
+							.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Humanoid.HumanOption.ObjectUseOption object_use_option = 9;
+							.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Humanoid.HumanOption.SkillUseOption skill_use_option = 10;
+							int32 speed_multiplier = 11;
+						}
+						message FollowingCharactersOption {
+							repeated .com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NamedActor.Humanoid.HumanOption.FollowingCharactersOption.IndexedEntityLook following_characters_looks = 1;
+							message IndexedEntityLook {
+								.com.ankama.dofus.server.game.protocol.common.EntityLook look = 1;
+								int32 index = 2;
+							}
+
+						}
+
+						message AllianceOption {
+							.com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance_information = 1;
+							.com.ankama.dofus.server.game.protocol.common.AttackableStatus attackable_status = 2;
+						}
+
+						message EmoteOption {
+							int32 emote_id = 1;
+							string emote_start_time = 2;
+						}
+
+						message TitleOption {
+							optional int32 title_id = 1;
+							optional string title_parameter = 2;
+						}
+
+						message OrnamentOption {
+							int32 player_level = 2;
+							optional int32 ladder_position = 4;
+							optional int32 ornament_id = 1;
+							optional int32 league_id = 3;
+						}
+
+						message ObjectUseOption {
+							.com.ankama.dofus.server.game.protocol.common.DelayedActionType delayed_action_type = 1;
+							string end_delay = 2;
+							int32 object_gid = 3;
+						}
+
+						message SkillUseOption {
+							int32 element_id = 1;
+							int32 skill_id = 2;
+							string skill_end_time = 3;
+						}
+
+					}
+
+					message MutantInformation {
+						int32 monster_id = 1;
+						int32 power_level = 2;
+					}
+
+				}
+
+				message Mount {
+					string owner_name = 1;
+					int32 level = 2;
+				}
+
+			}
+
+			message TaxCollectorActor {
+				.com.ankama.dofus.server.game.protocol.common.TaxCollectorStaticInformation identification = 1;
+				int32 attack = 2;
+			}
+
+			message MonsterGroupActor {
+				.com.ankama.dofus.server.game.protocol.common.MonsterGroupStaticInformation identification = 1;
+				int32 loot_share = 2;
+				.com.ankama.dofus.server.game.protocol.common.Alignment alignment = 3;
+				optional .com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.MonsterGroupActor.WaveInformation wave_information = 4;
+				message WaveInformation {
+					repeated .com.ankama.dofus.server.game.protocol.common.MonsterGroupStaticInformation alternatives = 2;
+					optional int32 wave_count = 1;
+				}
+
+			}
+
+			message NpcStaticInformation {
+				int32 npc_id = 1;
+				.com.ankama.dofus.server.game.protocol.common.Gender gender = 2;
+				int32 special_artwork_id = 3;
+				optional .com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.RolePlayActor.NpcStaticInformation.Quests quests = 4;
+				message Quests {
+					repeated int32 quests_to_valid = 1;
+					repeated int32 quests_to_start = 2;
+				}
+
+			}
+
+		}
+
+		message FightFighterInformation {
+			.com.ankama.dofus.server.game.protocol.common.SpawnInformation spawn_information = 1;
+			int32 wave = 2;
+			.com.ankama.dofus.server.game.protocol.common.FightCharacteristics stats = 3;
+			repeated int32 previous_positions = 4;
+			oneof fighter_information {
+				.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.FightFighterInformation.NamedFighterInformation named_fighter = 5;
+				.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.FightFighterInformation.AIFighterInformation ai_fighter = 6;
+				.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.FightFighterInformation.EntityFighterInformation entity_fighter = 7;
+			}
+			message NamedFighterInformation {
+				string name = 1;
+				.com.ankama.dofus.server.game.protocol.common.CharacterStatus status = 2;
+				int32 league_id = 3;
+				int32 ladder_position = 4;
+				bool hidden_in_pre_fight = 5;
+				oneof fighter_information {
+					.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.FightFighterInformation.NamedFighterInformation.FightCharacterInformation character_information = 6;
+					.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.FightFighterInformation.NamedFighterInformation.FightMutantInformation mutant_information = 7;
+				}
+				message FightCharacterInformation {
+					int32 level = 1;
+					.com.ankama.dofus.server.game.protocol.common.AlignmentInformation alignment_information = 2;
+					int32 breed_id = 3;
+					.com.ankama.dofus.server.game.protocol.common.Gender gender = 4;
+				}
+
+				message FightMutantInformation {
+					int32 power_level = 1;
+				}
+
+			}
+
+			message AIFighterInformation {
+				oneof ai_fighter_information {
+					.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.FightFighterInformation.AIFighterInformation.MonsterFighter monster_fighter_information = 1;
+					.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation.ActorInformation.FightFighterInformation.AIFighterInformation.TaxCollectorFighter tax_collector_information = 2;
+				}
+				message MonsterFighter {
+					int32 monster_gid = 1;
+					int32 creature_grade = 2;
+					int32 creature_level = 3;
+					optional .com.ankama.dofus.server.game.protocol.common.AlignmentInformation alignment_information = 4;
+				}
+
+				message TaxCollectorFighter {
+					int32 first_name_id = 1;
+					int32 last_name_id = 2;
+				}
+
+			}
+
+			message EntityFighterInformation {
+				int32 entity_model_id = 1;
+				int32 level = 2;
+				int64 master_id = 3;
+			}
+
+		}
+
+	}
+
+}
+
+message SpawnInformation {
+	.com.ankama.dofus.server.game.protocol.common.Team team = 1;
+	bool alive = 2;
+	.com.ankama.dofus.server.game.protocol.common.ActorPositionInformation position = 3;
+}
+
+message AllianceInformation {
+	string uid = 1;
+	string tag = 2;
+	optional .com.ankama.dofus.server.game.protocol.common.SocialEmblem emblem = 4;
+	optional .com.ankama.dofus.server.game.protocol.common.AllianceInformation.AllianceCardInformation card_information = 5;
+	optional string name = 3;
+	message AllianceCardInformation {
+		int64 creation_date = 1;
+		int32 members_number = 2;
+		int32 subarea_number = 3;
+		int32 tax_collector_number = 4;
+		.com.ankama.dofus.server.game.protocol.common.AllianceRecruitmentInformation recruitment = 5;
+	}
+
+}
+
+message BreachBranch {
+	int32 room = 1;
+	int32 element = 2;
+	repeated .com.ankama.dofus.server.game.protocol.common.MonsterInGroupInformation bosses = 3;
+	int64 map_id = 4;
+	int32 score = 5;
+	int32 relative_score = 6;
+	repeated .com.ankama.dofus.server.game.protocol.common.MonsterInGroupInformation monsters = 7;
+	optional .com.ankama.dofus.server.game.protocol.common.BreachBranch.ExtendedBreachBranch extended_information = 8;
+	message ExtendedBreachBranch {
+		repeated .com.ankama.dofus.server.game.protocol.common.BreachReward rewards = 1;
+		int32 modifier = 2;
+		int32 price = 3;
+		optional int32 unlock_price = 4;
+	}
+
+}
+
+message BreachReward {
+	int32 id = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.BreachReward.BreachRewardLock buy_locks = 2;
+	string buy_criterion = 3;
+	int32 remaining_quantity = 4;
+	int32 price = 5;
+	enum BreachRewardLock {
+		BREACH_REWARD_LOCK_OWNER = 0;
+		BREACH_REWARD_LOCK_FIGHTER = 1;
+		BREACH_REWARD_LOCK_RESOURCES = 2;
+		BREACH_REWARD_LOCK_CRITERION = 3;
+		BREACH_REWARD_LOCK_USELESS = 4;
+		BREACH_REWARD_MAX_PURCHASE_REACHED = 5;
+	}
+
+}
+
+message Challenge {
+	int32 challenge_id = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.ChallengeTarget targets = 2;
+	int32 drop_bonus = 3;
+	int32 xp_bonus = 4;
+	.com.ankama.dofus.server.game.protocol.common.Challenge.ChallengeState state = 5;
+	enum ChallengeState {
+		CHALLENGE_COMPLETED = 0;
+		CHALLENGE_FAILED = 1;
+		CHALLENGE_RUNNING = 2;
+	}
+
+}
+
+message ChallengeTarget {
+	int64 target_id = 1;
+	int32 target_cell = 2;
+	repeated int64 attackers_id = 3;
+}
+
+message Character {
+	int64 id = 1;
+	oneof complement {
+		.com.ankama.dofus.server.game.protocol.common.Character.CharacterBasicInformation character_basic_information = 2;
+		.com.ankama.dofus.server.game.protocol.common.CharacterRemodelingInformation character_remodeling_information = 3;
+	}
+	message CharacterBasicInformation {
+		string name = 1;
+		optional int32 level = 2;
+		oneof complement {
+			.com.ankama.dofus.server.game.protocol.common.Character.CharacterBasicInformation.CharacterLook character_look = 4;
+			.com.ankama.dofus.server.game.protocol.common.RankInformation rank = 5;
+			.com.ankama.dofus.server.game.protocol.common.Character.CharacterBasicInformation.SocialMember social_member = 6;
+		}
+		message SocialMember {
+			int32 breed_id = 1;
+			.com.ankama.dofus.server.game.protocol.common.Gender gender = 2;
+			.com.ankama.dofus.server.game.protocol.common.CharacterState state = 3;
+			int64 hours_since_last_connection = 4;
+			int64 account_id = 5;
+			.com.ankama.dofus.server.game.protocol.common.CharacterStatus status = 6;
+			int32 rank_id = 7;
+			int64 enrollment_date = 8;
+			optional int32 ava_role_id = 9;
+			optional .com.ankama.dofus.server.game.protocol.common.Character.CharacterBasicInformation.SocialMember.GuildMember guild_member = 10;
+			message GuildMember {
+				int64 given_experience = 1;
+				int32 experience_given_percent = 2;
+				.com.ankama.dofus.server.game.protocol.common.Alignment alignment = 3;
+				int32 mood_smiley_id = 4;
+				int32 achievement_points = 5;
+				bool haven_bag_shared = 6;
+				.com.ankama.dofus.server.game.protocol.common.Character.CharacterBasicInformation.SocialMember.GuildMember.PlayerNote note = 7;
+				message PlayerNote {
+					string content = 1;
+					int64 last_edit_date = 2;
+				}
+
+			}
+
+		}
+
+		message CharacterLook {
+			.com.ankama.dofus.server.game.protocol.common.EntityLook look = 1;
+			int32 breed_id = 2;
+			oneof complement {
+				.com.ankama.dofus.server.game.protocol.common.GuildInformation guild_information = 3;
+				.com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance_information = 4;
+				int32 grade = 5;
+				.com.ankama.dofus.server.game.protocol.common.Character.CharacterBasicInformation.CharacterLook.CharacterBaseInformation base_information = 6;
+			}
+			message CharacterBaseInformation {
+				.com.ankama.dofus.server.game.protocol.common.Gender gender = 1;
+				oneof complement {
+					.com.ankama.dofus.server.game.protocol.common.Character.CharacterBasicInformation.CharacterLook.CharacterBaseInformation.CharacterEpicInformation epic_information = 2;
+					.com.ankama.dofus.server.game.protocol.common.Character.CharacterBasicInformation.CharacterLook.CharacterBaseInformation.PartyMemberInformation party_member_information = 3;
+					.com.ankama.dofus.server.game.protocol.common.Character.CharacterBasicInformation.CharacterLook.CharacterBaseInformation.PartyInvitationMemberInformation party_invitation_member_information = 4;
+				}
+				message CharacterEpicInformation {
+					.com.ankama.dofus.server.game.protocol.common.Character.CharacterBasicInformation.CharacterLook.CharacterBaseInformation.CharacterEpicInformation.EpicDeathState death_state = 1;
+					int32 death_count = 2;
+					int32 death_max_level = 3;
+					enum EpicDeathState {
+						DEATH_STATE_ALIVE = 0;
+						DEATH_STATE_DEAD = 1;
+						DEATH_STATE_WAITING_CONFIRMATION = 2;
+					}
+
+				}
+
+				message PartyMemberInformation {
+					.com.ankama.dofus.server.game.protocol.common.PartyUpdateCommonsInformation commons_information = 1;
+					int32 initiative = 2;
+					.com.ankama.dofus.server.game.protocol.common.Alignment alignment = 3;
+					.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates coordinates = 4;
+					.com.ankama.dofus.server.game.protocol.common.CharacterStatus status = 5;
+					repeated .com.ankama.dofus.server.game.protocol.common.PartyEntity entities = 6;
+					optional int32 rank = 7;
+				}
+
+				message PartyInvitationMemberInformation {
+					.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates coordinates = 1;
+					repeated .com.ankama.dofus.server.game.protocol.common.PartyEntity entities = 2;
+				}
+
+			}
+
+		}
+
+	}
+
+}
+
+message CharacterRemodelingInformation {
+	string name = 1;
+	int32 breed_id = 2;
+	.com.ankama.dofus.server.game.protocol.common.Gender gender = 3;
+	repeated int32 colors = 4;
+	int32 cosmeticId = 5;
+	optional .com.ankama.dofus.server.game.protocol.common.CharacterRemodelingInformation.CharacterToRemodelInformation character_to_remodel_information = 6;
+	message CharacterToRemodelInformation {
+		int32 possible_change_mask = 1;
+		int32 mandatory_change_mask = 2;
+	}
+
+}
+
+message PartyEntity {
+	int32 index_id = 1;
+	int32 entity_model_id = 2;
+	.com.ankama.dofus.server.game.protocol.common.EntityLook look = 3;
+	optional .com.ankama.dofus.server.game.protocol.common.PartyEntity.EntityMember entity_member = 4;
+	message EntityMember {
+		int32 initiative = 1;
+		.com.ankama.dofus.server.game.protocol.common.PartyUpdateCommonsInformation commons_information = 2;
+	}
+
+}
+
+message PartyUpdateCommonsInformation {
+	int32 life_point = 1;
+	int32 max_life_points = 2;
+	int32 prospecting = 3;
+	int32 regen_rate = 4;
+}
+
+message CharacterCharacteristic {
+	int32 characteristic_id = 1;
+	oneof character_characteristic {
+		.com.ankama.dofus.server.game.protocol.common.CharacterCharacteristicValue value = 2;
+		.com.ankama.dofus.server.game.protocol.common.CharacterCharacteristicDetailed detailed = 3;
+		.com.ankama.dofus.server.game.protocol.common.CharacterCharacteristicDetailedUsable usable = 4;
+	}
+}
+
+message CharacterCharacteristicValue {
+	int64 total = 1;
+}
+
+message CharacterCharacteristicDetailed {
+	int32 base = 1;
+	int32 additional = 2;
+	int32 objects_and_mount_bonus = 3;
+	int32 alignment_gift_bonus = 4;
+	int32 context_modification = 5;
+	int32 temporary = 6;
+}
+
+message CharacterCharacteristicDetailedUsable {
+	int32 base = 1;
+	int32 additional = 2;
+	int32 objects_and_mount_bonus = 3;
+	int32 alignment_gift_bonus = 4;
+	int32 context_modification = 5;
+	int32 used = 6;
+	int32 temporary = 7;
+}
+
+message CharacterInformation {
+	int64 character_id = 1;
+	string name = 2;
+	int32 breed_id = 3;
+	.com.ankama.dofus.server.game.protocol.common.Gender gender = 4;
+	int32 level = 5;
+	int64 account_id = 6;
+	string account_tag = 7;
+	string account_nickname = 8;
+	.com.ankama.dofus.server.game.protocol.common.CharacterStatus status = 9;
+}
+
+message CharacterStatus {
+	.com.ankama.dofus.server.game.protocol.common.CharacterStatus.Status status = 1;
+	optional string message = 2;
+	enum Status {
+		STATUS_OFFLINE = 0;
+		STATUS_AVAILABLE = 1;
+		STATUS_IDLE = 2;
+		STATUS_AFK = 3;
+		STATUS_PRIVATE = 4;
+		STATUS_SOLO = 5;
+		STATUS_UNKNOWN = 6;
+	}
+
+}
+
+message PlayerSearch {
+	oneof player_search {
+		.com.ankama.dofus.server.game.protocol.common.PlayerSearch.SearchByCharacterName search_by_character_name = 1;
+		.com.ankama.dofus.server.game.protocol.common.PlayerSearch.SearchByAccount search_by_account = 2;
+	}
+	message SearchByCharacterName {
+		string name = 1;
+	}
+
+	message SearchByAccount {
+		string name = 1;
+		string tag = 2;
+	}
+
+}
+
+message AllianceMemberInformation {
+	.com.ankama.dofus.server.game.protocol.common.Character information = 1;
+	int32 ava_role_id = 2;
+}
+
+message SocialApplicationInformation {
+	.com.ankama.dofus.server.game.protocol.common.CharacterInformation player_information = 1;
+	string apply_text = 2;
+	int64 creation_date = 3;
+}
+
+message CharacterCharacteristics {
+	int64 experience = 1;
+	int64 experience_level_floor = 2;
+	int64 experience_next_level_floor = 3;
+	int64 experience_bonus_limit = 4;
+	int64 kamas = 5;
+	.com.ankama.dofus.server.game.protocol.common.AlignmentInformation alignment_information = 6;
+	int32 critical_hit_weapon = 7;
+	repeated .com.ankama.dofus.server.game.protocol.common.CharacterCharacteristic characteristics = 8;
+	repeated .com.ankama.dofus.server.game.protocol.common.SpellModifier spell_modifiers = 9;
+	int64 probation_time = 10;
+}
+
+message AlignmentInformation {
+	.com.ankama.dofus.server.game.protocol.common.Alignment alignment = 1;
+	int32 alignment_quest_number = 2;
+	int32 alignment_grade = 3;
+	int64 character_id = 4;
+	int64 character_level = 5;
+	optional .com.ankama.dofus.server.game.protocol.common.AlignmentInformation.AlignmentExtendedInformation extended_information = 6;
+	message AlignmentExtendedInformation {
+		int32 honor = 1;
+		int32 honor_grade_floor = 2;
+		int32 honor_next_grade_floor = 3;
+		.com.ankama.dofus.server.game.protocol.common.AttackableStatus attackable = 4;
+	}
+
+}
+
+message InteractiveElement {
+	int32 element_id = 1;
+	int32 element_type_id = 2;
+	repeated .com.ankama.dofus.server.game.protocol.common.InteractiveElement.InteractiveElementSkill enabled_skills = 3;
+	repeated .com.ankama.dofus.server.game.protocol.common.InteractiveElement.InteractiveElementSkill disabled_skills = 4;
+	bool on_current_map = 5;
+	optional int32 age_bonus = 6;
+	message InteractiveElementSkill {
+		int32 skill_id = 1;
+		int32 skill_instance_uid = 2;
+		optional int32 name_id = 3;
+	}
+
+}
+
+message StatedElement {
+	int32 element_id = 1;
+	int32 cell_id = 2;
+	int32 state = 3;
+	bool on_current_map = 4;
+}
+
+message EntityLook {
+	int32 bones_id = 1;
+	repeated int32 skins = 2;
+	repeated int32 indexed_colors = 3;
+	repeated int32 scales = 4;
+	repeated .com.ankama.dofus.server.game.protocol.common.SubEntityInformation sub_entities = 5;
+}
+
+message SubEntityInformation {
+	.com.ankama.dofus.server.game.protocol.common.SubEntityInformation.BindingPointCategoryEnum binding_point_category = 1;
+	int32 binding_point_index = 2;
+	.com.ankama.dofus.server.game.protocol.common.EntityLook sub_entity_look = 3;
+	enum BindingPointCategoryEnum {
+		HOOK_POINT_CATEGORY_UNUSED = 0;
+		HOOK_POINT_CATEGORY_PET = 1;
+		HOOK_POINT_CATEGORY_MOUNT_DRIVER = 2;
+		HOOK_POINT_CATEGORY_LIFTED_ENTITY = 3;
+		HOOK_POINT_CATEGORY_BASE_BACKGROUND = 4;
+		HOOK_POINT_CATEGORY_BASE_FOREGROUND = 6;
+		HOOK_POINT_CATEGORY_UNDERWATER_BUBBLES = 7;
+	}
+
+}
+
+message EntityDisposition {
+	.com.ankama.dofus.server.game.protocol.common.Direction direction = 3;
+	optional int64 entity_id = 1;
+	optional int32 cell_id = 2;
+	optional int64 carrying_character_id = 4;
+}
+
+message NamedPartyTeam {
+	.com.ankama.dofus.server.game.protocol.common.Team team = 1;
+	string party_name = 2;
+}
+
+message SocialFightInformation {
+	int32 fight_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.SocialFightInformation.Type fight_type = 2;
+	int64 map_id = 3;
+	enum Type {
+		TAX_COLLECTOR = 0;
+		PRISM = 1;
+	}
+
+}
+
+message SocialFight {
+	.com.ankama.dofus.server.game.protocol.common.SocialFightInformation social_fight_info = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.Character attackers = 2;
+	repeated .com.ankama.dofus.server.game.protocol.common.Character defenders = 3;
+	.com.ankama.dofus.server.game.protocol.common.FightPhaseInfo phase = 4;
+}
+
+message FightPhaseInfo {
+	.com.ankama.dofus.server.game.protocol.common.FightPhaseInfo.FightPhase phase = 1;
+	int64 phase_end_timestamp = 2;
+	enum FightPhase {
+		STARTED = 0;
+		JOINING_PHASE = 1;
+		POSITIONING_PHASE = 2;
+	}
+
+}
+
+message FightOptionsInformation {
+	bool is_secret = 1;
+	bool is_restricted_to_party = 2;
+	bool is_closed = 3;
+	bool is_asking_for_help = 4;
+}
+
+message FighterLightInformation {
+	int64 id = 1;
+	int32 wave = 2;
+	int32 level = 3;
+	int32 breed_id = 4;
+	.com.ankama.dofus.server.game.protocol.common.Gender gender = 5;
+	bool alive = 6;
+	oneof fighter_info {
+		.com.ankama.dofus.server.game.protocol.common.FighterMonsterLightInformation monster_information = 7;
+		.com.ankama.dofus.server.game.protocol.common.FighterEntityLightInformation entity_information = 8;
+		.com.ankama.dofus.server.game.protocol.common.FighterTaxCollectorLightInformation tax_collector_information = 9;
+		.com.ankama.dofus.server.game.protocol.common.FighterNamedLightInformation named_information = 10;
+	}
+}
+
+message FighterMonsterLightInformation {
+	int32 monster_gid = 1;
+}
+
+message FighterEntityLightInformation {
+	int32 entity_model_id = 1;
+	int64 master_id = 2;
+}
+
+message FighterTaxCollectorLightInformation {
+	int32 first_name_id = 1;
+	int32 last_name_id = 2;
+}
+
+message FighterNamedLightInformation {
+	string name = 1;
+}
+
+message FightCommonInformation {
+	int32 fight_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.FightType type = 2;
+	repeated .com.ankama.dofus.server.game.protocol.common.FightTeamInformation teams_information = 3;
+	repeated int32 teams_position = 4;
+	repeated .com.ankama.dofus.server.game.protocol.common.FightOptionsInformation teams_options = 5;
+}
+
+message FightTeamInformation {
+	.com.ankama.dofus.server.game.protocol.common.Team team = 1;
+	int64 leader_id = 2;
+	.com.ankama.dofus.server.game.protocol.common.Alignment side = 3;
+	.com.ankama.dofus.server.game.protocol.common.TeamType type = 4;
+	int32 waves = 5;
+	oneof team_information {
+		.com.ankama.dofus.server.game.protocol.common.FightTeamMembersInformation team_members = 6;
+		.com.ankama.dofus.server.game.protocol.common.FightTeamLightInformation light_information = 7;
+	}
+}
+
+message FightExternalInformation {
+	int32 fight_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.FightType fight_type = 2;
+	int64 fight_start = 3;
+	bool fight_spectator_locked = 4;
+	repeated .com.ankama.dofus.server.game.protocol.common.FightExternalInformation.FightTeamsWithOptions fight_teams_with_options = 5;
+	message FightTeamsWithOptions {
+		.com.ankama.dofus.server.game.protocol.common.FightTeamInformation fight_team = 1;
+		.com.ankama.dofus.server.game.protocol.common.FightOptionsInformation fight_team_options = 2;
+	}
+
+}
+
+message FightTeamLightInformation {
+	int32 team_members_count = 1;
+	int32 average_level = 2;
+	bool has_friend = 3;
+	bool has_guild_member = 4;
+	bool has_alliance_member = 5;
+	bool has_group_member = 6;
+	bool has_my_tax_collector = 7;
+}
+
+message FightTeamMembersInformation {
+	repeated .com.ankama.dofus.server.game.protocol.common.FightTeamMemberInformation team_members = 1;
+	optional .com.ankama.dofus.server.game.protocol.common.AllianceRelation alliance_relation = 2;
+}
+
+message FightTeamMemberInformation {
+	int64 member_id = 1;
+	oneof information {
+		.com.ankama.dofus.server.game.protocol.common.FightTeamMemberCharacter character_member = 2;
+		.com.ankama.dofus.server.game.protocol.common.FightTeamMemberEntity entity_member = 3;
+		.com.ankama.dofus.server.game.protocol.common.FightTeamMemberMonster monster_member = 4;
+		.com.ankama.dofus.server.game.protocol.common.FightTeamMemberTaxCollector tax_collector_member = 5;
+	}
+}
+
+message FightTeamMemberCharacter {
+	string name = 1;
+	int32 level = 2;
+	optional .com.ankama.dofus.server.game.protocol.common.FightTeamMemberCharacter.BasicAllianceInformation alliance_info = 3;
+	message BasicAllianceInformation {
+		string alliance_uid = 1;
+		string alliance_tag = 2;
+	}
+
+}
+
+message FightTeamMemberEntity {
+	int32 entity_model_id = 1;
+	int32 level = 2;
+	int64 master_id = 3;
+}
+
+message FightTeamMemberMonster {
+	int32 monster_id = 1;
+	int32 grade = 2;
+}
+
+message FightTeamMemberTaxCollector {
+	int32 first_name_id = 1;
+	int32 last_name_id = 2;
+	int32 group_id = 3;
+	string tax_collector_uid = 4;
+}
+
+message FightStartingPositions {
+	repeated int32 challengers_positions = 1;
+	repeated int32 defenders_positions = 2;
+}
+
+message FightRemovableEffectExtendedInformation {
+	int32 action_id = 1;
+	int64 source_id = 2;
+	.com.ankama.dofus.server.game.protocol.common.FightRemovableEffect effect = 3;
+}
+
+message FightRemovableEffect {
+	int32 uid = 1;
+	int64 target_id = 2;
+	int32 turn_duration = 3;
+	.com.ankama.dofus.server.game.protocol.common.FightRemovableEffect.EffectDissipationState dissipation_state = 4;
+	int32 spell_id = 5;
+	int32 effect_id = 6;
+	int32 parent_boost_id = 7;
+	oneof effect {
+		.com.ankama.dofus.server.game.protocol.common.FightTemporaryBoostEffect temporary_boost_effect = 8;
+		.com.ankama.dofus.server.game.protocol.common.FightTemporarySpellImmunityEffect temporary_spell_immunity_effect = 9;
+		.com.ankama.dofus.server.game.protocol.common.FightTriggeredEffect triggered_effect = 10;
+	}
+	enum EffectDissipationState {
+		DISSIPATED = 0;
+		DISSIPATED_BY_DEATH = 1;
+		DISSIPATED_BY_STRONG_DISPEL = 2;
+		REALLY_NOT_DISSIPATED = 3;
+	}
+
+}
+
+message FightTemporaryBoostEffect {
+	int32 delta = 1;
+	oneof complement {
+		int32 boosted_spell_id = 2;
+		int32 weapon_type_id = 3;
+		int32 state_id = 4;
+		.com.ankama.dofus.server.game.protocol.common.FightTemporaryBoostEffect.Details details = 5;
+	}
+	message Details {
+		int32 first_param = 1;
+		int32 second_param = 2;
+		int32 third_param = 3;
+	}
+
+}
+
+message FightTemporarySpellImmunityEffect {
+	int32 immune_spell_id = 1;
+}
+
+message FightTriggeredEffect {
+	int32 first_param = 1;
+	int32 second_param = 2;
+	int32 third_param = 3;
+	int32 delay = 4;
+}
+
+message FightMark {
+	int64 author_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.Team team = 2;
+	int32 spell_id = 3;
+	int32 spell_level = 4;
+	int32 mark_id = 5;
+	.com.ankama.dofus.server.game.protocol.common.FightMark.MarkType mark_type = 6;
+	int32 mark_impact_cell = 7;
+	repeated .com.ankama.dofus.server.game.protocol.common.FightMark.MarkedCell cells = 8;
+	bool active = 9;
+	message MarkedCell {
+		int32 id = 1;
+		int32 zone_size = 2;
+		int32 color = 3;
+		.com.ankama.dofus.server.game.protocol.common.FightMark.MarkedCell.MarkCellsType cells_type = 4;
+		enum MarkCellsType {
+			CELLS_CIRCLE = 0;
+			CELLS_CROSS = 1;
+			CELLS_SQUARE = 2;
+		}
+
+	}
+
+	enum MarkType {
+		GLYPH = 0;
+		TRAP = 1;
+		WALL = 2;
+		PORTAL = 3;
+		RUNE = 4;
+	}
+
+}
+
+message FightEffectTriggerCount {
+	int32 effect_id = 1;
+	int64 target_id = 2;
+	int32 count = 3;
+}
+
+message FightSpellCoolDown {
+	int32 spell_id = 1;
+	int32 cool_down = 2;
+}
+
+message FightResumeSlaves {
+	int64 slave_id = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.FightSpellCoolDown spell_cool_downs = 2;
+	int32 summon_count = 3;
+	int32 bomb_count = 4;
+}
+
+message FightResultListEntry {
+	.com.ankama.dofus.server.game.protocol.common.FightOutcome outcome = 1;
+	int32 wave = 2;
+	.com.ankama.dofus.server.game.protocol.common.FightResultListEntry.FightLoot rewards = 3;
+	optional .com.ankama.dofus.server.game.protocol.common.FightResultListEntry.FighterListEntry fighter_list_entry = 4;
+	message FightLoot {
+		repeated .com.ankama.dofus.server.game.protocol.common.FightResultListEntry.FightLoot.Object objects = 1;
+		int64 kamas = 2;
+		message Object {
+			int32 id = 1;
+			int32 quantity = 2;
+			int32 priority_hint = 3;
+		}
+
+	}
+
+	message FighterListEntry {
+		int64 fighter_id = 1;
+		bool alive = 2;
+		oneof complement {
+			.com.ankama.dofus.server.game.protocol.common.FightResultListEntry.FighterListEntry.PlayerListEntry player_list_entry = 3;
+			.com.ankama.dofus.server.game.protocol.common.FightResultListEntry.FighterListEntry.MutantListEntry mutant_list_entry = 4;
+			.com.ankama.dofus.server.game.protocol.common.FightResultListEntry.FighterListEntry.TaxCollectorListEntry tax_collector_list_entry = 5;
+		}
+		message PlayerListEntry {
+			int32 level = 1;
+			repeated .com.ankama.dofus.server.game.protocol.common.FightResultListEntry.FighterListEntry.PlayerListEntry.FightResultAdditionalData additional = 2;
+			message FightResultAdditionalData {
+				oneof additional_data {
+					.com.ankama.dofus.server.game.protocol.common.FightResultListEntry.FighterListEntry.PlayerListEntry.FightResultAdditionalData.ExperienceData experience_data = 1;
+					.com.ankama.dofus.server.game.protocol.common.FightResultListEntry.FighterListEntry.PlayerListEntry.FightResultAdditionalData.PvpData pvp_data = 2;
+				}
+				message ExperienceData {
+					int64 experience = 1;
+					bool show_experience = 2;
+					int64 experience_level_floor = 3;
+					bool show_experience_level_floor = 4;
+					int64 experience_next_level_floor = 5;
+					bool show_experience_next_level_floor = 6;
+					int64 experience_fight_delta = 7;
+					bool show_experience_fight_delta = 8;
+					int64 experience_for_guild = 9;
+					bool show_experience_for_guild = 10;
+					int64 experience_for_mount = 11;
+					bool show_experience_for_mount = 12;
+					int32 re_roll_experience_multiplier = 13;
+				}
+
+				message PvpData {
+					int32 grade = 1;
+					int32 min_honor_for_grade = 2;
+					int32 max_honor_for_grade = 3;
+					int32 honor = 4;
+					int32 honor_delta = 5;
+				}
+
+			}
+
+		}
+
+		message MutantListEntry {
+			int32 level = 1;
+		}
+
+		message TaxCollectorListEntry {
+			.com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance_information = 1;
+		}
+
+	}
+
+}
+
+message NamedPartyTeamWithOutcome {
+	.com.ankama.dofus.server.game.protocol.common.NamedPartyTeam team = 1;
+	.com.ankama.dofus.server.game.protocol.common.FightOutcome outcome = 2;
+}
+
+message FightCharacteristics {
+	repeated .com.ankama.dofus.server.game.protocol.common.CharacterCharacteristic characteristics = 1;
+	int64 summoner = 2;
+	bool summoned = 3;
+	.com.ankama.dofus.server.game.protocol.common.FightInvisibilityState invisibility_state = 4;
+}
+
+message GuildInformation {
+	int32 id = 1;
+	string name = 2;
+	int32 level = 3;
+	optional .com.ankama.dofus.server.game.protocol.common.GuildInformation.GuildSocialInformation social_information = 4;
+	message GuildSocialInformation {
+		.com.ankama.dofus.server.game.protocol.common.SocialEmblem emblem = 1;
+		optional .com.ankama.dofus.server.game.protocol.common.GuildInformation.GuildSocialInformation.GuildDetailedInformation detailed_information = 2;
+		message GuildDetailedInformation {
+			int64 leader_id = 1;
+			int32 members_count = 2;
+			int32 last_activity_day = 3;
+			.com.ankama.dofus.server.game.protocol.common.GuildRecruitmentInformation recruitment = 4;
+			int32 pending_applications_count = 5;
+			optional string leader_name = 6;
+		}
+
+	}
+
+}
+
+message GuildRecruitmentInformation {
+	int32 social_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.SocialRecruitmentType recruitment_type = 2;
+	string title = 3;
+	string text = 4;
+	repeated int32 selected_languages = 5;
+	repeated int32 selected_criterion = 6;
+	int32 min_level = 7;
+	bool min_level_facultative = 8;
+	bool invalidated_by_moderation = 9;
+	string last_edit_player_name = 10;
+	int64 last_edit_date = 11;
+	bool auto_locked = 12;
+	int32 min_success = 13;
+	bool min_success_facultative = 14;
+}
+
+message GuildLogbookEntry {
+	int32 guild_id = 1;
+	int64 date = 2;
+	oneof activity {
+		.com.ankama.dofus.server.game.protocol.common.GuildLogbookEntry.ChestActivity chest_activity = 3;
+		.com.ankama.dofus.server.game.protocol.common.GuildLogbookEntry.PaddockActivity paddock_activity = 4;
+		.com.ankama.dofus.server.game.protocol.common.GuildLogbookEntry.PlayerFlowActivity player_flow_activity = 5;
+		.com.ankama.dofus.server.game.protocol.common.GuildLogbookEntry.LevelUpActivity level_up_activity = 6;
+		.com.ankama.dofus.server.game.protocol.common.GuildLogbookEntry.UnlockNewTabActivity Unlock_new_tab_activity = 7;
+		.com.ankama.dofus.server.game.protocol.common.GuildLogbookEntry.RankActivity rank_activity = 8;
+		.com.ankama.dofus.server.game.protocol.common.GuildLogbookEntry.PlayerRankUpdateActivity player_rank_update_activity = 9;
+	}
+	message ChestActivity {
+		int64 player_id = 1;
+		string player_name = 2;
+		.com.ankama.dofus.server.game.protocol.common.GuildLogbookEntry.ChestActivity.ChestEventType event_type = 3;
+		int32 quantity = 4;
+		.com.ankama.dofus.server.game.protocol.common.ObjectItem object = 5;
+		int32 source_tab_id = 6;
+		int32 destination_tab_id = 7;
+		enum ChestEventType {
+			DEPOSIT = 0;
+			WITHDRAW = 1;
+			TRANSFER = 2;
+		}
+
+	}
+
+	message PaddockActivity {
+		int64 player_id = 1;
+		string player_name = 2;
+		.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates paddock_coordinates = 3;
+		int64 farm_id = 4;
+		.com.ankama.dofus.server.game.protocol.common.GuildLogbookEntry.PaddockActivity.PaddockCommercialEventType paddock_commercial_event_type = 5;
+		enum PaddockCommercialEventType {
+			BUY = 0;
+			PUT_ON_SELL = 1;
+			SOLD = 2;
+		}
+
+	}
+
+	message PlayerFlowActivity {
+		int64 player_id = 1;
+		string player_name = 2;
+		.com.ankama.dofus.server.game.protocol.common.GuildLogbookEntry.PlayerFlowActivity.PlayerFlowEventType player_flow_event_type = 3;
+		enum PlayerFlowEventType {
+			JOIN = 0;
+			LEAVE = 1;
+			APPLY_REFUSED = 2;
+		}
+
+	}
+
+	message LevelUpActivity {
+		int32 new_guild_level = 1;
+	}
+
+	message UnlockNewTabActivity {
+	}
+
+	message RankActivity {
+		.com.ankama.dofus.server.game.protocol.common.GuildLogbookEntry.RankActivity.RankActivityType rank_activity_type = 1;
+		.com.ankama.dofus.server.game.protocol.common.RankInformation rank_information = 2;
+		enum RankActivityType {
+			CREATION = 0;
+			UPDATE = 1;
+			DELETE = 2;
+		}
+
+	}
+
+	message PlayerRankUpdateActivity {
+		.com.ankama.dofus.server.game.protocol.common.RankInformation rank_information = 1;
+		int64 source_player_id = 2;
+		int64 target_player_id = 3;
+		string source_player_name = 4;
+		string target_player_name = 5;
+	}
+
+}
+
+message HouseInstance {
+	int32 instance_id = 1;
+	bool second_hand = 2;
+	bool is_locked = 3;
+	.com.ankama.dofus.server.game.protocol.common.AccountTag account_tag = 4;
+	bool has_owner = 5;
+	bool is_sale_locked = 7;
+	bool is_admin_locked = 8;
+	int32 rooms_count = 10;
+	int32 chests_count = 11;
+	repeated int32 skills_id = 12;
+	optional int64 price = 6;
+	optional .com.ankama.dofus.server.game.protocol.common.GuildInformation guild_information = 9;
+}
+
+message House {
+	int32 house_id = 1;
+	int32 model_id = 2;
+	oneof information {
+		.com.ankama.dofus.server.game.protocol.common.House.HouseAccount house_account = 3;
+		.com.ankama.dofus.server.game.protocol.common.House.HouseOnMap house_on_map = 4;
+		.com.ankama.dofus.server.game.protocol.common.House.HouseInside house_inside = 5;
+		.com.ankama.dofus.server.game.protocol.common.House.HouseGuild house_guild = 6;
+	}
+	message HouseAccount {
+		.com.ankama.dofus.server.game.protocol.common.HouseInstance house_information = 1;
+		.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates coordinates = 2;
+	}
+
+	message HouseOnMap {
+		repeated int32 doors_on_map = 1;
+		repeated .com.ankama.dofus.server.game.protocol.common.HouseInstance houses_information = 2;
+	}
+
+	message HouseInside {
+		.com.ankama.dofus.server.game.protocol.common.HouseInstance house_information = 1;
+		.com.ankama.dofus.server.game.protocol.common.MapCoordinates coordinates = 2;
+	}
+
+	message HouseGuild {
+		.com.ankama.dofus.server.game.protocol.common.HouseInstance house_information = 1;
+		.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates coordinates = 2;
+		repeated int32 skills_id = 3;
+		int64 guild_share_params = 4;
+	}
+
+}
+
+message Shortcut {
+	int32 slot_id = 1;
+	oneof shortcut {
+		.com.ankama.dofus.server.game.protocol.common.ShortcutObjectItem shortcut_object_item = 2;
+		.com.ankama.dofus.server.game.protocol.common.ShortcutPreset shortcut_preset = 3;
+		.com.ankama.dofus.server.game.protocol.common.ShortcutSpell shortcut_spell = 4;
+		.com.ankama.dofus.server.game.protocol.common.ShortcutSmiley shortcut_smiley = 5;
+		.com.ankama.dofus.server.game.protocol.common.ShortcutEmote shortcut_emote = 6;
+		.com.ankama.dofus.server.game.protocol.common.ShortcutCosmeticObject shortcut_cosmetic_object = 7;
+		.com.ankama.dofus.server.game.protocol.common.ShortcutOutfit shortcut_outfit = 8;
+	}
+}
+
+message ShortcutObjectItem {
+	int32 item_uid = 1;
+	int32 item_gid = 2;
+}
+
+message ShortcutSpell {
+	int32 spell_id = 1;
+}
+
+message ShortcutSmiley {
+	int32 smiley_id = 1;
+}
+
+message ShortcutEmote {
+	int32 emote_id = 1;
+}
+
+message ShortcutCosmeticObject {
+	int32 object_gid = 1;
+	bool enable = 3;
+	optional int32 skin_id = 2;
+}
+
+message ShortcutOutfit {
+	string outfit_uuid = 1;
+}
+
+message ShortcutPreset {
+	string preset_uuid = 1;
+	.com.ankama.dofus.server.game.protocol.common.PresetType type = 2;
+}
+
+message MapCoordinates {
+	int32 world_x = 1;
+	int32 world_y = 2;
+}
+
+message MapExtendedCoordinates {
+	int32 world_x = 1;
+	int32 world_y = 2;
+	int64 map_id = 3;
+	int32 sub_area_id = 4;
+}
+
+message MonsterGroupStaticInformation {
+	.com.ankama.dofus.server.game.protocol.common.MonsterInGroupInformation main_creature = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.MonsterInGroupInformation underlings = 2;
+	repeated .com.ankama.dofus.server.game.protocol.common.MonstersInGroupAlternativeInformation alternatives = 3;
+}
+
+message MonsterInGroupInformation {
+	int32 gid = 1;
+	int32 grade = 2;
+	int32 level = 3;
+	optional .com.ankama.dofus.server.game.protocol.common.EntityLook look = 4;
+}
+
+message MonstersInGroupAlternativeInformation {
+	int32 player_count = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.MonsterInGroupInformation monsters = 2;
+}
+
+message ItemMinimalInformation {
+	int32 object_gid = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectEffect effects = 2;
+	oneof complement {
+		int32 quantity = 3;
+		.com.ankama.dofus.server.game.protocol.common.ItemMinimalInformation.ItemToSellInNpcShop item_to_sell_in_npc_shop = 4;
+	}
+	message ItemToSellInNpcShop {
+		int64 price = 1;
+		string buy_criterion = 2;
+	}
+
+}
+
+message ObjectGidWithQuantity {
+	int32 object_gid = 1;
+	int32 quantity = 2;
+	optional .com.ankama.dofus.server.game.protocol.common.ObjectGidWithQuantity.ObjectPriceDateEffect price_date_effect = 3;
+	message ObjectPriceDateEffect {
+		int64 price = 1;
+		repeated .com.ankama.dofus.server.game.protocol.common.ObjectEffect effects = 2;
+		int64 date = 3;
+	}
+
+}
+
+message ObjectUidWithQuantity {
+	int32 object_uid = 1;
+	int32 quantity = 2;
+}
+
+message ObjectItemInventory {
+	int32 position = 1;
+	.com.ankama.dofus.server.game.protocol.common.ObjectItem item = 2;
+	bool favorite = 3;
+	repeated string tag_storage_uuids = 4;
+}
+
+message ObjectItem {
+	int32 uid = 1;
+	int32 quantity = 2;
+	int64 gid = 3;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectEffect effects = 4;
+}
+
+message ObjectEffect {
+	int32 action = 1;
+	oneof effect {
+		string value_string = 2;
+		int32 value_int = 3;
+		.com.ankama.dofus.server.game.protocol.common.ObjectEffect.ObjectEffectMinMaxValue min_max = 4;
+		.com.ankama.dofus.server.game.protocol.common.ObjectEffect.ObjectEffectDiceValue dice = 5;
+		string date = 6;
+		int64 duration_minute = 7;
+		int32 creature_family = 8;
+		.com.ankama.dofus.server.game.protocol.common.ObjectEffect.MonsterCount monster_count = 9;
+		.com.ankama.dofus.server.game.protocol.common.ObjectEffect.ObjectEffectMountValue mount = 10;
+	}
+	message ObjectEffectMinMaxValue {
+		int32 min = 1;
+		int32 max = 2;
+	}
+
+	message ObjectEffectDiceValue {
+		int64 num = 1;
+		int32 side = 2;
+		int32 const = 3;
+	}
+
+	message MonsterCount {
+		int32 creature_family = 1;
+		int32 count = 2;
+	}
+
+	message ObjectEffectMountValue {
+		int64 certificate_id = 1;
+		string date_expiration = 2;
+		int32 model_id = 3;
+		string mount_name = 4;
+		string owner_name = 5;
+		int32 mount_level = 6;
+		.com.ankama.dofus.server.game.protocol.common.Gender mount_gender = 7;
+		bool rideable = 8;
+		bool impregnated = 9;
+		bool impregnate_ready = 10;
+		int32 reproduction_count = 11;
+		int32 reproduction_max = 12;
+		repeated .com.ankama.dofus.server.game.protocol.common.ObjectEffect effect = 13;
+		repeated int32 capacity = 14;
+	}
+
+}
+
+message ObjectInRolePlay {
+	int32 cell_id = 1;
+	int32 object_gid = 2;
+	oneof complement {
+		.com.ankama.dofus.server.game.protocol.common.ObjectInRolePlay.WithLook with_look = 3;
+		.com.ankama.dofus.server.game.protocol.common.ObjectInRolePlay.PaddockItem paddock_item = 4;
+	}
+	message WithLook {
+		.com.ankama.dofus.server.game.protocol.common.EntityLook look = 1;
+		optional .com.ankama.dofus.server.game.protocol.common.Direction direction = 2;
+	}
+
+	message PaddockItem {
+		int32 durability = 1;
+		int32 durability_max = 2;
+	}
+
+}
+
+message GameActionItem {
+	int32 id = 1;
+	string title = 2;
+	string text = 3;
+	string desc_url = 4;
+	string picture_url = 5;
+	repeated .com.ankama.dofus.server.game.protocol.common.ItemMinimalInformation items = 6;
+}
+
+message PortalInformation {
+	int32 portal_id = 1;
+	int32 area_id = 2;
+}
+
+message PrismInformation {
+	.com.ankama.dofus.server.game.protocol.common.PrismInformation.PrismState state = 1;
+	int64 placement_date = 2;
+	int64 nuggets_count = 3;
+	int32 durability = 4;
+	int64 next_evolution_date = 5;
+	optional .com.ankama.dofus.server.game.protocol.common.PrismModule module = 7;
+	optional .com.ankama.dofus.server.game.protocol.common.PrismCristal cristal = 8;
+	optional int32 cristal_number_left = 9;
+	optional .com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance_information = 6;
+	enum PrismState {
+		NORMAL = 0;
+		WEAKENED = 1;
+		VULNERABLE = 2;
+		PROTECTED = 3;
+		INHIBITED = 4;
+	}
+
+}
+
+message PrismLocalizedInformation {
+	int32 sub_area_id = 1;
+	string alliance_uid = 2;
+	.com.ankama.dofus.server.game.protocol.common.MapCoordinates map_coordinates = 3;
+	int64 map_id = 4;
+	.com.ankama.dofus.server.game.protocol.common.PrismInformation prism = 5;
+}
+
+message PrismModule {
+	.com.ankama.dofus.server.game.protocol.common.ObjectItemInventory module_object = 1;
+	.com.ankama.dofus.server.game.protocol.common.PrismModule.PrismModuleType type = 2;
+	enum PrismModuleType {
+		NO_MODULE = 0;
+		TELEPORTER = 1;
+		RECYCLER = 2;
+	}
+
+}
+
+message PrismCristal {
+	.com.ankama.dofus.server.game.protocol.common.ObjectItemInventory cristal_object = 1;
+	.com.ankama.dofus.server.game.protocol.common.PrismCristal.PrismCristalType type = 2;
+	enum PrismCristalType {
+		NO_CRISTAL = 0;
+		PROTECTIVE = 1;
+		INHIBITOR = 2;
+	}
+
+}
+
+message AllianceRecruitmentInformation {
+	string social_uid = 1;
+	.com.ankama.dofus.server.game.protocol.common.SocialRecruitmentType recruitment_type = 2;
+	string title = 3;
+	string text = 4;
+	repeated int32 selected_languages = 5;
+	repeated int32 selected_criterion = 6;
+	int32 min_level = 7;
+	bool min_level_facultative = 8;
+	bool invalidated_by_moderation = 9;
+	string last_edit_player_name = 10;
+	int64 last_edit_date = 11;
+	bool auto_locked = 12;
+}
+
+message SocialEmblem {
+	int32 symbol_shape_id = 1;
+	int32 symbol_color = 2;
+	int32 background_shape_id = 3;
+	int32 background_color = 4;
+}
+
+message SocialNoticeInformation {
+	string content = 1;
+	int64 timestamp = 2;
+	int64 member_id = 3;
+	string member_name = 4;
+}
+
+message RankInformation {
+	int32 id = 1;
+	string name = 2;
+	optional .com.ankama.dofus.server.game.protocol.common.RankInformation.PrivateInformation private_information = 4;
+	optional .com.ankama.dofus.server.game.protocol.common.RankInformation.OrderAndGfx order_and_gfx = 3;
+	message OrderAndGfx {
+		int32 order = 1;
+		int32 gfx_id = 2;
+	}
+
+	message PrivateInformation {
+		bool modifiable = 1;
+		repeated int32 rights = 2;
+	}
+
+}
+
+message TaxCollectorInformation {
+	string uid = 1;
+	int32 first_name_id = 2;
+	int32 last_name_id = 3;
+	.com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance = 4;
+	int64 caller_id = 5;
+	string caller_name = 6;
+	int64 hired_date = 7;
+	.com.ankama.dofus.server.game.protocol.common.MapCoordinates coordinates = 8;
+	int32 sub_area_id = 9;
+	int64 map_id = 10;
+	.com.ankama.dofus.server.game.protocol.common.TaxCollectorState state = 11;
+	.com.ankama.dofus.server.game.protocol.common.EntityLook entity_look = 12;
+	repeated .com.ankama.dofus.server.game.protocol.common.TaxCollectorComplementaryInformation complementary_information = 13;
+	repeated .com.ankama.dofus.server.game.protocol.common.CharacterCharacteristic character_characteristics = 14;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectItemInventory equipments = 15;
+	repeated .com.ankama.dofus.server.game.protocol.common.TaxCollectorOrderedSpell spells = 16;
+}
+
+message TaxCollectorStaticInformation {
+	string uid = 1;
+	int32 first_name_id = 2;
+	int32 last_name_id = 3;
+	.com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance = 4;
+	int64 caller_id = 5;
+}
+
+message TaxCollectorComplementaryInformation {
+	oneof complementary_information {
+		.com.ankama.dofus.server.game.protocol.common.TaxCollectorLootInformation loot_information = 1;
+		.com.ankama.dofus.server.game.protocol.common.TaxCollectorWaitingForHelpInformation waiting_for_help_information = 2;
+	}
+}
+
+message TaxCollectorLootInformation {
+	int32 pods = 1;
+	int64 items_kamas_value = 2;
+}
+
+message TaxCollectorWaitingForHelpInformation {
+	int64 time_left_before_fight = 1;
+	int64 placement_time_left = 2;
+	int32 defender_slots_left = 3;
+}
+
+message TaxCollectorOrderedSpell {
+	int32 spell_id = 1;
+	int32 slot_id = 2;
+}
+
+message TaxCollectorPreset {
+	string preset_uid = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.TaxCollectorOrderedSpell spells = 2;
+	repeated .com.ankama.dofus.server.game.protocol.common.CharacterCharacteristic characteristics = 3;
+}
+
+message MountData {
+	int64 id = 1;
+	int32 model_id = 2;
+	repeated int32 ancestors = 3;
+	repeated int32 behaviors = 4;
+	string name = 5;
+	.com.ankama.dofus.server.game.protocol.common.Gender gender = 6;
+	int64 owner_id = 7;
+	int64 experience = 8;
+	int64 experience_for_level = 9;
+	int32 level = 11;
+	bool is_rideable = 12;
+	int32 max_pods = 13;
+	bool is_wild = 14;
+	int32 stamina = 15;
+	int32 stamina_max = 16;
+	int32 maturity = 17;
+	int32 maturity_for_adult = 18;
+	int32 energy = 19;
+	int32 energy_max = 20;
+	int32 serenity = 21;
+	int32 aggressiveness_max = 22;
+	int32 serenity_max = 23;
+	int32 love = 24;
+	int32 love_max = 25;
+	int32 fertilization_time = 26;
+	bool is_fertilization_ready = 27;
+	int32 boost_limiter = 28;
+	int64 boost_max = 29;
+	int32 reproduction_count = 30;
+	int64 reproduction_count_max = 31;
+	int32 harness_gid = 32;
+	bool use_harness_colors = 33;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectEffect effects = 34;
+	optional int64 experience_for_next_level = 10;
+}
+
+message PaddockInformation {
+	int32 max_outdoor_mount = 1;
+	int32 max_items = 2;
+	oneof information {
+		.com.ankama.dofus.server.game.protocol.common.PaddockInformation.PaddockContent content = 3;
+		.com.ankama.dofus.server.game.protocol.common.PaddockInformation.PaddockInstances instances = 4;
+	}
+	message PaddockContent {
+		int64 paddock_id = 1;
+		.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates coordinates = 2;
+		bool abandoned = 3;
+		repeated .com.ankama.dofus.server.game.protocol.common.PaddockInformation.PaddockContent.MountForPaddock mounts_information = 4;
+		message MountForPaddock {
+			int32 model_id = 1;
+			string name = 2;
+			string owner_name = 3;
+		}
+
+	}
+
+	message PaddockInstances {
+		repeated .com.ankama.dofus.server.game.protocol.common.PaddockInformation.PaddockInstances.PaddockToSell paddocks_to_sell = 1;
+		message PaddockToSell {
+			int64 price = 1;
+			bool locked = 2;
+			optional .com.ankama.dofus.server.game.protocol.common.PaddockInformation.PaddockInstances.PaddockToSell.PaddockGuildInformation guild_information = 3;
+			message PaddockGuildInformation {
+				bool deserted = 1;
+				.com.ankama.dofus.server.game.protocol.common.GuildInformation guild_information = 2;
+			}
+
+		}
+
+	}
+
+}
+
+message SpellItem {
+	int32 spell_id = 1;
+	int32 spell_level = 2;
+	optional bool available = 3;
+}
+
+message SpellModifier {
+	int32 spell_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.SpellModifierActionType action_type = 2;
+	.com.ankama.dofus.server.game.protocol.common.SpellModifierType modifier_type = 3;
+	int32 context = 4;
+	int32 equipment = 5;
+}
+

@@ -1,0 +1,165 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/character_management";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.character.management;
+
+message PrepareCharacterDeletionRequest {
+	int64 character_id = 1;
+}
+
+message CharacterDeletionRequest {
+	int64 character_id = 1;
+	string secret_answer_hash = 2;
+}
+
+message CanCreateCharacterRequest {
+}
+
+message CharacterCreationRequest {
+	.com.ankama.dofus.server.game.protocol.common.CharacterRemodelingInformation modelingInformation = 1;
+}
+
+message CharacterReplayRequest {
+	int64 character_id = 1;
+}
+
+message CharacterReplayWithRemodelRequest {
+	int64 character_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.Character remodelingInformation = 2;
+}
+
+message CharacterSelectionRequest {
+	int64 character_id = 1;
+}
+
+message CharacterSelectionWithRemodelRequest {
+	int64 character_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.Character remodelingInformation = 2;
+}
+
+message CharacterListRequest {
+}
+
+message CharacterForceSelectionReadyRequest {
+}
+
+message CharacterFirstSelectionRequest {
+	int64 character_id = 1;
+	bool do_tutorial = 2;
+}
+
+message CharacterNameSuggestionRequest {
+}
+
+message CanCharacterBeCreatedResultEvent {
+	bool result = 1;
+}
+
+message CharacterCreationResultEvent {
+	.com.ankama.dofus.server.game.protocol.character.management.CharacterCreationResultEvent.CharacterCreationResult result = 1;
+	.com.ankama.dofus.server.game.protocol.character.management.CharacterCreationResultEvent.NameCompliance reason = 2;
+	enum CharacterCreationResult {
+		CREATE_OK = 0;
+		CREATE_ERROR_NO_REASON = 1;
+		CREATE_ERROR_INVALID_NAME = 2;
+		CREATE_ERROR_TOO_MANY_CHARACTERS = 3;
+		CREATE_ERROR_NOT_ALLOWED = 4;
+		CREATE_ERROR_NEW_PLAYER_NOT_ALLOWED = 5;
+	}
+
+	enum NameCompliance {
+		NAME_OK = 0;
+		NAME_ERROR_SERVICE_UNAVAILABLE = 1;
+		NAME_ERROR_ALREADY_EXISTS = 2;
+		NAME_ERROR_BAD_ALPHABET = 3;
+		NAME_ERROR_BAD_LENGTH = 4;
+		NAME_ERROR_BAD_CHAR = 5;
+		NAME_ERROR_INVALID_DASH_POSITION = 6;
+		NAME_ERROR_NAME_WITH_BAD_CASE = 7;
+		NAME_ERROR_TOO_MANY_CONSECUTIVE_IDENTICAL = 8;
+		NAME_ERROR_TOO_MANY_SPECIAL = 9;
+		NAME_ERROR_FORBIDDEN = 10;
+		NAME_ERROR_RESERVED = 11;
+	}
+
+}
+
+message CharacterDeletionErrorEvent {
+	.com.ankama.dofus.server.game.protocol.character.management.CharacterDeletionErrorEvent.CharacterDeletionError reason = 1;
+	enum CharacterDeletionError {
+		DELETE_ERROR_NO_REASON = 0;
+		DELETE_ERROR_TOO_MANY_CHAR_DELETED = 1;
+		DELETE_ERROR_BAD_SECRET_ANSWER = 2;
+	}
+
+}
+
+message CharacterSelectionEvent {
+	oneof result {
+		.com.ankama.dofus.server.game.protocol.character.management.CharacterSelectionEvent.Error error = 1;
+		.com.ankama.dofus.server.game.protocol.character.management.CharacterSelectionEvent.Success success = 2;
+	}
+	message Error {
+	}
+
+	message Success {
+		.com.ankama.dofus.server.game.protocol.common.Character character = 1;
+		bool collect_stats = 2;
+	}
+
+}
+
+message CharacterListWithRemodelingEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.Character characters = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.Character characters_to_remodel = 2;
+}
+
+message CharacterListEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.Character characters = 1;
+}
+
+message CharacterLoadingCompleteEvent {
+}
+
+message CharacterNameSuggestionEvent {
+	string suggestion = 1;
+}
+
+message CharacterNameGenerationFailedEvent {
+	.com.ankama.dofus.server.game.protocol.character.management.CharacterNameGenerationFailedEvent.NameGenerationFailureReason reason = 1;
+	enum NameGenerationFailureReason {
+		NAME_GENERATOR_RETRY_TOO_SHORT = 0;
+		NAME_GENERATOR_UNAVAILABLE = 1;
+	}
+
+}
+
+message CharacterDeletionPrepareEvent {
+	int64 character_id = 1;
+	string name = 2;
+	string secret_question = 3;
+	bool need_secret_answer = 4;
+}
+
+message CharacterForceSelectionEvent {
+	int64 character_id = 1;
+}
+
+message CharacterListErrorEvent {
+}
+
+message CharacterCapabilitiesEvent {
+	int32 guild_emblem_symbol_category = 1;
+}
+
+message CharacterChangeBreedRequest {
+	int32 breed_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.Gender gender = 2;
+	repeated int32 colors = 3;
+	int32 cosmetic_id = 4;
+	int32 object_id = 5;
+}
+

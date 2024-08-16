@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/shop";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.shop;
+
+message AccessoryPreviewRequest {
+	repeated int32 object_gid = 1;
+	bool show_current_objects = 2;
+}
+
+message AccessoryPreviewErrorEvent {
+	.com.ankama.dofus.server.game.protocol.shop.AccessoryPreviewErrorEvent.AccessoryPreviewError error = 1;
+	enum AccessoryPreviewError {
+		ERROR = 0;
+		COOL_DOWN = 1;
+		BAD_ITEM = 2;
+	}
+
+}
+
+message AccessoryPreviewEvent {
+	.com.ankama.dofus.server.game.protocol.common.EntityLook look = 1;
+}
+

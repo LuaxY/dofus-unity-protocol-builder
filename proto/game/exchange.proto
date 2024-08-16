@@ -1,0 +1,617 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/exchange";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.exchange;
+
+message ExchangeObjectMoveRequest {
+	int32 object_uid = 1;
+	int32 quantity = 2;
+}
+
+message ExchangeSetCraftRecipeRequest {
+	int32 object_uid = 1;
+}
+
+message ExchangeObjectUseInWorkshopRequest {
+	int32 object_uid = 1;
+	int32 quantity = 2;
+}
+
+message ExchangeObjectMoveToTabRequest {
+	int32 object_uid = 1;
+	int32 quantity = 2;
+	int32 tab_number = 3;
+}
+
+message ExchangeObjectMovePricedRequest {
+	int32 object_uid = 1;
+	int32 quantity = 2;
+	int64 price = 3;
+}
+
+message ExchangeObjectModifyPricedRequest {
+	int32 object_uid = 1;
+	int32 quantity = 2;
+	int64 price = 3;
+}
+
+message ExchangeObjectTransferAllToInventoryRequest {
+}
+
+message ExchangeObjectTransferListToInventoryRequest {
+	repeated int32 objects_uid = 1;
+}
+
+message ExchangeObjectTransferListWithQuantityToInventoryRequest {
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectUidWithQuantity objects = 1;
+}
+
+message ExchangeObjectTransferExistingToInventoryRequest {
+}
+
+message ExchangeObjectTransferAllFromInventoryRequest {
+}
+
+message ExchangeObjectTransferListFromInventoryRequest {
+	repeated int32 objects_uid = 1;
+}
+
+message ExchangeObjectTransferTypeFromInventoryRequest {
+	int32 object_type = 1;
+}
+
+message ExchangeObjectTransferExistingFromInventoryRequest {
+}
+
+message ExchangeMoveKamaRequest {
+	int64 quantity = 1;
+}
+
+message ExchangeCraftCountRequest {
+	int32 count = 1;
+}
+
+message ExchangeReplayStopRequest {
+}
+
+message ExchangeMultiCraftSetCrafterCanUseHisResourcesRequest {
+	bool allow = 1;
+}
+
+message ExchangePlayerRequest {
+	int64 target_id = 1;
+}
+
+message ExchangePlayerMultiCraftRequest {
+	.com.ankama.dofus.server.game.protocol.common.ExchangeType exchange_type = 1;
+	int64 target_id = 2;
+	int32 skill_id = 3;
+}
+
+message ExchangeMountRequest {
+}
+
+message ExchangeTaxCollectorRequest {
+	string tax_collector_uuid = 1;
+}
+
+message ExchangeAcceptRequest {
+}
+
+message ExchangeReadyRequest {
+	bool ready = 1;
+	int32 step = 2;
+}
+
+message ExchangeFocusedReadyRequest {
+	bool ready = 1;
+	int32 step = 2;
+	int32 focus_action_id = 3;
+}
+
+message ExchangeCraftPaymentModificationRequest {
+	int64 quantity = 1;
+}
+
+message ExchangeBuyRequest {
+	int32 object_uid = 1;
+	int32 quantity = 2;
+}
+
+message ExchangeSellRequest {
+	int32 object_uid = 1;
+	int32 quantity = 2;
+}
+
+message ExchangeObjectsSellRequest {
+	repeated .com.ankama.dofus.server.game.protocol.exchange.ExchangeObjectsSellRequest.ExchangeObject objects = 1;
+	message ExchangeObject {
+		int32 object_uid = 1;
+		int32 quantity = 2;
+	}
+
+}
+
+message JobBookSubscribeRequest {
+	repeated int32 jobs_id = 1;
+}
+
+message ExchangeHandleMountsRequest {
+	.com.ankama.dofus.server.game.protocol.exchange.ExchangeHandleMountsRequest.ExchangeHandleMountStableType action_type = 1;
+	repeated int32 rides_id = 2;
+	enum ExchangeHandleMountStableType {
+		EXCHANGE_MOUNT_STABLES_PUT = 0;
+		EXCHANGE_MOUNT_STABLES_GET = 1;
+		EXCHANGE_MOUNT_STABLES_FREE = 2;
+		EXCHANGE_MOUNT_STABLES_CERTIF = 3;
+		EXCHANGE_MOUNT_STABLES_UNCERTIF = 4;
+		EXCHANGE_MOUNT_PADDOCK_PUT = 5;
+		EXCHANGE_MOUNT_PADDOCK_GET = 6;
+		EXCHANGE_MOUNT_PADDOCK_FREE = 7;
+		EXCHANGE_EQUIPPED_MOUNT_PADDOCK_PUT = 8;
+		EXCHANGE_EQUIPPED_MOUNT_PADDOCK_GET = 9;
+		EXCHANGE_EQUIPPED_FREE = 10;
+		EXCHANGE_CERTIFICATE_FREE = 11;
+		EXCHANGE_EQUIPPED_CERTIF = 12;
+		EXCHANGE_MOUNT_PADDOCK_CERTIF = 13;
+		EXCHANGE_UNCERTIF_TO_EQUIPPED = 14;
+		EXCHANGE_UNCERTIF_TO_PADDOCK = 15;
+		EXCHANGE_MOUNT_STABLES_STERILIZE = 16;
+		EXCHANGE_EQUIPPED_STERILIZE = 17;
+		EXCHANGE_MOUNT_PADDOCK_STERILIZE = 18;
+	}
+
+}
+
+message ExchangeBidHouseSearchRequest {
+	int32 object_gid = 1;
+	bool follow = 2;
+}
+
+message ExchangeBidHouseListRequest {
+	int32 object_gid = 1;
+	bool follow = 2;
+}
+
+message ExchangeBidHouseTypeRequest {
+	int32 type_id = 1;
+	bool follow = 2;
+}
+
+message ExchangeBidHouseBuyRequest {
+	int32 object_uid = 1;
+	int32 quantity = 2;
+	int64 price = 3;
+}
+
+message ExchangeBidHousePriceRequest {
+	int32 object_gid = 1;
+}
+
+message ExchangeTaxCollectorEquipmentRequest {
+	string tax_collector_uid = 1;
+}
+
+message ObjectAveragePricesRequest {
+}
+
+message ExchangeMoneyMovementLimitEvent {
+	int64 limit = 1;
+}
+
+message ExchangeCraftCountModifiedEvent {
+	int32 count = 1;
+}
+
+message ExchangeObjectsAddedEvent {
+	bool remote = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectItemInventory objects = 2;
+	optional int32 fm_power = 3;
+}
+
+message ExchangeObjectRemovedEvent {
+	bool remote = 1;
+	int32 object_uid = 2;
+}
+
+message ExchangeObjectsRemovedEvent {
+	bool remote = 1;
+	repeated int32 objects_uid = 2;
+}
+
+message ExchangeObjectsModifiedEvent {
+	bool remote = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectItemInventory objects = 2;
+}
+
+message ExchangeObjectPutInBagEvent {
+	bool remote = 1;
+	.com.ankama.dofus.server.game.protocol.common.ObjectItemInventory object = 2;
+}
+
+message ExchangeObjectRemovedFromBagEvent {
+	bool remote = 1;
+	int32 object_uid = 2;
+}
+
+message ExchangeObjectModifiedInBagEvent {
+	bool remote = 1;
+	.com.ankama.dofus.server.game.protocol.common.ObjectItemInventory object = 2;
+}
+
+message ExchangeKamaModifiedEvent {
+	bool remote = 1;
+	int64 quantity = 2;
+}
+
+message ExchangePodsModifiedEvent {
+	bool remote = 1;
+	int32 current_weight = 2;
+	int32 max_weight = 3;
+}
+
+message ExchangeMultiCraftCrafterCanUseHisResourcesEvent {
+	bool allowed = 1;
+}
+
+message ExchangeRequestedTradeEvent {
+	.com.ankama.dofus.server.game.protocol.common.ExchangeType exchange_type = 1;
+	int64 source_id = 2;
+	int64 target_id = 3;
+}
+
+message ExchangeStartedEvent {
+	.com.ankama.dofus.server.game.protocol.common.ExchangeType exchange_type = 1;
+}
+
+message ExchangeStartedWithPodsEvent {
+	.com.ankama.dofus.server.game.protocol.common.ExchangeType exchange_type = 1;
+	int64 first_character_id = 2;
+	int32 first_character_current_weight = 3;
+	int32 first_character_max_weight = 4;
+	int64 second_character_id = 5;
+	int32 second_character_current_weight = 6;
+	int32 second_character_max_weight = 7;
+}
+
+message ExchangeStartedWithStorageEvent {
+	.com.ankama.dofus.server.game.protocol.common.ExchangeType exchange_type = 1;
+	int32 storage_max_slot = 2;
+}
+
+message ExchangeStartedWithMultiTabStorageEvent {
+	.com.ankama.dofus.server.game.protocol.common.ExchangeType exchange_type = 1;
+	int32 storage_max_slot = 2;
+	int32 tab_number = 3;
+}
+
+message ExchangeBidHouseBuyResultEvent {
+	int32 object_uid = 1;
+	bool bought = 2;
+}
+
+message ExchangeBidHouseItemAddedEvent {
+	.com.ankama.dofus.server.game.protocol.common.ObjectItem item = 1;
+	int64 price = 2;
+	int64 unsold_delay = 3;
+}
+
+message ExchangeBidHouseItemRemovedEvent {
+	int32 sell_id = 1;
+}
+
+message ExchangeBidHouseGenericItemAddedEvent {
+	int32 object_gid = 1;
+}
+
+message ExchangeBidHouseGenericItemRemovedEvent {
+	int32 object_gid = 1;
+}
+
+message ExchangeBidHouseInListAddedEvent {
+	int32 object_uid = 1;
+	int32 object_gid = 2;
+	int32 object_type = 3;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectEffect effects = 4;
+	repeated int64 prices = 5;
+}
+
+message ExchangeBidHouseInListUpdatedEvent {
+	int32 object_uid = 1;
+	int32 object_gid = 2;
+	int32 object_type = 3;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectEffect effects = 4;
+	repeated int64 prices = 5;
+}
+
+message ExchangeBidHouseInListRemovedEvent {
+	int32 object_uid = 1;
+	int32 object_gid = 2;
+	int32 object_type = 3;
+}
+
+message ExchangeBidHouseUnsoldItemsEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectGidWithQuantity objects = 1;
+}
+
+message ExchangeBidHouseOfflineSoldItemsEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectGidWithQuantity bid_house_items = 1;
+}
+
+message ExchangeReadyEvent {
+	int64 character_id = 1;
+	bool ready = 2;
+}
+
+message ExchangeStoppedEvent {
+	int64 character_id = 1;
+}
+
+message ExchangeErrorEvent {
+	.com.ankama.dofus.server.game.protocol.exchange.ExchangeErrorEvent.ExchangeError error_type = 1;
+	enum ExchangeError {
+		REQUEST_IMPOSSIBLE = 0;
+		REQUEST_CHARACTER_OCCUPIED = 1;
+		REQUEST_CHARACTER_JOB_NOT_EQUIPPED = 2;
+		REQUEST_CHARACTER_TOOL_TOO_FAR = 3;
+		REQUEST_CHARACTER_OVERLOADED = 4;
+		REQUEST_CHARACTER_NOT_SUBSCRIBER = 5;
+		REQUEST_CHARACTER_GUEST = 6;
+		MOUNT_PADDOCK_ERROR = 7;
+		BID_SEARCH_ERROR = 8;
+		SELL_ERROR = 9;
+		BUY_ERROR = 10;
+	}
+
+}
+
+message ExchangeLeaveEvent {
+	.com.ankama.dofus.server.game.protocol.common.DialogType dialog_type = 1;
+	bool success = 2;
+}
+
+message ExchangeTaxCollectorEquipmentStartedEvent {
+	.com.ankama.dofus.server.game.protocol.common.TaxCollectorInformation tax_collector_information = 1;
+}
+
+message ExchangeNpcTradeStartedEvent {
+	int64 npc_id = 1;
+}
+
+message ExchangeRunesTradeStartedEvent {
+}
+
+message ExchangeRecycleTradeStartedEvent {
+	int32 percent_to_prism = 1;
+	int32 percent_to_player = 2;
+	repeated int32 adjacent_subareas_possessed = 3;
+	repeated int32 adjacent_subareas_not_possessed = 4;
+}
+
+message ExchangeNpcShopStartedEvent {
+	int64 npc_seller_id = 1;
+	int32 token_id = 2;
+	repeated .com.ankama.dofus.server.game.protocol.common.ItemMinimalInformation objects = 3;
+}
+
+message ExchangeMultiCraftOkEvent {
+	int64 initiator_id = 1;
+	int64 other_id = 2;
+	.com.ankama.dofus.server.game.protocol.common.ExchangeType role = 3;
+}
+
+message ExchangeCraftResultEvent {
+	.com.ankama.dofus.server.game.protocol.exchange.ExchangeCraftResultEvent.CraftResult result = 1;
+	oneof complement {
+		int32 object_gid = 2;
+		.com.ankama.dofus.server.game.protocol.exchange.ExchangeCraftResultEvent.ExchangeCraftResultWithObjectDescription object = 3;
+	}
+	message ExchangeCraftResultWithObjectDescription {
+		.com.ankama.dofus.server.game.protocol.common.ObjectItem object = 1;
+		int32 fm_power = 3;
+		optional .com.ankama.dofus.server.game.protocol.exchange.ExchangeCraftResultEvent.ExchangeCraftResultWithObjectDescription.MagicPoolStatus magic_pool_status = 2;
+		enum MagicPoolStatus {
+			NO_CHANGE = 0;
+			INCREASE = 1;
+			LOSS = 2;
+		}
+
+	}
+
+	enum CraftResult {
+		IMPOSSIBLE = 0;
+		FAILED = 1;
+		SUCCESS = 2;
+		NEUTRAL = 3;
+		FORBIDDEN = 4;
+	}
+
+}
+
+message ExchangeMountStockStartedEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectItemInventory objects = 1;
+}
+
+message ExchangeTaxCollectorShopStartedEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectItemInventory objects = 1;
+	int64 kamas = 2;
+}
+
+message ExchangeBidSellerStartedEvent {
+	.com.ankama.dofus.server.game.protocol.exchange.SellingConditions selling_conditions = 1;
+	repeated .com.ankama.dofus.server.game.protocol.exchange.ExchangeBidSellerStartedEvent.ObjectItemToSelInBid objects = 2;
+	message ObjectItemToSelInBid {
+		.com.ankama.dofus.server.game.protocol.common.ObjectItem object = 1;
+		int64 price = 2;
+		int32 unsold_delay = 3;
+	}
+
+}
+
+message ExchangeBidBuyerStartedEvent {
+	.com.ankama.dofus.server.game.protocol.exchange.SellingConditions selling_conditions = 1;
+}
+
+message ExchangeBidPriceEvent {
+	int32 object_gid = 1;
+	int64 average_price = 2;
+	optional .com.ankama.dofus.server.game.protocol.exchange.ExchangeBidPriceEvent.BidPriceForSeller bid_price_for_seller = 3;
+	message BidPriceForSeller {
+		bool all_identical = 1;
+		repeated int64 minimal_prices = 2;
+	}
+
+}
+
+message ExchangeTypesExchangerDescriptionForUserEvent {
+	int32 object_type = 1;
+	repeated int32 type_description = 2;
+}
+
+message ExchangeTypesItemsExchangerDescriptionForUserEvent {
+	int32 object_gid = 1;
+	int32 object_type = 2;
+	repeated .com.ankama.dofus.server.game.protocol.exchange.ExchangeTypesItemsExchangerDescriptionForUserEvent.BidExchangerObject item_descriptions = 3;
+	message BidExchangerObject {
+		int32 object_uid = 1;
+		int32 object_gid = 2;
+		int32 object_type = 3;
+		repeated .com.ankama.dofus.server.game.protocol.common.ObjectEffect effects = 4;
+		repeated int64 prices = 5;
+	}
+
+}
+
+message ExchangeWeightEvent {
+	int32 current_weight = 1;
+	int32 max_weight = 2;
+}
+
+message ExchangeTaxCollectorGetEvent {
+	string collector_name = 1;
+	.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates coordinates = 2;
+	string user_name = 3;
+	int64 caller_id = 4;
+	string caller_name = 5;
+	int32 pods = 6;
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectGidWithQuantity objects = 7;
+	.com.ankama.dofus.server.game.protocol.common.EntityLook look = 8;
+}
+
+message ExchangeBoughtEvent {
+}
+
+message ExchangeSoldEvent {
+}
+
+message ExchangeMountWithoutPaddockStartedEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.MountData stabled_mounts = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.MountData paddocked_mounts = 2;
+}
+
+message ExchangeMountsStableAddedEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.MountData mounts = 1;
+	bool new_born = 2;
+}
+
+message ExchangeMountsPaddockAddedEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.MountData mounts = 1;
+}
+
+message ExchangeMountsStableRemoveEvent {
+	repeated int32 mounts_id = 1;
+}
+
+message ExchangeMountsPaddockRemoveEvent {
+	repeated int32 mounts_id = 1;
+}
+
+message ExchangeMountFreeFromPaddockEvent {
+	string name = 1;
+	.com.ankama.dofus.server.game.protocol.common.MapCoordinates coordinates = 2;
+	string liberator = 3;
+}
+
+message ExchangeItemAutoCraftStoppedEvent {
+	.com.ankama.dofus.server.game.protocol.exchange.ExchangeItemAutoCraftStoppedEvent.ExchangeReplayStopReason reason = 1;
+	enum ExchangeReplayStopReason {
+		OK = 0;
+		USER = 1;
+		MISSING_RESSOURCE = 2;
+		IMPOSSIBLE_MODIFICATION = 3;
+	}
+
+}
+
+message ExchangeCraftStartedEvent {
+	optional int32 skill_id = 1;
+}
+
+message ExchangeMultiCraftCrafterStartedEvent {
+	int32 skill_id = 1;
+}
+
+message ExchangeMultiCraftCustomerStartedEvent {
+	int32 skill_id = 1;
+	int32 crafter_job_level = 2;
+}
+
+message ExchangeCrafterJobLevelUpEvent {
+	int32 crafter_job_level = 1;
+}
+
+message ExchangeJobIndexStartedEvent {
+	repeated int32 jobs = 1;
+}
+
+message ExchangeCraftPaymentModifiedEvent {
+	int64 kamas = 1;
+}
+
+message SellingConditions {
+	repeated int32 quantities = 1;
+	repeated int32 types = 2;
+	float tax_percentage = 3;
+	float tax_modification_percentage = 4;
+	int32 max_item_level = 5;
+	int32 max_item_per_account = 6;
+	int32 npc_contextual_id = 7;
+	int32 unsold_delay = 8;
+}
+
+message ObjectAveragePricesErrorEvent {
+}
+
+message ObjectAveragePricesEvent {
+	repeated .com.ankama.dofus.server.game.protocol.exchange.ObjectAveragePricesEvent.ObjectAveragePrice objects_average_prices = 1;
+	message ObjectAveragePrice {
+		int32 object_gid = 1;
+		int64 average_price = 2;
+	}
+
+}
+
+message RecycleResultEvent {
+	int32 prism_nuggets = 1;
+	int32 player_nuggets = 2;
+}
+
+message DecraftResultEvent {
+	repeated .com.ankama.dofus.server.game.protocol.exchange.DecraftResultEvent.DecraftedItem results = 1;
+	message DecraftedItem {
+		int32 object_uid = 1;
+		float bonus_min = 2;
+		float bonus_max = 3;
+		repeated .com.ankama.dofus.server.game.protocol.exchange.DecraftResultEvent.DecraftedItem.Rune runes = 4;
+		message Rune {
+			int32 rune_id = 1;
+			int32 quantity = 2;
+		}
+
+	}
+
+}
+

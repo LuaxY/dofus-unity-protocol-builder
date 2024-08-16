@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/guild_member";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.guild.member;
+
+message GuildMemberParametersChangeRequest {
+	int64 member_id = 1;
+	int32 rank_id = 2;
+	int32 experience_given_percent = 3;
+}
+
+message GuildMemberWarnOnConnectionStartRequest {
+}
+
+message GuildMemberWarnOnConnectionStopRequest {
+}
+
+message GuildMemberOnlineStatusEvent {
+	int64 member_id = 1;
+	bool online = 2;
+}
+
+message GuildMembersEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.Character members = 1;
+}
+
+message GuildMemberUpdateEvent {
+	.com.ankama.dofus.server.game.protocol.common.Character member = 1;
+}
+
+message GuildMemberLeaveEvent {
+	bool kicked = 1;
+	int64 player_id = 2;
+}
+
+message GuildLeftEvent {
+}
+
+message GuildMembershipEvent {
+	.com.ankama.dofus.server.game.protocol.common.GuildInformation guild_information = 1;
+	int32 rank_id = 2;
+}
+
+message GuildJoinedEvent {
+	.com.ankama.dofus.server.game.protocol.common.GuildInformation guild_information = 1;
+	int32 rank_id = 2;
+}
+

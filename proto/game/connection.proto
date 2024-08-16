@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/connection";
+
+package com.ankama.dofus.server.game.protocol.connection;
+
+message IdentificationRequest {
+	string ticket_key = 1;
+	string language_code = 2;
+}
+
+message ReloginRequest {
+}
+
+message PingRequest {
+	bool quiet = 1;
+}
+
+message PongEvent {
+	bool quiet = 1;
+}
+
+message AuthenticationTicketAcceptedEvent {
+}
+
+message AlreadyConnectedEvent {
+}
+
+message ReconnectToGameServerEvent {
+	bool valid_token = 1;
+	string token = 2;
+	int32 server_id = 3;
+}
+
+message OptionalFeaturesEvent {
+	repeated int32 features = 1;
+}
+
+message ReloginTokenEvent {
+	bool valid_token = 1;
+	string token = 2;
+}
+
+message QueueStatusEvent {
+	int32 position = 1;
+	int32 total = 2;
+}
+
+message AuthenticationTicketRefusedEvent {
+}
+

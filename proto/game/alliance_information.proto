@@ -1,0 +1,138 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/alliance_information";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.alliance.information;
+
+message AllianceCreationValidRequest {
+	string alliance_name = 1;
+	string alliance_tag = 2;
+	.com.ankama.dofus.server.game.protocol.common.SocialEmblem alliance_emblem = 3;
+}
+
+message AllianceEmblemModificationValidRequest {
+	.com.ankama.dofus.server.game.protocol.common.SocialEmblem alliance_emblem = 1;
+}
+
+message AllianceNameAndTagModificationValidRequest {
+	string alliance_name = 1;
+	string alliance_tag = 2;
+}
+
+message AllianceModificationValidRequest {
+	string alliance_name = 1;
+	string alliance_tag = 2;
+	.com.ankama.dofus.server.game.protocol.common.SocialEmblem alliance_emblem = 3;
+}
+
+message AllianceMemberStartWarningOnConnectionRequest {
+}
+
+message AllianceMemberStopWarningOnConnectionRequest {
+}
+
+message AllianceCreationStartedEvent {
+}
+
+message AllianceModificationStartedEvent {
+	bool can_change_name = 1;
+	bool can_change_tag = 2;
+	bool can_change_emblem = 3;
+}
+
+message AllianceCreationResultEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialGroupOperationResult result = 1;
+}
+
+message AllianceModificationResultEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialGroupOperationResult result = 1;
+}
+
+message AllianceInsiderInformationRequest {
+}
+
+message AllianceFactsRequest {
+	string alliance_uuid = 1;
+}
+
+message AllianceSummaryRequest {
+	int64 offset = 1;
+	int64 count = 2;
+	.com.ankama.dofus.server.game.protocol.alliance.information.AllianceSummaryRequest.DirectoryTextFilter filter_type = 3;
+	string text_filer = 4;
+	bool hide_full_filter = 5;
+	bool following_alliance_criteria = 6;
+	repeated int32 criterion_filter = 7;
+	.com.ankama.dofus.server.game.protocol.alliance.information.AllianceSummaryRequest.AllianceSummarySort sort_type = 8;
+	bool sort_descending = 9;
+	repeated int32 languages_filter = 10;
+	repeated .com.ankama.dofus.server.game.protocol.common.SocialRecruitmentType recruitment_type_filter = 11;
+	int32 min_player_level_filter = 12;
+	int32 max_player_level_filter = 13;
+	enum DirectoryTextFilter {
+		ALLIANCE_SEARCH_DEFAULT_FILTER = 0;
+		ALLIANCE_SEARCH_NAME_FILTER = 1;
+		ALLIANCE_SEARCH_TAG_FILTER = 2;
+	}
+
+	enum AllianceSummarySort {
+		SORT_BY_ALLIANCE_NAME = 0;
+		SORT_BY_ALLIANCE_TAG = 1;
+		SORT_BY_NB_TERRITORIES = 2;
+		SORT_BY_ALLIANCE_NB_MEMBERS = 3;
+	}
+
+}
+
+message AllianceInsiderInformationEvent {
+	.com.ankama.dofus.server.game.protocol.common.AllianceInformation information = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.AllianceMemberInformation members = 2;
+	repeated .com.ankama.dofus.server.game.protocol.common.PrismLocalizedInformation prisms = 3;
+	repeated .com.ankama.dofus.server.game.protocol.common.TaxCollectorInformation tax_collectors = 4;
+}
+
+message AllianceFactsErrorEvent {
+	string alliance_uuid = 1;
+}
+
+message AllianceFactsEvent {
+	.com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance_information = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.Character members = 2;
+	repeated int32 controlled_subarea_ids = 3;
+	int64 leader_id = 4;
+	string leader_name = 5;
+}
+
+message AllianceSummaryEvent {
+	int64 offset = 1;
+	int64 count = 2;
+	int64 total = 3;
+	repeated .com.ankama.dofus.server.game.protocol.common.AllianceInformation alliances = 4;
+}
+
+message AllianceMotdSetRequest {
+	string content = 1;
+}
+
+message AllianceMotdEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialNoticeInformation motd_info = 1;
+}
+
+message AllianceMotdSetErrorEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialNoticeError reason = 1;
+}
+
+message AllianceBulletinSetRequest {
+	string content = 1;
+}
+
+message AllianceBulletinEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialNoticeInformation bulletin_info = 1;
+}
+
+message AllianceBulletinSetErrorEvent {
+	.com.ankama.dofus.server.game.protocol.common.SocialNoticeError reason = 1;
+}
+

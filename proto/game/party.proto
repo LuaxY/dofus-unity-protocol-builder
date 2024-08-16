@@ -1,0 +1,267 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/party";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.party;
+
+enum PartyMemberInFightCause {
+	UNKNOWN = 0;
+	MONSTER_ATTACK = 1;
+	PLAYER_ATTACK = 2;
+	MEMBER_ATTACKED_PLAYERS = 3;
+	MEMBER_CHALLENGE = 4;
+}
+
+enum PartyType {
+	UNDEFINED = 0;
+	CLASSICAL = 1;
+	ARENA = 2;
+}
+
+message PartyInvitationRequest {
+	.com.ankama.dofus.server.game.protocol.common.PlayerSearch target = 1;
+	.com.ankama.dofus.server.game.protocol.party.PartyType party_type = 2;
+}
+
+message PartyInvitationDetailsRequest {
+	int32 party_id = 1;
+}
+
+message PartyInvitationAcceptRequest {
+	int32 party_id = 1;
+}
+
+message PartyInvitationRefuseRequest {
+	int32 party_id = 1;
+}
+
+message PartyInvitationCancelRequest {
+	int32 party_id = 1;
+	int64 guest_id = 2;
+}
+
+message PartyAbdicateThroneRequest {
+	int32 party_id = 1;
+	int64 player_id = 2;
+}
+
+message PartyFollowMemberRequest {
+	int32 party_id = 1;
+	int64 player_id = 2;
+	optional bool enabled = 3;
+}
+
+message PartyStopFollowMemberRequest {
+	int32 party_id = 1;
+	int64 player_id = 2;
+}
+
+message PartyLocateMembersRequest {
+	int32 party_id = 1;
+}
+
+message PartyLeaveRequest {
+	int32 party_id = 1;
+}
+
+message PartyKickRequest {
+	int32 party_id = 1;
+	int64 player_id = 2;
+}
+
+message PartyPledgeLoyaltyRequest {
+	int32 party_id = 1;
+	bool loyal = 2;
+}
+
+message PartyNameSetRequest {
+	int32 party_id = 1;
+	string name = 2;
+}
+
+message PartyInvitationEvent {
+	int32 party_id = 1;
+	.com.ankama.dofus.server.game.protocol.party.PartyType party_type = 2;
+	string party_name = 3;
+	int32 max_participants = 4;
+	int64 from_player_id = 5;
+	string from_player_name = 6;
+	int64 to_player_id = 7;
+}
+
+message PartyInvitationDetailsEvent {
+	int32 party_id = 1;
+	.com.ankama.dofus.server.game.protocol.party.PartyType party_type = 2;
+	string party_name = 3;
+	int64 from_player_id = 4;
+	string from_player_name = 5;
+	int64 leader_id = 6;
+	repeated .com.ankama.dofus.server.game.protocol.common.Character members = 7;
+	repeated .com.ankama.dofus.server.game.protocol.party.PartyGuest guests = 8;
+}
+
+message PartyInvitationCancelledForGuestEvent {
+	int32 party_id = 1;
+	int64 canceller_id = 2;
+}
+
+message PartyInvitationCancelledEvent {
+	int32 party_id = 1;
+	int64 canceller_id = 2;
+	int64 guest_id = 3;
+}
+
+message PartyInvitationRefusedEvent {
+	int32 party_id = 1;
+	int64 guest_id = 2;
+}
+
+message PartyJoinErrorEvent {
+	int32 party_id = 1;
+	.com.ankama.dofus.server.game.protocol.party.PartyJoinErrorEvent.PartyJoinError reason = 2;
+	enum PartyJoinError {
+		UNKNOWN = 0;
+		PLAYER_NOT_FOUND = 1;
+		PARTY_NOT_FOUND = 2;
+		PARTY_FULL = 3;
+		PLAYER_BUSY = 4;
+		PLAYER_ALREADY_INVITED = 5;
+		PLAYER_TOO_SOLICITED = 6;
+		PLAYER_LOYAL = 7;
+		UNMODIFIABLE = 8;
+		UNMET_CRITERION = 9;
+		NOT_ENOUGH_ROOM = 10;
+		COMPOSITION_CHANGED = 11;
+		PLAYER_IN_TUTORIAL = 12;
+	}
+
+}
+
+message PartyJoinEvent {
+	int32 party_id = 1;
+	.com.ankama.dofus.server.game.protocol.party.PartyType party_type = 2;
+	int64 leader_id = 3;
+	int32 max_participants = 4;
+	repeated .com.ankama.dofus.server.game.protocol.common.Character members = 5;
+	repeated .com.ankama.dofus.server.game.protocol.party.PartyGuest guests = 6;
+	bool restricted = 7;
+	string party_name = 8;
+}
+
+message PartyNewGuestEvent {
+	int32 party_id = 1;
+	.com.ankama.dofus.server.game.protocol.party.PartyGuest guest = 2;
+}
+
+message PartyMemberUpdateEvent {
+	int32 party_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.Character member = 2;
+}
+
+message PartyNewMemberEvent {
+	int32 party_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.Character member = 2;
+}
+
+message PartyMemberUpdateLightEvent {
+	int32 party_id = 1;
+	int64 player_id = 2;
+	.com.ankama.dofus.server.game.protocol.common.PartyUpdateCommonsInformation commons_information = 3;
+	optional int32 index = 4;
+}
+
+message PartyMemberRemoveEvent {
+	int32 party_id = 1;
+	int64 leaving_player_id = 2;
+	optional int64 kicker_id = 3;
+}
+
+message PartyLeaderUpdateEvent {
+	int32 party_id = 1;
+	int64 party_leader_id = 2;
+}
+
+message PartyFollowStatusUpdateEvent {
+	int32 party_id = 1;
+	bool success = 2;
+	bool is_followed = 3;
+	int64 followed_id = 4;
+}
+
+message PartyLeaveEvent {
+	int32 party_id = 1;
+}
+
+message PartyKickedByEvent {
+	int32 party_id = 1;
+	int64 kicker_id = 2;
+}
+
+message PartyRestrictedEvent {
+	int32 party_id = 1;
+	bool restricted = 2;
+}
+
+message PartyDeletedEvent {
+	int32 party_id = 1;
+}
+
+message PartyLoyaltyStatusEvent {
+	int32 party_id = 1;
+	bool loyal = 2;
+}
+
+message PartyMemberInFightEvent {
+	int32 party_id = 1;
+	.com.ankama.dofus.server.game.protocol.party.PartyMemberInFightCause reason = 2;
+	int64 member_id = 3;
+	int64 member_account_id = 4;
+	string member_name = 5;
+	int32 fight_id = 6;
+	int32 time_before_fight_start = 7;
+	.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates standard_fight_map = 8;
+}
+
+message PartyMemberInBreachFightEvent {
+	int32 party_id = 1;
+	.com.ankama.dofus.server.game.protocol.party.PartyMemberInFightCause reason = 2;
+	int64 member_id = 3;
+	int64 member_account_id = 4;
+	string member_name = 5;
+	int32 fight_id = 6;
+	int32 time_before_fight_start = 7;
+	int32 floor = 8;
+	int32 room = 9;
+}
+
+message PartyNameUpdateEvent {
+	int32 party_id = 1;
+	string name = 2;
+}
+
+message PartyNameSetErrorEvent {
+	int32 party_id = 1;
+	.com.ankama.dofus.server.game.protocol.party.PartyNameSetErrorEvent.PartyNameError result = 2;
+	enum PartyNameError {
+		UNDEFINED_ERROR = 0;
+		INVALID = 1;
+		ALREADY_USED = 2;
+		UNALLOWED_RIGHTS = 3;
+		UNALLOWED_NOW = 4;
+	}
+
+}
+
+message PartyGuest {
+	int64 player_id = 1;
+	int64 host_id = 2;
+	string name = 3;
+	.com.ankama.dofus.server.game.protocol.common.EntityLook look = 4;
+	int32 breed = 5;
+	.com.ankama.dofus.server.game.protocol.common.Gender gender = 6;
+	.com.ankama.dofus.server.game.protocol.common.CharacterStatus status = 7;
+	repeated .com.ankama.dofus.server.game.protocol.common.PartyEntity entities = 8;
+}
+

@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/paddock";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.paddock;
+
+message PaddockSellRequest {
+	int64 price = 1;
+	bool for_sale = 2;
+}
+
+message PaddockBuyRequest {
+	int64 proposed_price = 1;
+}
+
+message PaddockRemoveItemRequest {
+	int32 cell_id = 1;
+}
+
+message PaddockMoveItemRequest {
+	int32 old_cell_id = 1;
+	int32 new_cell_id = 2;
+}
+
+message PaddocksToSellRequest {
+	int32 page_index = 1;
+}
+
+message PaddocksToSellFiltersRequest {
+	int32 area_id = 1;
+	int32 at_least_mount_number = 2;
+	int32 at_least_machine_number = 3;
+	int64 price_max = 4;
+	.com.ankama.dofus.server.game.protocol.common.RealEstateOrder order_by = 5;
+}
+
+message PaddockObjectRemovedEvent {
+	int32 cell_id = 1;
+}
+
+message PaddockObjectAddedEvent {
+	.com.ankama.dofus.server.game.protocol.common.ObjectInRolePlay paddock_item = 1;
+}
+
+message PaddockObjectsAddedEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.ObjectInRolePlay paddock_item = 1;
+}
+
+message PaddockBuyResultEvent {
+	int64 paddock_id = 1;
+	bool bought = 2;
+	int64 price = 3;
+}
+
+message PaddockPropertiesEvent {
+	.com.ankama.dofus.server.game.protocol.common.PaddockInformation properties = 1;
+}
+
+message PaddockTransactionDialogEvent {
+	.com.ankama.dofus.server.game.protocol.paddock.PaddockTransactionDialogEvent.Transaction transaction = 1;
+	int32 owner_id = 2;
+	int64 price = 3;
+	enum Transaction {
+		BUY = 0;
+		SELL = 1;
+	}
+
+}
+
+message PaddockObjectAnimationPlayEvent {
+	repeated int32 cells_id = 1;
+}
+
+message PaddocksToSellEvent {
+	int32 page_index = 1;
+	int32 page_total = 2;
+	repeated .com.ankama.dofus.server.game.protocol.paddock.PaddocksToSellEvent.PaddockForSale paddocks = 3;
+	message PaddockForSale {
+		string guild_owner = 1;
+		.com.ankama.dofus.server.game.protocol.common.MapCoordinates coordinates = 2;
+		int32 sub_area_id = 3;
+		int32 mount_number = 4;
+		int32 object_number = 5;
+		int64 price = 6;
+	}
+
+}
+

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/client_verification";
+
+package com.ankama.dofus.server.game.protocol.client.verification;
+
+message ServerSessionReadyEvent {
+}
+
+message ClientIdRequest {
+	string id = 1;
+}
+
+message ServerVerificationEvent {
+}
+
+message ClientChallengeInitRequest {
+	string challengeKey = 1;
+}
+
+message ServerChallengeEvent {
+	optional string value = 1;
+}
+
+message ClientChallengeProofRequest {
+	string proof = 1;
+}
+

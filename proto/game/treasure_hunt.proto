@@ -1,0 +1,147 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/treasure_hunt";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.treasure.hunt;
+
+enum TreasureHuntType {
+	CLASSIC = 0;
+	PORTAL = 1;
+	LEGENDARY = 2;
+}
+
+message TreasureHuntLegendaryRequest {
+	int32 legendary_id = 1;
+}
+
+message TreasureHuntDigRequest {
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntType quest_type = 1;
+}
+
+message TreasureHuntFlagRequest {
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntType quest_type = 1;
+	int32 index = 2;
+}
+
+message TreasureHuntFlagRemoveRequest {
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntType quest_type = 1;
+	int32 index = 2;
+}
+
+message TreasureHuntGiveUpRequest {
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntType quest_type = 1;
+}
+
+message PortalUseRequest {
+	int32 portal_id = 1;
+}
+
+message TreasureHuntLegendaryEvent {
+	repeated int32 available_legendary_ids = 1;
+}
+
+message TreasureHuntAnswerEvent {
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntType quest_type = 1;
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntAnswerEvent.Result result = 2;
+	enum Result {
+		ERROR_UNDEFINED = 0;
+		ERROR_NO_QUEST_FOUND = 1;
+		ERROR_ALREADY_HAVE_QUEST = 2;
+		ERROR_NOT_AVAILABLE = 3;
+		ERROR_DAILY_LIMIT_EXCEEDED = 4;
+		OK = 5;
+	}
+
+}
+
+message TreasureHuntEvent {
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntType quest_type = 1;
+	int64 start_map_id = 2;
+	repeated .com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntEvent.TreasureHuntStep known_steps = 3;
+	int32 total_step_count = 4;
+	int32 current_check_point = 5;
+	int32 total_check_point = 6;
+	int32 available_retry_count = 7;
+	repeated .com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntEvent.TreasureHuntFlag flags = 8;
+	message TreasureHuntStep {
+		oneof step {
+			.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntEvent.TreasureHuntStep.FollowDirectionToPOI follow_direction_to_poi = 1;
+			.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntEvent.TreasureHuntStep.FollowDirectionToHint follow_direction_to_hint = 2;
+			.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntEvent.TreasureHuntStep.FollowDirection follow_direction = 3;
+			.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntEvent.TreasureHuntStep.Fight fight = 4;
+			.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntEvent.TreasureHuntStep.Dig dig = 5;
+		}
+		message FollowDirectionToPOI {
+			.com.ankama.dofus.server.game.protocol.common.Direction direction = 1;
+			int32 poi_label_id = 2;
+		}
+
+		message FollowDirectionToHint {
+			.com.ankama.dofus.server.game.protocol.common.Direction direction = 1;
+			int32 npc_id = 2;
+		}
+
+		message FollowDirection {
+			.com.ankama.dofus.server.game.protocol.common.Direction direction = 1;
+			int32 map_count = 2;
+		}
+
+		message Fight {
+		}
+
+		message Dig {
+		}
+
+	}
+
+	message TreasureHuntFlag {
+		int64 map_id = 1;
+		.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntEvent.TreasureHuntFlag.FlagState state = 2;
+		enum FlagState {
+			UNKNOWN = 0;
+			OK = 1;
+			WRONG = 2;
+		}
+
+	}
+
+}
+
+message TreasureHuntFinishedEvent {
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntType quest_type = 1;
+}
+
+message TreasureHuntDigAnswerEvent {
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntType quest_type = 1;
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntDigAnswerEvent.DigResult result = 2;
+	optional int32 wrong_flag_count = 3;
+	enum DigResult {
+		ERROR_UNDEFINED = 0;
+		NEW_HINT = 1;
+		FINISHED = 2;
+		WRONG = 3;
+		LOST = 4;
+		ERROR_IMPOSSIBLE = 5;
+		WRONG_AND_YOU_KNOW_IT = 6;
+	}
+
+}
+
+message TreasureHuntFlagAnswerEvent {
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntType quest_type = 1;
+	.com.ankama.dofus.server.game.protocol.treasure.hunt.TreasureHuntFlagAnswerEvent.FlagResult result = 2;
+	int32 index = 3;
+	enum FlagResult {
+		ERROR_UNDEFINED = 0;
+		OK = 1;
+		WRONG = 2;
+		TOO_MANY = 3;
+		ERROR_IMPOSSIBLE = 4;
+		WRONG_INDEX = 5;
+		SAME_MAP = 6;
+	}
+
+}
+

@@ -1,0 +1,161 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/taxcollector";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.taxcollector;
+
+message TaxCollectorUpdatesListenStartRequest {
+	string tax_collector_uid = 1;
+}
+
+message TaxCollectorUpdatesListenStopRequest {
+	string tax_collector_uid = 1;
+}
+
+message TaxCollectorOrderedSpellAddRequest {
+	string tax_collector_uid = 1;
+	.com.ankama.dofus.server.game.protocol.common.TaxCollectorOrderedSpell added_spell = 2;
+}
+
+message TaxCollectorOrderedSpellRemoveRequest {
+	string tax_collector_uid = 1;
+	int32 slot_id = 2;
+}
+
+message TaxCollectorOrderedSpellMoveRequest {
+	string tax_collector_uid = 1;
+	int32 from_slot_id = 2;
+	int32 to_slot_id = 3;
+}
+
+message TaxCollectorPresetsUpdatesListenStartRequest {
+}
+
+message TaxCollectorPresetsUpdatesListenStopRequest {
+}
+
+message TaxCollectorPresetSpellAddRequest {
+	string preset_uid = 1;
+	.com.ankama.dofus.server.game.protocol.common.TaxCollectorOrderedSpell spell = 2;
+}
+
+message TaxCollectorPresetSpellRemoveRequest {
+	string preset_uid = 1;
+	int32 slot_id = 2;
+}
+
+message TaxCollectorPresetSpellMoveRequest {
+	string preset_uid = 1;
+	int32 from_slot_id = 2;
+	int32 to_slot_id = 3;
+}
+
+message TaxCollectorTopListEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.TaxCollectorInformation dungeon_tax_collectors_information = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.TaxCollectorInformation world_tax_collectors_information = 2;
+}
+
+message TaxCollectorStateUpdateEvent {
+	string tax_collector_uid = 1;
+	.com.ankama.dofus.server.game.protocol.common.TaxCollectorState state = 2;
+}
+
+message TaxCollectorAddedEvent {
+	int64 caller_id = 1;
+	.com.ankama.dofus.server.game.protocol.common.TaxCollectorInformation tax_collector = 2;
+}
+
+message TaxCollectorRemovedEvent {
+	string tax_collector_uid = 1;
+}
+
+message TaxCollectorAttackedEvent {
+	int32 first_name_id = 1;
+	int32 last_name_id = 2;
+	.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates coordinates = 3;
+	string alliance_uid = 4;
+	string alliance_tag = 5;
+}
+
+message TaxCollectorAttackResultEvent {
+	bool dead = 1;
+	int32 first_name_id = 2;
+	int32 last_name_id = 3;
+	.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates coordinates = 4;
+	string alliance_uid = 5;
+	string alliance_tag = 6;
+}
+
+message TaxCollectorHarvestedEvent {
+	string tax_collector_uid = 1;
+	int64 harvester_id = 2;
+	string harvester_name = 3;
+}
+
+message TaxCollectorMovement {
+	.com.ankama.dofus.server.game.protocol.taxcollector.TaxCollectorMovement.TaxCollectorMovementType movement_type = 1;
+	int32 first_name_id = 2;
+	int32 last_name_id = 3;
+	.com.ankama.dofus.server.game.protocol.common.MapExtendedCoordinates coordinates = 4;
+	int64 player_id = 5;
+	string player_name = 6;
+	enum TaxCollectorMovementType {
+		TAX_COLLECTOR_UNKNOWN_ACTION = 0;
+		TAX_COLLECTOR_HIRED = 1;
+		TAX_COLLECTOR_HARVESTED = 2;
+		TAX_COLLECTOR_DEFEATED = 3;
+		TAX_COLLECTOR_DESTROYED = 4;
+	}
+
+}
+
+message TaxCollectorMovementsOfflineEvent {
+	repeated .com.ankama.dofus.server.game.protocol.taxcollector.TaxCollectorMovement movements = 1;
+}
+
+message TaxCollectorEquipmentUpdateEvent {
+	string tax_collector_uid = 1;
+	.com.ankama.dofus.server.game.protocol.common.ObjectItemInventory object = 2;
+	bool added = 3;
+	repeated .com.ankama.dofus.server.game.protocol.common.CharacterCharacteristic characteristics = 4;
+}
+
+message TaxCollectorErrorEvent {
+	.com.ankama.dofus.server.game.protocol.taxcollector.TaxCollectorErrorEvent.TaxCollectorErrorReason reason = 1;
+	enum TaxCollectorErrorReason {
+		TAX_COLLECTOR_ERROR_UNKNOWN = 0;
+		TAX_COLLECTOR_NOT_FOUND = 1;
+		TAX_COLLECTOR_NOT_OWNED = 2;
+		TAX_COLLECTOR_NO_RIGHTS = 3;
+		TAX_COLLECTOR_MAX_REACHED = 4;
+		TAX_COLLECTOR_ALREADY_ONE = 5;
+		TAX_COLLECTOR_CANT_HIRE_YET = 6;
+		TAX_COLLECTOR_CANT_HIRE_HERE = 7;
+		TAX_COLLECTOR_NOT_ENOUGH_KAMAS = 8;
+	}
+
+}
+
+message TaxCollectorUpdatesListeningConfirmationEvent {
+	.com.ankama.dofus.server.game.protocol.common.TaxCollectorInformation information = 1;
+}
+
+message TaxCollectorOrderedSpellUpdatedEvent {
+	string tax_collector_uid = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.TaxCollectorOrderedSpell spells = 2;
+}
+
+message TaxCollectorPresetsEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.TaxCollectorPreset presets = 1;
+}
+
+message TaxCollectorPresetSpellUpdatedEvent {
+	string preset_uid = 1;
+	repeated .com.ankama.dofus.server.game.protocol.common.TaxCollectorOrderedSpell spells = 2;
+}
+
+message TaxCollectorFightRequest {
+}
+

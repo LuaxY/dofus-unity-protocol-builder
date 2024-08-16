@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/teleportation";
+
+package com.ankama.dofus.server.game.protocol.teleportation;
+
+enum Teleporter {
+	TELEPORTER_ZAAP = 0;
+	TELEPORTER_SUBWAY = 1;
+	TELEPORTER_PRISM = 2;
+	TELEPORTER_HAVEN_BAG = 3;
+	TELEPORTER_ANOMALY = 4;
+}
+
+message TeleportRequest {
+	.com.ankama.dofus.server.game.protocol.teleportation.Teleporter source_type = 1;
+	.com.ankama.dofus.server.game.protocol.teleportation.Teleporter destination_type = 2;
+	int64 map_id = 3;
+}
+
+message ZaapRespawnSaveRequest {
+}
+
+message TeleportBuddiesAnswerRequest {
+	bool accept = 1;
+}
+
+message TeleportToBuddyAnswerRequest {
+	bool accept = 1;
+}
+
+message TeleportPlayerAnswerRequest {
+	bool accept = 1;
+}
+
+message GroupTeleportPlayerAnswerRequest {
+	bool accept = 1;
+}
+
+message ZaapRespawnUpdatedEvent {
+	int64 map_id = 1;
+}
+
+message TeleportDestinationsEvent {
+	.com.ankama.dofus.server.game.protocol.teleportation.Teleporter type = 1;
+	repeated .com.ankama.dofus.server.game.protocol.teleportation.TeleportDestination destinations = 2;
+	optional int64 spawn_map_id = 3;
+}
+
+message ZaapKnownListEvent {
+	repeated int64 destinations = 1;
+}
+
+message TeleportBuddiesEvent {
+	int32 dungeon_id = 1;
+}
+
+message TeleportBuddiesRequestedEvent {
+	int32 dungeon_id = 1;
+	int64 inviter_id = 2;
+	repeated int64 invalid_buddies_id = 3;
+}
+
+message TeleportToBuddyOfferEvent {
+	int32 dungeon_id = 1;
+	int64 buddy_id = 2;
+	int32 time_left = 3;
+}
+
+message TeleportToBuddyClosedEvent {
+	int32 dungeon_id = 1;
+	int64 buddy_id = 2;
+}
+
+message TeleportPlayerOfferEvent {
+	int64 map_id = 1;
+	string message = 2;
+	int32 time_left = 3;
+	int64 requester_id = 4;
+}
+
+message TeleportPlayerClosedEvent {
+	int64 map_id = 1;
+	int64 requester_id = 2;
+}
+
+message GroupTeleportPlayerOfferEvent {
+	int64 map_id = 1;
+	int32 world_x = 2;
+	int32 world_y = 3;
+	int32 time_left = 4;
+	int64 requester_id = 5;
+	string requester_name = 6;
+}
+
+message GroupTeleportPlayerClosedEvent {
+	int64 map_id = 1;
+	int64 requester_id = 2;
+}
+
+message TeleportDestination {
+	.com.ankama.dofus.server.game.protocol.teleportation.Teleporter type = 1;
+	int64 map_id = 2;
+	int32 subarea_id = 3;
+	int32 level = 4;
+	int32 cost = 5;
+	optional .com.ankama.dofus.server.game.protocol.teleportation.TeleportDestination.Anomaly anomaly = 6;
+	message Anomaly {
+		int32 bonus_pourcentage = 1;
+		int64 remaining_time = 2;
+	}
+
+}
+

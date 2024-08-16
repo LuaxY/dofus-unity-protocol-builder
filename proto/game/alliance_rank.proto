@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/game/alliance_rank";
+
+import "common.proto";
+
+package com.ankama.dofus.server.game.protocol.alliance.rank;
+
+message AllianceRankCreationRequest {
+	int32 parent_rank_id = 1;
+	int32 gfx_id = 2;
+	string name = 3;
+}
+
+message AllianceRankUpdateAllRequest {
+	repeated .com.ankama.dofus.server.game.protocol.common.RankInformation ranks = 1;
+}
+
+message AllianceRankDeletionRequest {
+	int32 rank_id = 1;
+	int32 replacement_rank_id = 2;
+}
+
+message AllianceRankUpdateRequest {
+	.com.ankama.dofus.server.game.protocol.common.RankInformation rank = 1;
+}
+
+message AllianceRanksRequest {
+}
+
+message AllianceRankChangeRequest {
+	int64 member_id = 1;
+	int32 rank_id = 2;
+}
+
+message AllianceRanksEvent {
+	repeated .com.ankama.dofus.server.game.protocol.common.RankInformation ranks = 1;
+}
+
+message AllianceRightsUpdateRequest {
+	int32 rank_id = 1;
+	repeated int32 rights = 2;
+}
+
