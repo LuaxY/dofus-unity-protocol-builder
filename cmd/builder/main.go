@@ -115,8 +115,8 @@ func ProcessDescriptorFile(packageName string, filepath string) {
 	sb.WriteString(fmt.Sprintf(`syntax = "%s";`, protoDescriptor.Syntax))
 	sb.WriteString("\n\n")
 
-	sb.WriteString(fmt.Sprintf(`option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/%s/%s";`, packageName, strings.Replace(sanitizedFilename, ".proto", "", 1)))
-	sb.WriteString("\n\n")
+	//sb.WriteString(fmt.Sprintf(`option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/%s/%s";`, packageName, strings.Replace(sanitizedFilename, ".proto", "", 1)))
+	//sb.WriteString("\n\n")
 
 	if len(protoDescriptor.Dependency) > 0 {
 		for _, dependency := range protoDescriptor.Dependency {

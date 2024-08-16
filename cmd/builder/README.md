@@ -48,7 +48,7 @@ foreach (var ass in assemblies)
 
 - Run go program
 
-`go run ./cmd/builder/main.go -input_dir=./path/to/game/output -output_dir=./proto`
+`go run ./cmd/builder/main.go -input_dir=/path/to/game/output -output_dir=./proto`
 
 ## Thank You
 
