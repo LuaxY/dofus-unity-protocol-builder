@@ -64,14 +64,6 @@ func main() {
 }
 
 func export(protocolType ProtocolType, outputFile string) {
-	os.Mkdir("output", os.ModePerm)
-	os.Remove(outputFile)
-
-	protoFile, err := os.Create(outputFile)
-	if err != nil {
-		panic(err)
-	}
-
 	targetNamespace := ""
 	ignoreNamespace := ""
 
