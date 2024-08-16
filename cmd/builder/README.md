@@ -3,7 +3,9 @@
 ## Extraction Proto Descriptors
 
 - Create a new directory `output` in the root of the game.  
-- Install last [BepInEx-Unity.IL2CPP](https://builds.bepinex.dev/projects/bepinex_be)   
+- Install last [BepInEx-Unity.IL2CPP](https://builds.bepinex.dev/projects/bepinex_be)
+    - For MacOS, add `xattr -d com.apple.quarantine libdoorstop.dylib` on top of `run_bepinex.sh`
+
 - Install last [CinematicUnityExplorer (CUE)](https://github.com/originalnicodr/CinematicUnityExplorer) ([instructions](https://framedsc.com/GeneralGuides/cinematic-unity-explorer.htm))  
 - Run this C# code in the game
 
