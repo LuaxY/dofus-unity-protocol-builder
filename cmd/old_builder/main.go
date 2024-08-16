@@ -60,7 +60,7 @@ const (
 
 func main() {
 	export(CONNECTION_PROTOCOL, "output/connection.proto")
-	export(GAME_PROTOCOL, "output/game.proto")
+	//export(GAME_PROTOCOL, "output/game.proto")
 }
 
 func export(protocolType ProtocolType, outputFile string) {
@@ -75,11 +75,6 @@ func export(protocolType ProtocolType, outputFile string) {
 		targetNamespace = gameProtocolNamespace
 		ignoreNamespace = connectionProtocolNamespace
 	}
-
-	_, _ = protoFile.WriteString(`syntax = "proto3";`)
-	_, _ = protoFile.WriteString("\n\n")
-	_, _ = protoFile.WriteString(`import "google/protobuf/any.proto";`)
-	_, _ = protoFile.WriteString("\n\n")
 
 	file, err := os.Open("dump.cs")
 	if err != nil {
@@ -97,6 +92,29 @@ func export(protocolType ProtocolType, outputFile string) {
 	if err != nil {
 		panic(err)
 	}
+
+	//var re = regexp.MustCompile(`(?m)\/\/ Namespace: ([A-Za-z.]+)\npublic static class ([A-Za-z.<>]+)Reflection`)
+	//messages := re.FindAllStringSubmatch(string(data), -1)
+	//for _, message := range messages {
+	//	filename := "Output/" + message[1] + ".json"
+	//	fmt.Printf("System.IO.File.WriteAllText(\"%s\", %s.%sReflection.Descriptor.Proto.ToString());\n", filename, message[1], message[2])
+	//	//fmt.Println(filename)
+	//}
+	//
+	//return
+
+	os.Mkdir("output", os.ModePerm)
+	os.Remove(outputFile)
+
+	protoFile, err := os.Create(outputFile)
+	if err != nil {
+		panic(err)
+	}
+
+	_, _ = protoFile.WriteString(`syntax = "proto3";`)
+	_, _ = protoFile.WriteString("\n\n")
+	_, _ = protoFile.WriteString(`import "google/protobuf/any.proto";`)
+	_, _ = protoFile.WriteString("\n\n")
 
 	var reEnum = regexp.MustCompile(`(?m)// Namespace: (.*)\npublic enum ([A-Za-z.]+).*\n{((?s).*?)}`)
 	var reEnumField = regexp.MustCompile(`(?m)public const ([A-Za-z.]+) (\w+) = (\d+);`)
