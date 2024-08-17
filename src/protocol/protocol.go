@@ -18,7 +18,7 @@ var marshaller = protojson.MarshalOptions{
 	Resolver: customResolver,
 }
 
-var unmarshaller = protojson.UnmarshalOptions{
+var unmarshaller = proto.UnmarshalOptions{
 	Resolver: customResolver,
 }
 
@@ -46,7 +46,7 @@ func EncodeMessage(message protoreflect.ProtoMessage) ([]byte, error) {
 	return buffer, nil
 }
 
-func DecodeMessage(data []byte, message protoreflect.ProtoMessage) error {
+func DecodeMessage(data []byte, message proto.Message) error {
 	if err := unmarshaller.Unmarshal(data, message); err != nil {
 		return fmt.Errorf("error unmarshalling message: %w", err)
 	}
