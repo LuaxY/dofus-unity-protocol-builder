@@ -15,13 +15,6 @@ import (
 	"sync"
 )
 
-type Server string
-
-const (
-	Connection Server = "Connection"
-	Game              = "Game"
-)
-
 type Direction int
 
 const (
@@ -35,7 +28,7 @@ func main() {
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
-	connectionProxy := NewProxy(Connection, 5555, "dofus2-co-beta.ankama-games.com:5555", &connectionMessage.Message{})
+	connectionProxy := NewProxy(protocol.ConnectionServer, 5555, "dofus2-co-beta.ankama-games.com:5555", &connectionMessage.Message{})
 	connectionProxy.ClientMessageFunc = processConnectionClientMessage
 	connectionProxy.ServerMessageFunc = processConnectionServerMessage
 
@@ -61,7 +54,7 @@ type Client struct {
 }
 
 type Proxy struct {
-	serverType  Server
+	serverType  protocol.ServerType
 	port        int32
 	target      string
 	listener    net.Listener
@@ -71,7 +64,7 @@ type Proxy struct {
 	ClientMessageFunc ProcessMessageFunc
 }
 
-func NewProxy(serverType Server, port int32, target string, messageType protoreflect.ProtoMessage) *Proxy {
+func NewProxy(serverType protocol.ServerType, port int32, target string, messageType protoreflect.ProtoMessage) *Proxy {
 	p := &Proxy{
 		serverType:  serverType,
 		port:        port,
@@ -124,6 +117,9 @@ func (p *Proxy) handleConnection(clientConn net.Conn) {
 		return
 	}
 
+	defer clientConn.Close()
+	defer serverConn.Close()
+
 	client := &Client{
 		clientConn: clientConn,
 		serverConn: serverConn,
@@ -132,16 +128,8 @@ func (p *Proxy) handleConnection(clientConn net.Conn) {
 		bufferConnectionServer: make([]byte, 0),
 	}
 
-	var serverStr string
-	switch p.serverType {
-	case Connection:
-		serverStr = "Connection"
-	case Game:
-		serverStr = "Game"
-	}
-
 	handleConn := func(client *Client, direction Direction) {
-		var partialBuffers []byte
+		var partialBuffer []byte
 
 		var from net.Conn
 		var to net.Conn
@@ -174,57 +162,62 @@ func (p *Proxy) handleConnection(clientConn net.Conn) {
 				return
 			}
 
-			partialBuffers = append(partialBuffers, readBuffer[:n]...)
+			partialBuffer = append(partialBuffer, readBuffer[:n]...)
 
 			//fmt.Println("Received", n, "bytes")
 			//fmt.Println(hex.EncodeToString(readBuffer[:n]))
 
 			for {
-				size, sizeLength := binary.Uvarint(partialBuffers[:])
+				size, sizeLength := binary.Uvarint(partialBuffer[:])
 
 				//fmt.Println("Size", size)
 				//fmt.Println("SizeLength", sizeLength)
 
 				// Incomplete message
-				if size == 0 || int(size) > len(partialBuffers)-sizeLength {
+				if size == 0 || int(size) > len(partialBuffer)-sizeLength {
 					break
 				}
 
-				payload := partialBuffers[sizeLength : sizeLength+int(size)]
+				payload := partialBuffer[sizeLength : sizeLength+int(size)]
 				//fmt.Println(sizeLength, size, hex.EncodeToString(payload[:]))
 
 				// instantiate the message type using reflection
 				message := reflect.New(reflect.TypeOf(p.messageType).Elem()).Interface().(protoreflect.ProtoMessage)
-				if err := protocol.DecodeMessage(payload[:size], message); err != nil {
-					color.Red("[%s] [%s] Error decoding message: %v", serverStr, directionStr, err)
+				if err := protocol.DecodeMessage(payload, message); err != nil {
+					color.Red("[%s] [%s] Error decoding message: %v", p.serverType, directionStr, err)
 				}
 
 				messages, err := processMessageFunc(client, message)
 				if err != nil {
-					color.Red("[%s] [%s] Error processing message: %v", serverStr, directionStr, err)
+					color.Red("[%s] [%s] Error processing message: %v", p.serverType, directionStr, err)
 				}
 
 				for _, message := range messages {
-					colorFunc("[%s] [%s] %s\n", serverStr, directionStr, protocol.PrettyPrintMessage(message))
+					colorFunc("[%s] [%s] %s\n", p.serverType, directionStr, protocol.PrettyPrintMessage(message))
 
 					encodedMessage, err := protocol.EncodeMessage(message)
 					if err != nil {
-						color.Red("[%s] [%s] Error encoding message: %v", serverStr, directionStr, err)
+						color.Red("[%s] [%s] Error encoding message: %v", p.serverType, directionStr, err)
 					}
 
 					_, err = to.Write(encodedMessage)
 					if err != nil {
-						color.Red("[%s] [%s] Error writing to %s: %v", serverStr, directionStr, to.RemoteAddr().String(), err)
+						color.Red("[%s] [%s] Error writing to %s: %v", p.serverType, directionStr, to.RemoteAddr().String(), err)
 					}
 				}
 
-				partialBuffers = partialBuffers[sizeLength+int(size):]
+				partialBuffer = partialBuffer[sizeLength+int(size):]
 			}
 		}
 	}
 
+	wg := sync.WaitGroup{}
+	wg.Add(2)
+
 	go handleConn(client, ClientToServer)
 	go handleConn(client, ServerToClient)
+
+	wg.Wait()
 }
 
 func processConnectionClientMessage(client *Client, msg protoreflect.ProtoMessage) ([]protoreflect.ProtoMessage, error) {
@@ -257,7 +250,7 @@ func processConnectionServerMessage(client *Client, msg protoreflect.ProtoMessag
 					port := rand.Int32N(65535-49152) + 49152
 
 					// Start the game proxy
-					gameProxy = NewProxy(Game, port, fmt.Sprintf("%s:%d", success.GetHost(), success.GetPorts()[0]), &gameMessage.Message{})
+					gameProxy = NewProxy(protocol.GameServer, port, fmt.Sprintf("%s:%d", success.GetHost(), success.GetPorts()[0]), &gameMessage.Message{})
 					gameProxy.ClientMessageFunc = processGameClientMessage
 					gameProxy.ServerMessageFunc = processGameServerMessage
 

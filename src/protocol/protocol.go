@@ -24,6 +24,13 @@ var unmarshaller = proto.UnmarshalOptions{
 
 const typeUrlPrefix = "type.ankama.com/"
 
+type ServerType string
+
+const (
+	ConnectionServer ServerType = "Connection"
+	GameServer                  = "Game"
+)
+
 func PrettyPrintMessage(message protoreflect.ProtoMessage) string {
 	jsonBytes, err := marshaller.Marshal(message)
 	if err != nil {
