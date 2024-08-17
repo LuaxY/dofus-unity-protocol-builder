@@ -151,28 +151,20 @@ func (p *Proxy) handleConnection(clientConn net.Conn) {
 			n, err := from.Read(readBuffer[:])
 			if err != nil {
 				fmt.Println("Error reading", err)
-				client.clientConn.Close()
+				to.Close()
 				return
 			}
 
 			partialBuffer = append(partialBuffer, readBuffer[:n]...)
 
-			//fmt.Println("Received", n, "bytes")
-			//fmt.Println(hex.EncodeToString(readBuffer[:n]))
-
 			for {
 				size, sizeLength := binary.Uvarint(partialBuffer[:])
-
-				//fmt.Println("Size", size)
-				//fmt.Println("SizeLength", sizeLength)
-
 				// Incomplete message
 				if size == 0 || int(size) > len(partialBuffer)-sizeLength {
 					break
 				}
 
 				payload := partialBuffer[sizeLength : sizeLength+int(size)]
-				//fmt.Println(sizeLength, size, hex.EncodeToString(payload[:]))
 
 				// instantiate the message type using reflection
 				message := reflect.New(reflect.TypeOf(p.messageType).Elem()).Interface().(protoreflect.ProtoMessage)
