@@ -28,7 +28,14 @@ type ServerType string
 
 const (
 	ConnectionServer ServerType = "Connection"
-	GameServer                  = "Game"
+	GameServer       ServerType = "Game"
+)
+
+type Direction string
+
+const (
+	ClientToServer Direction = "ClientToServer"
+	ServerToClient Direction = "ServerToClient"
 )
 
 func PrettyPrintMessage(message protoreflect.ProtoMessage) string {

@@ -15,13 +15,6 @@ import (
 	"sync"
 )
 
-type Direction int
-
-const (
-	ClientToServer Direction = iota
-	ServerToClient
-)
-
 var serverProxyMap = make(map[string]*Proxy)
 
 func main() {
@@ -128,7 +121,7 @@ func (p *Proxy) handleConnection(clientConn net.Conn) {
 		bufferConnectionServer: make([]byte, 0),
 	}
 
-	handleConn := func(client *Client, direction Direction) {
+	handleConn := func(client *Client, direction protocol.Direction) {
 		var partialBuffer []byte
 
 		var from net.Conn
@@ -138,13 +131,13 @@ func (p *Proxy) handleConnection(clientConn net.Conn) {
 		var colorFunc func(format string, a ...interface{})
 
 		switch direction {
-		case ClientToServer:
+		case protocol.ClientToServer:
 			from = client.clientConn
 			to = client.serverConn
 			processMessageFunc = p.ClientMessageFunc
 			directionStr = "C->S"
 			colorFunc = color.Cyan
-		case ServerToClient:
+		case protocol.ServerToClient:
 			from = client.serverConn
 			to = client.clientConn
 			processMessageFunc = p.ServerMessageFunc
@@ -214,8 +207,8 @@ func (p *Proxy) handleConnection(clientConn net.Conn) {
 	wg := sync.WaitGroup{}
 	wg.Add(2)
 
-	go handleConn(client, ClientToServer)
-	go handleConn(client, ServerToClient)
+	go handleConn(client, protocol.ClientToServer)
+	go handleConn(client, protocol.ServerToClient)
 
 	wg.Wait()
 }
