@@ -39,7 +39,7 @@ foreach (var ass in assemblies)
         var toStringMethod = proto.GetType().GetMethod("ToString");
         var res = (string)toStringMethod.Invoke(proto, Array.Empty<object>());
 
-        Il2CppSystem.IO.File.WriteAllText("./ouput/" + t.Name + ".json", res);
+        Il2CppSystem.IO.File.WriteAllText("./output/" + t.Name + ".json", res);
         
         Console.WriteLine(descriptor);
     } 
