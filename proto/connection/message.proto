@@ -58,6 +58,7 @@ message UpdateServerEvent {
 
 message IdentificationRequest {
 	string device_identifier = 1;
+	string client_version = 5;
 	oneof identification_type {
 		.com.ankama.dofus.server.connection.protocol.TokenRequest tokenRequest = 3;
 		.com.ankama.dofus.server.connection.protocol.LoginRequest loginRequest = 4;
@@ -104,6 +105,7 @@ message IdentificationResponse {
 	message Error {
 		.com.ankama.dofus.server.connection.protocol.IdentificationResponse.Error.Reason reason = 1;
 		optional string ban_end_date = 2;
+		optional string required_version = 3;
 		enum Reason {
 			UNKNOWN_AUTH_ERROR = 0;
 			ALREADY_CONNECTED = 1;
@@ -117,6 +119,8 @@ message IdentificationResponse {
 			ANONYMOUS_IP_FORBIDDEN = 9;
 			NICKNAME_REGISTRATION = 10;
 			UNAUTHORIZED = 11;
+			INVALID_CLIENT_VERSION = 12;
+			OUTDATED_CLIENT_VERSION = 13;
 		}
 
 	}

@@ -413,9 +413,9 @@ message ActorPositionInformation {
 
 						message OrnamentOption {
 							int32 player_level = 2;
-							optional int32 ladder_position = 4;
 							optional int32 ornament_id = 1;
 							optional int32 league_id = 3;
+							optional int32 ladder_position = 4;
 						}
 
 						message ObjectUseOption {
@@ -550,9 +550,9 @@ message SpawnInformation {
 message AllianceInformation {
 	string uid = 1;
 	string tag = 2;
+	optional string name = 3;
 	optional .com.ankama.dofus.server.game.protocol.common.SocialEmblem emblem = 4;
 	optional .com.ankama.dofus.server.game.protocol.common.AllianceInformation.AllianceCardInformation card_information = 5;
-	optional string name = 3;
 	message AllianceCardInformation {
 		int64 creation_date = 1;
 		int32 members_number = 2;
@@ -1643,10 +1643,10 @@ message PrismInformation {
 	int64 nuggets_count = 3;
 	int32 durability = 4;
 	int64 next_evolution_date = 5;
+	optional .com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance_information = 6;
 	optional .com.ankama.dofus.server.game.protocol.common.PrismModule module = 7;
 	optional .com.ankama.dofus.server.game.protocol.common.PrismCristal cristal = 8;
 	optional int32 cristal_number_left = 9;
-	optional .com.ankama.dofus.server.game.protocol.common.AllianceInformation alliance_information = 6;
 	enum PrismState {
 		NORMAL = 0;
 		WEAKENED = 1;
@@ -1719,8 +1719,8 @@ message SocialNoticeInformation {
 message RankInformation {
 	int32 id = 1;
 	string name = 2;
-	optional .com.ankama.dofus.server.game.protocol.common.RankInformation.PrivateInformation private_information = 4;
 	optional .com.ankama.dofus.server.game.protocol.common.RankInformation.OrderAndGfx order_and_gfx = 3;
+	optional .com.ankama.dofus.server.game.protocol.common.RankInformation.PrivateInformation private_information = 4;
 	message OrderAndGfx {
 		int32 order = 1;
 		int32 gfx_id = 2;

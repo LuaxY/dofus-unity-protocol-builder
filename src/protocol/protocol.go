@@ -13,12 +13,16 @@ import (
 
 var customResolver = resolver.NewCustomResolver()
 
-var marshaller = protojson.MarshalOptions{
+var unmarshal = proto.UnmarshalOptions{
+	Resolver: customResolver,
+}
+
+var jsonMarshal = protojson.MarshalOptions{
 	Indent:   "  ",
 	Resolver: customResolver,
 }
 
-var unmarshaller = proto.UnmarshalOptions{
+var jsonUnmarshal = protojson.UnmarshalOptions{
 	Resolver: customResolver,
 }
 
@@ -39,7 +43,7 @@ const (
 )
 
 func PrettyPrintMessage(message protoreflect.ProtoMessage) string {
-	jsonBytes, err := marshaller.Marshal(message)
+	jsonBytes, err := jsonMarshal.Marshal(message)
 	if err != nil {
 		return "" // TODO: handle error
 	}
@@ -61,7 +65,7 @@ func EncodeMessage(message protoreflect.ProtoMessage) ([]byte, error) {
 }
 
 func DecodeMessage(data []byte, message proto.Message) error {
-	if err := unmarshaller.Unmarshal(data, message); err != nil {
+	if err := unmarshal.Unmarshal(data, message); err != nil {
 		return fmt.Errorf("error unmarshalling message: %w", err)
 	}
 
@@ -144,4 +148,12 @@ func EncodeGameEvent(event protoreflect.ProtoMessage) (*gameMessage.Message, err
 			},
 		},
 	}, nil
+}
+
+func JsonToProto(jsonBytes []byte, message proto.Message) error {
+	if err := jsonUnmarshal.Unmarshal(jsonBytes, message); err != nil {
+		return fmt.Errorf("error unmarshalling message: %w", err)
+	}
+
+	return nil
 }

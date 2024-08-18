@@ -65,16 +65,17 @@ func main() {
 
 	for _, file := range files {
 		if filepath.Ext(file.Name()) == ".json" {
+			fmt.Println(file.Name())
 			splits := strings.Split(file.Name(), ".")
 			packageName := strings.ToLower(splits[4])
-			ProcessDescriptorFile(packageName, filepath.Join(outputDir, file.Name()))
+			ProcessDescriptorFile(packageName, filepath.Join(inputDir, file.Name()), outputDir)
 		}
 	}
 }
 
 type Fn func(MessageType, Fn)
 
-func ProcessDescriptorFile(packageName string, filepath string) {
+func ProcessDescriptorFile(packageName string, filepath string, outputDir string) {
 	protoDescriptorJsonFile, err := os.Open(filepath)
 	if err != nil {
 		panic(err)
@@ -115,8 +116,8 @@ func ProcessDescriptorFile(packageName string, filepath string) {
 	sb.WriteString(fmt.Sprintf(`syntax = "%s";`, protoDescriptor.Syntax))
 	sb.WriteString("\n\n")
 
-	//sb.WriteString(fmt.Sprintf(`option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/%s/%s";`, packageName, strings.Replace(sanitizedFilename, ".proto", "", 1)))
-	//sb.WriteString("\n\n")
+	sb.WriteString(fmt.Sprintf(`option go_package = "go-xp-dofus-unity-proto-builder/src/protocol/%s/%s";`, packageName, strings.Replace(sanitizedFilename, ".proto", "", 1)))
+	sb.WriteString("\n\n")
 
 	if len(protoDescriptor.Dependency) > 0 {
 		for _, dependency := range protoDescriptor.Dependency {
@@ -137,8 +138,8 @@ func ProcessDescriptorFile(packageName string, filepath string) {
 		WriteMessageType(&sb, messageType, 0)
 	}
 
-	err = os.MkdirAll(path.Join(".", "output", packageName), os.ModePerm)
-	protoFile, err := os.Create(path.Join(".", "output", packageName, sanitizedFilename))
+	err = os.MkdirAll(path.Join(outputDir, packageName), os.ModePerm)
+	protoFile, err := os.Create(path.Join(outputDir, packageName, sanitizedFilename))
 	if err != nil {
 		panic(err)
 	}

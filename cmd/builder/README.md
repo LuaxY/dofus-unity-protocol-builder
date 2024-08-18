@@ -38,8 +38,14 @@ foreach (var ass in assemblies)
         // we invoke the method "ToString()"
         var toStringMethod = proto.GetType().GetMethod("ToString");
         var res = (string)toStringMethod.Invoke(proto, Array.Empty<object>());
+        
+        // Find the last occurrence of the dot
+        int lastDotIndex = t.FullName.LastIndexOf('.');
 
-        Il2CppSystem.IO.File.WriteAllText("./output/" + t.Name + ".json", res);
+        // If a dot is found, create a substring that excludes the last dot and everything after it
+        string sanitizedFullName = (lastDotIndex >= 0) ? t.FullName.Substring(0, lastDotIndex) : t.FullName;
+
+        Il2CppSystem.IO.File.WriteAllText("./output/" + sanitizedFullName + ".json", res);
         
         Console.WriteLine(descriptor);
     } 
