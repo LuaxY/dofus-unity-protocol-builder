@@ -183,10 +183,10 @@ message Outfit {
 	repeated .com.ankama.dofus.server.game.protocol.cosmetic.Outfit.ObjectsEntry objects = 4;
 	bool favorite = 9;
 	string last_modified = 10;
-	optional int32 aura_emote_id = 5;
-	optional int32 ornament_id = 6;
 	optional int32 title_id = 7;
 	optional .com.ankama.dofus.server.game.protocol.common.EntityLook entity_look = 8;
+	optional int32 aura_emote_id = 5;
+	optional int32 ornament_id = 6;
 	message ObjectsEntry {
 		int32 key = 1;
 		.com.ankama.dofus.server.game.protocol.cosmetic.Outfit.SkinOutfit value = 2;

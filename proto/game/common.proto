@@ -413,9 +413,9 @@ message ActorPositionInformation {
 
 						message OrnamentOption {
 							int32 player_level = 2;
+							optional int32 ladder_position = 4;
 							optional int32 ornament_id = 1;
 							optional int32 league_id = 3;
-							optional int32 ladder_position = 4;
 						}
 
 						message ObjectUseOption {
@@ -1399,8 +1399,8 @@ message HouseInstance {
 	int32 rooms_count = 10;
 	int32 chests_count = 11;
 	repeated int32 skills_id = 12;
-	optional int64 price = 6;
 	optional .com.ankama.dofus.server.game.protocol.common.GuildInformation guild_information = 9;
+	optional int64 price = 6;
 }
 
 message House {
